@@ -4,7 +4,7 @@
 *eMail=
 *
 *Project=garvuino_09g
-*Date=23:27:00
+*Date=23:56:37
 *CreatedBy=Fritzing 0.9.3b.04.19.5c895d327c44a3114e5fcc9d8260daf0cbb52806
 *
 *
@@ -13,78 +13,78 @@
 *Rotation in degree (0-360, math. pos.)
 *
 *No;Value;Package;X;Y;Rotation;Side;Name
-1;;;56.5084;-56.2023;0;Bottom;TXT1
-2;;;39.6218;-66.5574;0;Bottom;TXT1
-3;;;64.5364;-2.7603;0;Bottom;TXT1
-4;;THT;50.6587;-43.5719;-90;Bottom;24 Mhz
-5;;;7.22394;-63.0443;0;Bottom;Hole7
-6;;;67.3552;-19.8025;0;Bottom;TXT1
-7;;;61.9458;-3.10733;0;Bottom;TXT1
-8;;;20.0615;-67.2677;0;Bottom;IMG3
-9;;THT;70.724;-54.1543;180;Bottom;J1
-10;;THT;29.83;-38.9143;0;Bottom;J8
-11;;;39.4184;-23.7332;0;Bottom;TXT1
-12;;THT;13.3271;-63.0475;-90;Bottom;mono
-13;;;7.60652;-47.841;0;Bottom;TXT1
-14;;;18.4;-24.9359;0;Bottom;Arduino Nano
-15;;;54.3268;-17.207;0;Bottom;TXT1
-16;;;52.6042;-7.48152;0;Bottom;IMG6
-17;;din_5_female_support;69.884;-37.6135;-90;Bottom;midi
-18;;;7.22394;-7.16442;0;Bottom;Hole2
-19;1k;THT;4.43004;-18.8483;90;Bottom;R3
-20;;;27.2416;-26.4196;90;Bottom;IMG3
-21;;;54.3685;-29.887;0;Bottom;TXT1
-22;;;69.754;-17.2931;0;Bottom;IMG3
-23;;THT;8.24004;-23.6743;0;Bottom;J9
-24;;THT;29.322;-21.1343;0;Bottom;J7
-25;;THT;42.276;-47.8043;90;Bottom;AY>R
-26;;;64.5674;-17.0373;0;Bottom;TXT1
-27;;;56.0743;-58.9787;0;Bottom;TXT1
-28;10µF;100 mil [THT, electrolytic];19.162;-61.2663;0;Bottom;C6
-29;10µF;100 mil [THT, electrolytic];26.274;-61.2663;0;Bottom;C3
-30;;dil28-3-simon-kit;37.6087;-26.2145;-90;Bottom;Atmega8
-31;;;53.7559;-22.2269;0;Bottom;TXT1
-32;;;20.6831;-26.6491;90;Bottom;sd 
-33;;THT;21.194;-47.8043;90;Bottom;TX
-34;;THT;45.324;-18.5943;180;Bottom;J6
-35;;;73.5205;-52.9284;0;Bottom;TXT1
-36;;;66.4193;-22.6118;0;Bottom;TXT1
-37;;;7.50238;-57.4233;0;Bottom;TXT1
-38;;;49.6626;-66.9136;0;Bottom;TXT1
-39;;;39.3433;-28.8614;0;Bottom;TXT1
-40;;;73.2639;-63.0443;0;Bottom;Hole1
-41;;THT;51.928;-26.2143;180;Bottom;J2
-42;820pF;100 mil [THT, multilayer];33.3812;-58.4723;0;Bottom;C2
-43;;;38.4659;-2.84642;0;Bottom;Via6
-44;;;39.2624;-20.9832;0;Bottom;TXT1
-45;;;54.8192;-27.3721;0;Bottom;TXT1
-46;;;54.7179;-32.2963;0;Bottom;TXT1
-47;;;66.1712;-46.4687;0;Bottom;TXT1
-48;10k;THT;37.704;-57.9643;90;Bottom;R5
-49;820pF;100 mil [THT, multilayer];33.3812;-53.6463;0;Bottom;C7
-50;;THT;47.864;-57.9643;0;Bottom;J4
-51;10k;THT;42.53;-57.9643;90;Bottom;R4
-52;;;19.6008;-4.1634;0;Bottom;TXT1
-53;;;58.2779;-37.3903;0;Bottom;Via2
-54;;;68.191;-49.3959;0;Bottom;IMG4
-55;;;39.205;-31.3368;0;Bottom;TXT1
-56;;5 mm [THT];4.6839;-30.6756;0;Bottom;LED1
-57;;;65.0679;-7.24234;0;Bottom;IMG3
-58;;;67.262;-14.105;0;Bottom;TXT1
-59;;;53.766;-24.8572;0;Bottom;TXT1
-60;;ksa_sealed_tac_switch;21.194;-54.1543;0;Bottom;Switch
-61;;THT;33.132;-47.8043;90;Bottom;AY>L
-62;100nF;100 mil [THT, multilayer];45.07;-26.2191;90;Bottom;C5
-63;;;73.2639;-7.16442;0;Bottom;Hole6
-64;;;55.7379;-37.6443;0;Bottom;Via7
-65;;THT;8.24004;-12.2443;0;Bottom;J10
-66;;;39.2646;-33.6798;0;Bottom;TXT1
-67;;4Ucon 08780 [THT];5.18329;-52.8845;0;Bottom;TRS
-68;;;61.8228;-9.02825;0;Bottom;IMG3
-69;;;44.3079;-61.7743;0;Bottom;Via3
-70;;;36.6879;-5.38642;0;Bottom;Via5
-71;;THT;49.388;-26.2143;0;Bottom;J3
-72;;THT;57.262;-40.6923;180;Bottom;J5
-73;;;39.6308;-18.5221;-90;Bottom;TXT1
-74;;;71.8018;-48.8519;0;Bottom;TXT1
-75;;;18.0064;-39.5603;0;Bottom;TXT1
+1;;;66.4193;-22.6118;0;Bottom;TXT1
+2;;;18.4;-24.9359;0;Bottom;Arduino Nano
+3;;;66.1712;-46.4687;0;Bottom;TXT1
+4;;THT;45.324;-18.5943;180;Bottom;J6
+5;820pF;100 mil [THT, multilayer];33.3812;-58.4723;0;Bottom;C2
+6;;;54.3268;-17.207;0;Bottom;TXT1
+7;;;69.754;-17.2931;0;Bottom;IMG3
+8;;;39.6218;-66.5574;0;Bottom;TXT1
+9;;;54.8192;-27.3721;0;Bottom;TXT1
+10;;din_5_female_support;69.884;-37.6135;-90;Bottom;midi
+11;;;52.6042;-7.48152;0;Bottom;IMG6
+12;;ksa_sealed_tac_switch;21.194;-54.1543;0;Bottom;Switch
+13;10µF;100 mil [THT, electrolytic];19.162;-61.2663;0;Bottom;C6
+14;1k;THT;4.43004;-18.8483;90;Bottom;R3
+15;;;73.2639;-63.0443;0;Bottom;Hole1
+16;820pF;100 mil [THT, multilayer];33.3812;-53.6463;0;Bottom;C7
+17;;;49.6626;-66.9136;0;Bottom;TXT1
+18;;;53.7559;-22.2269;0;Bottom;TXT1
+19;;;39.2624;-20.9832;0;Bottom;TXT1
+20;;;7.22394;-63.0443;0;Bottom;Hole7
+21;;;64.5674;-17.0373;0;Bottom;TXT1
+22;;;7.22394;-7.16442;0;Bottom;Hole2
+23;;;61.8228;-9.02825;0;Bottom;IMG3
+24;;THT;21.194;-47.8043;90;Bottom;TX
+25;;;36.6879;-5.38642;0;Bottom;Via5
+26;;;39.2646;-33.6798;0;Bottom;TXT1
+27;;THT;29.322;-21.1343;0;Bottom;J7
+28;;;68.191;-49.3959;0;Bottom;IMG4
+29;;;7.50238;-57.4233;0;Bottom;TXT1
+30;;;39.6308;-18.5221;-90;Bottom;TXT1
+31;10k;THT;42.53;-57.9643;90;Bottom;R4
+32;;THT;50.6587;-43.5719;-90;Bottom;24 Mhz
+33;;THT;47.864;-57.9643;0;Bottom;J4
+34;10µF;100 mil [THT, electrolytic];26.274;-61.2663;0;Bottom;C3
+35;;;56.5084;-56.2023;0;Bottom;TXT1
+36;;;73.2639;-7.16442;0;Bottom;Hole6
+37;;;20.6831;-26.6491;90;Bottom;sd 
+38;;dil28-3-simon-kit;37.5453;-26.2143;-90;Bottom;Atmega8
+39;;;58.2779;-37.3903;0;Bottom;Via2
+40;;THT;49.388;-26.2143;0;Bottom;J3
+41;10k;THT;37.704;-57.9643;90;Bottom;R5
+42;;;18.0064;-39.5603;0;Bottom;TXT1
+43;;;61.9458;-3.10733;0;Bottom;TXT1
+44;100nF;100 mil [THT, multilayer];45.07;-26.2191;90;Bottom;C5
+45;;;39.205;-31.3368;0;Bottom;TXT1
+46;;5 mm [THT];4.6839;-30.6756;0;Bottom;LED1
+47;;;19.6008;-4.1634;0;Bottom;TXT1
+48;;THT;33.132;-47.8043;90;Bottom;AY>L
+49;;;54.3685;-29.887;0;Bottom;TXT1
+50;;;44.3079;-61.7743;0;Bottom;Via3
+51;;THT;51.928;-26.2143;180;Bottom;J2
+52;;;65.0679;-7.24234;0;Bottom;IMG3
+53;;;53.766;-24.8572;0;Bottom;TXT1
+54;;;64.5364;-2.7603;0;Bottom;TXT1
+55;;;27.2416;-26.4196;90;Bottom;IMG3
+56;;THT;8.24004;-23.6743;0;Bottom;J9
+57;;;55.7379;-37.6443;0;Bottom;Via7
+58;;;38.4659;-2.84642;0;Bottom;Via6
+59;;THT;8.24004;-12.2443;0;Bottom;J10
+60;;THT;13.3271;-63.0475;-90;Bottom;mono
+61;;;56.0743;-58.9787;0;Bottom;TXT1
+62;;THT;70.724;-54.1543;180;Bottom;J1
+63;;4Ucon 08780 [THT];5.18329;-52.8845;0;Bottom;TRS
+64;;;39.4184;-23.7332;0;Bottom;TXT1
+65;;;71.8018;-48.8519;0;Bottom;TXT1
+66;;;67.262;-14.105;0;Bottom;TXT1
+67;;;21.0839;-67.5943;0;Bottom;IMG3
+68;;THT;57.262;-40.6923;180;Bottom;J5
+69;;;39.3433;-28.8614;0;Bottom;TXT1
+70;;THT;42.276;-47.8043;90;Bottom;AY>R
+71;;;73.5205;-52.9284;0;Bottom;TXT1
+72;;THT;29.83;-38.9143;0;Bottom;J8
+73;;;7.60652;-47.841;0;Bottom;TXT1
+74;;;54.7179;-32.2963;0;Bottom;TXT1
+75;;;67.3552;-19.8025;0;Bottom;TXT1

@@ -1,6 +1,6 @@
 
 
-## Garvuino 
+# Garvuino 
 
 The Garvuino is a PCB board for creating musics, sounds and chiptunes.
 
@@ -15,21 +15,21 @@ On atmega8 chip, driven by the arduino nano, from the [AVR-AY project](http://av
  * It can replay sinclair, atari, amstrad chiptunes from the sd card
  * it might be possible to use it as a (very simple and dirty) AY synth. We just need to code the synth now.
 
-=== Sid emulator ===
+### Sid emulator 
 
 on arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-emulator)
 
  * it can replay some sid files, from the arduino memory, which is limited (so tunes will be cut). I'd like to find a way to stream the tune from the sd card, it's probably possible
  * it can be used as a Sid synth (see previous messages)
 
-=== 1-bit music ===
+### 1-bit music 
 
 From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on arduino)
+
  * it can get music from the arduino memory. 1 bit music don't need much memory so this time a whole song, even a complex one, can fit in the memory. It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
  * It should be possible to create a 1-bit synth in the future. Probably not an easy task.
 
-=== Mozzi synth ===
-
+### Mozzi synth 
 
  * [Mozzy synth](https://sensorium.github.io/Mozzi), can output fun FM sounds and many other effects.
 

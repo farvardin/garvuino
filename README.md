@@ -61,17 +61,17 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 Get a "USBASP USB ISP Programmer & 10 Pin ISP interface Cable - AVR ATMEL ATMega".
 
-Use a 16 Mhz crystal for example.
-
 Connect it according to this schematic:
 
 ![](atmega8/atmega8_burn_bb.png)
 
-Please refer to [this folder](atmega8) for more info about setting up the atmega8 chip.
+Use a 16 Mhz crystal for example.
 
-Once it's connected, I program the atmega8 chip with this command-line:
+Once it's connected, you can program the atmega8 chip with this command-line:
 
     avrdude -p atmega8 -c USBasp -U flash:w:AY_Emul_244_2ch.hex -U eeprom:w:Conf_standard_24MHz_1_75Mhz.hex -U lfuse:w:0xCE:m -U hfuse:w:0xCF:m 
+
+Please refer to [this folder](atmega8) for more info about setting up the atmega8 chip.
 
 ## Breadboard 
 

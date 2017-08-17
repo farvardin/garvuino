@@ -39,11 +39,11 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 ![](breadboard/garvuino_09g_breadboard_only_bb.png)
 
-Please refer to this folder.
+Please refer to [this folder](breadboard) for the fritzing sources and pdf version.
 
 ## PCB 
 
-Please refer to this folder.
+Please refer to [this folder](pcb) for the fritzing sources and gerber files.
 
 ## Links 
 

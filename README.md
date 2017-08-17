@@ -37,24 +37,24 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 ## Bill of Materials 
 
-    		optionnal
+    Name				nb 	(optionnal part)
     		
-    Garvuino PCB	1	
-    crystal 24 mhz	1	
-    arduino nano	1	
-    atmega8	1	
+    Garvuino PCB			1	
+    crystal 24 mhz			1	
+    arduino nano			1	
+    atmega8				1	
     ceramic capacitor 820 pF	2	
     electrolytic capacitor 10 uF	2	
     ceramic capacitor 100 nF	1	x
-    led 	1	x
-    DIN5 connector (midi)	1	x
-    1 kΩ Resistor	1	x
-    10 kΩ Resistor	2	
-    micro sd module	1	
-    sd module	1	x
-    momentary switch	1	
-    audio jack 3.5 mm (TRS)	1	
-    jumper	4	
+    led 				1	x
+    DIN5 connector (midi)		1	x
+    1 kΩ Resistor			1	x
+    10 kΩ Resistor			2	
+    micro sd module			1	
+    sd module			1	x
+    momentary switch		1	
+    audio jack 3.5 mm (TRS)		1	
+    jumper				4	
     
 
 ## Atmega8 setup 
@@ -82,6 +82,10 @@ Please refer to [this folder](breadboard) for the fritzing sources and pdf versi
 ## PCB 
 
 Please refer to [this folder](pcb) for the fritzing sources and gerber files.
+
+## Arduino sketches 
+
+Get the sketches [in this folder](arduino_sketches/)
 
 ## Links 
 

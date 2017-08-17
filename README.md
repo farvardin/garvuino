@@ -17,7 +17,7 @@ On atmega8 chip, driven by the arduino nano, from the [AVR-AY project](http://av
  * It can replay sinclair, atari, amstrad chiptunes from the sd card
  * it might be possible to use it as a (very simple and dirty) AY synth. We just need to code the synth now.
 
-=== Sid emulator ===
+### Sid emulator 
 
 on arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-emulator)
 
@@ -35,7 +35,7 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
  * [Mozzy synth](https://sensorium.github.io/Mozzi), can output fun FM sounds and many other effects.
 
-## How it sounds? 
+## How does it sound? 
 
  * AVRAY:
   * http://picosong.com/HUGM/

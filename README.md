@@ -8,7 +8,7 @@ The Garvuino is a PCB board for creating musics, sounds and chiptunes.
 
 It works with an Arduino Nano and an Atmega8 chip.
 
-It features:
+## Features 
 
 ### AY-3-8910 emulator 
 
@@ -35,6 +35,16 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
  * [Mozzy synth](https://sensorium.github.io/Mozzi), can output fun FM sounds and many other effects.
 
+## Breadboard 
+
+![](breadboard/garvuino_09g_breadboard_only_bb.png)
+
+Please refer to this folder.
+
+## PCB 
+
+Please refer to this folder.
+
 ## Links 
 
  * http://avray.ru/
@@ -52,7 +62,7 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 ## Licence 
 
-(The licence is only for the PCB sketch, and code written from scratch. 
+(This licence is only for the PCB sketch, and code written from scratch. 
 Code derived from other projects retains the original licence)
 
     BSD 3-Clause License

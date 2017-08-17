@@ -35,9 +35,47 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
  * [Mozzy synth](https://sensorium.github.io/Mozzi), can output fun FM sounds and many other effects.
 
+## Bill of Materials 
+
+    		optionnal
+    		
+    Garvuino PCB	1	
+    crystal 24 mhz	1	
+    arduino nano	1	
+    atmega8	1	
+    ceramic capacitor 820 pF	2	
+    electrolytic capacitor 10 uF	2	
+    ceramic capacitor 100 nF	1	x
+    led 	1	x
+    DIN5 connector (midi)	1	x
+    1 kΩ Resistor	1	x
+    10 kΩ Resistor	2	
+    micro sd module	1	
+    sd module	1	x
+    momentary switch	1	
+    audio jack 3.5 mm (TRS)	1	
+    jumper	4	
+    
+
+## Atmega8 setup 
+
+Get a "USBASP USB ISP Programmer & 10 Pin ISP interface Cable - AVR ATMEL ATMega".
+
+Use a 16 Mhz crystal for example.
+
+Connect it according to this schematic:
+
+![](atmega8/atmega8_burn_bb.png)
+
+Please refer to [this folder](atmega8) for more info about setting up the atmega8 chip.
+
+Once it's connected, I program the atmega8 chip with this command-line:
+
+    avrdude -p atmega8 -c USBasp -U flash:w:AY_Emul_244_2ch.hex -U eeprom:w:Conf_standard_24MHz_1_75Mhz.hex -U lfuse:w:0xCE:m -U hfuse:w:0xCF:m 
+
 ## Breadboard 
 
-![](breadboard/garvuino_09g_breadboard_only_bb.png)
+![](breadboard/garvuino_09g_breadboard_only_bb.jpg)
 
 Please refer to [this folder](breadboard) for the fritzing sources and pdf version.
 

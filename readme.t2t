@@ -52,22 +52,22 @@ From [various 1-bit engines http://randomflux.info/1bit/viewforum.php?id=5] (on 
 == How does it sound? ==
 
 
-- AVRAY:
+- **AVRAY**:
  - http://picosong.com/HUGM/
  - http://battleofthebits.org/arena/Entry/Underground+Water/26509/
  - https://www.youtube.com/watch?v=gzpGbokxwZ4
  - //more to come//
 
 
-- Mozzi:
+- **Mozzi**:
  - //more to come//
 
 
-- SID
+- **SID emulator**
  - //more to come//
 
 
-- Beeper 
+- **Beeper** 
  - http://garvalf.online.fr/index.php?page=blog_2017-02-12
  - //more to come//
 
@@ -116,7 +116,15 @@ Once it's connected, you can program the atmega8 chip with this command-line:
 Please refer to [this folder atmega8] for more info about setting up the atmega8 chip.
 
 
+
+== PCB ==
+
+Please refer to [this folder pcb] for the fritzing sources and gerber files.
+
+
 == Breadboard ==
+
+It can also work without the PCB. Just use a breadboard and a few wires!
 
 [breadboard/garvuino_09g_breadboard_only_bb.jpg]
 
@@ -124,14 +132,14 @@ Please refer to [this folder atmega8] for more info about setting up the atmega8
 Please refer to [this folder breadboard] for the fritzing sources and pdf version.
 
 
-== PCB ==
-
-Please refer to [this folder pcb] for the fritzing sources and gerber files.
-
 
 == Arduino sketches ==
 
 Get the sketches [in this folder arduino_sketches/]
+
+//(more infos to come later)//
+
+You can find [some tunes for using with the AVR-AY setup in here tunes/aym].
 
 
 == Links ==
@@ -145,7 +153,7 @@ Get the sketches [in this folder arduino_sketches/]
 == Credits ==
 
 - Yoruk for his help on the PCB
-- Ramiros and Evgeniy for AVR-AY emulator
+- Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)
 - Shiru for the 1-bit engines on Arduino
 - Christoph Haberer and Mario Patino for the Sid-arduino lib
 - The Mozzi team

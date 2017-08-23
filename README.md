@@ -90,6 +90,8 @@ Connect it according to this schematic for the atmega8:
 
 Basically it's:
 
+| SD reader |Atmega|
+|---------------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|
@@ -123,7 +125,7 @@ Get the sketches [in this folder](arduino_sketches/)
 
 *(more infos to come later)*
 
-You can find [some tunes for using with the AVR-AY setup in here](tunes/aym).
+You can find [some tunes for using with the AVR-AY setup in here](tunes/). The arduino sketch can read the RSF files from the SD (it can't read the YM or AY files directly). You can convert to RSF with the [AVR-AY Player](http://www.avray.ru/avr-ay-player/).
 
 ## Links 
 

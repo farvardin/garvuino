@@ -2,7 +2,7 @@
 
 # Garvuino 
 
-The Garvuino is a PCB board for creating musics, sounds and chiptunes.
+The Garvuino is a PCB board for creating musics, sounds and chiptunes, either through programmation, soundtracker or live recording (midi).
 
 ![](garvuino_pcb.png)
 
@@ -12,23 +12,23 @@ It works with an Arduino Nano and an Atmega8 chip.
 
 ### AY-3-8910 emulator 
 
-On atmega8 chip, driven by the arduino nano, from the [AVR-AY project](http://avray.ru/)
+On Atmega8 chip, driven by the Arduino nano, from the [AVR-AY project](http://avray.ru/)
 
- * It can replay sinclair, atari, amstrad chiptunes from the sd card
- * it might be possible to use it as a (very simple and dirty) AY synth. We just need to code the synth now.
+ * It can replay Sinclair ZX Spectrum, Atari ST, Amstrad chiptunes from the sd card.
+ * It might be possible to use it as a (very simple and dirty) AY synth. We just need to code the synth in the future.
 
 ### Sid emulator 
 
-on arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-emulator)
+On Arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-emulator)
 
- * it can replay some sid files, from the arduino memory, which is limited (so tunes will be cut). I'd like to find a way to stream the tune from the sd card, it's probably possible
- * it can be used as a Sid synth (see previous messages)
+ * It can replay some sid files, from the arduino memory, which is limited (so tunes will be cut). We'd like to find a way to stream the tune from the sd card, it's probably possible.
+ * It can be used as a Sid synth, driven by midi.
 
 ### 1-bit music 
 
 From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on arduino)
 
- * it can get music from the arduino memory. 1 bit music don't need much memory so this time a whole song, even a complex one, can fit in the memory. It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
+ * It can play music from the arduino memory. 1-bit music don't need much memory so a whole song, even a complex one, can fit in the memory. It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
  * It should be possible to create a 1-bit synth in the future. Probably not an easy task.
 
 ### Mozzi synth 
@@ -37,53 +37,67 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 ## How does it sound? 
 
- * **AVRAY**:
-  * http://picosong.com/HUGM/
-  * http://battleofthebits.org/arena/Entry/Underground+Water/26509/
-  * https://www.youtube.com/watch?v=gzpGbokxwZ4
-  * *more to come*
+### AVRAY 
 
- * **Mozzi**:
-  * *more to come*
+ * http://picosong.com/HUGM/
+ * http://battleofthebits.org/arena/Entry/Underground+Water/26509/
+ * https://www.youtube.com/watch?v=gzpGbokxwZ4
+ * *more to come*
 
- * **SID emulator**
-  * *more to come*
+### Mozzi 
 
- * **Beeper** 
-  * http://garvalf.online.fr/index.php?page=blog_2017-02-12
-  * *more to come*
+ * *more to come*
+
+### SID emulator 
+
+ * https://soundcloud.com/memento-somniare/sidarduino-test
+ * *more to come*
+
+### Beeper 
+
+ * http://garvalf.online.fr/index.php?page=blog_2017-02-12
+ * *more to come*
 
 ## Bill of Materials 
 
-    Name				nb 	(optionnal part)
+    Name						nb 	(optionnal part)
     		
-    Garvuino PCB			1	
-    crystal 24 mhz			1	
-    arduino nano			1	
-    atmega8				1	
+    Garvuino PCB				1	
+    crystal 24 mhz				1	
+    arduino nano				1	
+    atmega8						1	
     ceramic capacitor 820 pF	2	
-    electrolytic capacitor 10 uF	2	
-    ceramic capacitor 100 nF	1	x
-    led 				1	x
-    DIN5 connector (midi)		1	x
-    1 kΩ Resistor			1	x
-    10 kΩ Resistor			2	
-    micro sd module			1	
-    sd module			1	x
-    momentary switch		1	
+    electrolytic capac. 10 uF	2	
+    ceramic capacitor 100 nF	1		x
+    led 						1		x
+    DIN5 connector (midi)		1		x
+    1 kΩ Resistor				1		x
+    10 kΩ Resistor				2	
+    micro sd module				1	
+    sd module					1		x
+    momentary switch			1	
     audio jack 3.5 mm (TRS)		1	
-    jumper				4	
+    jumper						4	
     
 
 ## Atmega8 setup 
 
 Get a "USBASP USB ISP Programmer & 10 Pin ISP interface Cable - AVR ATMEL ATMega".
 
-Connect it according to this schematic:
+Connect it according to this schematic for the atmega8:
 
 ![](atmega8/atmega8_burn_bb.png)
 
-Use a 16 Mhz crystal for example.
+Basically it's:
+
+|MISO |pin 18: PB4|
+|MOSI |pin 17: PB3|
+|RESET |pin 01: PC6|
+|VCC |pin 20: AVCC||
+|SCK |pin 19: PB5|
+|GND |pin 22: GND|
+
+Use a 16 Mhz crystal for example, on pin 09 (PB6) and pin 10 (PB7).
 
 Once it's connected, you can program the atmega8 chip with this command-line:
 
@@ -122,14 +136,16 @@ You can find [some tunes for using with the AVR-AY setup in here](tunes/aym).
 
  * Yoruk for his help on the PCB
  * Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)
+ * Klaud for help with avr-ay
  * Shiru for the 1-bit engines on Arduino
  * Christoph Haberer and Mario Patino for the Sid-arduino lib
  * The Mozzi team
 
 ## Licence 
 
-(This licence is only for the PCB sketch, and code written from scratch. 
-Code derived from other projects retains the original licence)
+This BSD licence is only for the PCB sketch rendition, and code written from scratch. 
+Code derived from other projects retains the original licence.
+For example Avray is GPLv3.
 
     BSD 3-Clause License
     Copyright (c) 2015-2017, Garvalf

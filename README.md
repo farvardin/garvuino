@@ -91,7 +91,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|---------------|
+|--------|-------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|

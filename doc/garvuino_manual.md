@@ -1,6 +1,3 @@
-Garvuino Manual
-Garvalf
-2017-09-13
 
 
 # Garvuino 

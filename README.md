@@ -8,6 +8,10 @@ The Garvuino is a PCB board for creating musics, sounds and chiptunes, either th
 
 It works with an Arduino Nano and an Atmega8 chip.
 
+## Manual 
+
+You can find the manual [here](doc/garvuino_manual.md)
+
 ## Features 
 
 ### AY-3-8910 emulator 

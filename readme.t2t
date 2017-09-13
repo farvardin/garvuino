@@ -16,6 +16,11 @@ The Garvuino is a PCB board for creating musics, sounds and chiptunes, either th
 It works with an Arduino Nano and an Atmega8 chip.
 
 
+== Manual ==
+
+You can find the manual [here doc/garvuino_manual.md]
+
+
 == Features ==
 
 
@@ -51,6 +56,9 @@ From [various 1-bit engines http://randomflux.info/1bit/viewforum.php?id=5] (on 
 
 
  [garvuino01.jpg] 
+ 
+ 
+ 
 
 
 == How does it sound? ==

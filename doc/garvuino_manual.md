@@ -23,3 +23,5 @@ There is a little error on the version 1.09 / 2017-08 of the PCB board, which I'
 
 This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
 
+*TO BE CONTINUED*
+

@@ -1,0 +1,224 @@
+% =========== SAMPLE STYLE FOR TEXTALLION ==============================
+
+\usepackage[small,sf,bf]{titlesec}
+\pagenumbering{roman}
+
+\usepackage[all]{nowidow}
+
+\widowpenalty10000
+\clubpenalty10000
+
+% For using extended colors
+\usepackage[usenames,svgnames]{xcolor}
+\usepackage{mdframed} % boxes and frames
+
+% helping the creation of the index
+\usepackage{makeidx}
+
+% create the index. Disable to save time if you don't use it
+\makeindex
+
+% for customizing titles
+\def\TITLExSEPxSIZE{10}     %in pt, default 20
+
+\def\TITLExPARTxOPTIONS{\centering\normalfont\Huge\bfseries}  % add options if needed, for ex. \centering
+\def\TITLExCHAPTERxOPTIONS{\centering\color{DarkCyan}\normalfont\LARGE\bfseries}  % add options if needed, for ex. \centering
+\def\TITLExSECTIONxOPTIONS{\color{CadetBlue}\normalfont\Large\bfseries}  
+\def\TITLExSUBSECTIONxOPTIONS{\normalfont\large\bfseries}  
+\def\TITLExSUBxSUBxSECTIONxOPTIONS{\normalfont\normalsize\bfseries}
+
+
+
+% ----------- FONT OPTION 1 --------------------------------------------
+
+% DEF: beware of _ in the "def", they may not be interpreted 
+
+%% LATEX 
+
+\def\DEFAULTxFONT{pag}  % default font for LaTeX (pdflatex)
+                       %% Valid use can be:
+                       % {cmr} for computer modern (default in LaTeX)
+					   % {bch} for charter bt roman, 
+					   % {lmr} for latin modern roman
+					   % {lmss} for latin modern sans
+					   % {lmtt} for latin modern typewriter
+					   % {pag} for avant garde
+					   % {pcr} for courier
+					   % {phv} for helvetica 
+					   % {pnc} for new century schoolbook
+					   % {ppl} for palatino, 
+					   % {pzc} for zapf chancery, 	   
+					   % {ptm} for times
+					   % Dunhill (cmdh) / ptm
+					   % dayrom (needs to be installed)
+
+
+
+\def\DEFAULTxFONTxSIZE{14}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. Other sizes might not work.
+
+
+%% XETEX (other rendering)
+
+\def\DEFAULTxXETEXxFONT{Share Tech}  % default XeTeX font. 
+                       %% Valid use can be:
+					   % Linux Libertine O
+					   % Fontin Regular
+					   % Linux Biolinum O  (no bolt italic?)
+					   % DejaVu Serif, DejaVu Sans,DejaVu Mono
+					   % Gentium (ttf-gentium)
+					   % Delicious 
+					   % Tallys (no bold, no italic)
+					   % Junicode : doesn't work well
+					   % Cheboygan (no bold, no italic)
+					   % Sans Guilt (Gill Sans), get it at http://ospublish.constantvzw.org/foundry/sans-guilt or use "Cabin" (font-cabin package), or "Gillius ADF"
+
+
+
+\def\DEFAULTxXETEXxFONTxSIZE{16}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. FOR XETEX ONLY. It seems xetex fonts usually render smaller.
+
+
+
+
+
+% --------- FONT OPTION 2 ----------------------------------------------
+
+% if not used, set this empty one as default otherwise there will be an error
+\def\SPECIALxFONT{} 
+
+%\usepackage{egothic}
+%\def\SPECIAL_FONT{\normalfont\egothfamily} 
+
+%\usepackage{inslrmin}              % ex \usepackage{egothic}
+%\def\SPECIAL_FONT{\iminfamily}     % ex \normalfont\egothfamily
+
+
+% ---------- MARGINS & PAGE --------------------------------------------
+
+
+\def\ADDITIONALxOPTIONS{} 
+
+% define the text zone
+
+\def\HEIGHTxOFxTEXT{237}            % in mm
+\def\WIDTHxOFxTEXT{150}             % in mm
+
+% -- for A5 (example)
+%\def\HEIGHTxOFxTEXT{150}           % in mm
+%\def\WIDTHxOFxTEXT{100}            % in mm
+
+%\def\TOP_MARGIN_OF_DOCUMENT{0}     % in mm
+%\def\BOTTOM_MARGIN_OF_DOCUMENT{0}  % in mm
+%\def\LEFT_MARGIN_OF_DOCUMENT{0}    % in mm
+%\def\RIGHT_MARGIN_OF_DOCUMENT{0}   % in mm
+
+\def\SIZExOFxPAPER{a4paper}         % a5paper, a4paper... for custom use for ex. \SIZExOFxPAPER{papersize={110mm,200mm}}
+\def\ORIENTATIONxOFxPAPER{portrait} %landscape, portrait
+
+
+\def\PARAGRAPHxSPACE{8}             % default 8 in pt. Will be a fixed size.
+
+\def\LINExSPACE{1.20}               % default 120%. Only for Latex (not xetex)
+
+%\addtolength{\parskip}{\baselineskip} % skip one line between 2 paragraphs.
+
+
+\def\WIDTHxOFxCOLUMNS{20}			% default 20 mm
+\def\LINEWIDTHxOFxCOLUMNS{1}			% default 1 pt
+
+
+
+\def\INITIALxLETTERxSIZE{2}         % number of lines used by initials when they are activated. 2 or 3 seems a reasonable choice.
+
+\def\GEOMETRYxADDITIONALxOPTION{}   %  ex: "twocolumn, twoside, bindingoffset=1cm" % DOESN'T WORK YET
+
+
+%\def\TYPE_OF_DOCUMENT{book}        % book, article... IT DOESNT WORK
+
+
+\def\PAGExBREAKxPOLICY{2}             % higher number will make it more likely to produce a page break for a new \section or chapter (heading 1), from 0 (never break), to 4 (always break). 
+
+\def\PAGExSUBxBREAKxPOLICY{2}             % higher number will make it more likely to produce a page break for a new \section (heading 1), from 0 (never break), to 4 (always break). 
+
+
+\def\FOOTERxSPACE{18}               % from below the text, in mm
+\def\FOOTNOTExSPACE{14}				% space between the body and a footnote, in mm
+
+\usepackage{color}
+
+\definecolor{MyColor}{rgb}{0.0,0.2,0.3}
+\def\LINKxCOLOR{MyColor}
+
+
+\def\STYLExOFxBULLET{\textbullet}     % can be \textbullet or \textemdash
+%\def\STYLExOFxBULLET{\textemdash}    % can be \textbullet or \textemdash
+
+\def\HEADERxNUMBERING{-2} % display or not the numbers in the chapters (4 is generally the default in LaTeX). It looks odd for literature so we turn it to -1 here. (-1 because of chapters replacing sections)
+
+%% Additionnal style
+
+\usepackage{fancybox}
+
+\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }  %% for getting lower case in chapters headnote
+\renewcommand{\sectionmark}[1]{ \markright{#1}{} }   %% for getting lower case in sections headnote
+
+%% use fancyhd in the future instead?
+
+%% \leftmark -> = chapter =
+%% \rightmark -> == section ==
+
+%% Header text even (left) (and both odd and even if article class is used)
+
+\def\PAGExSTYLE{plain}             %% can be fancy, plain or fancyplain for different output control
+
+\def\LEFTxHEAD{}
+\def\CENTERxHEAD{\MYxFONT\DOCUMENTxTITLE}
+\def\RIGHTxHEAD{}
+
+%% Header text odd (right)
+
+\def\LEFTxHEADxODD{}
+\def\CENTERxHEADxODD{\MYxFONT\rightmark}
+\def\RIGHTxHEADxODD{}
+
+%% Footer text even (left) (and both odd and even if article class is used)
+
+\def\LEFTxFOOT{~ \MYxFONT\normalsize\thepage ~}
+\def\CENTERxFOOT{}
+\def\RIGHTxFOOT{}
+
+%% Footer text odd (right)
+
+\def\LEFTxFOOTxODD{}
+\def\CENTERxFOOTxODD{}
+\def\RIGHTxFOOTxODD{~ \MYxFONT\normalsize\thepage ~}
+
+
+
+%-- exergue definitions --
+
+\def\EXERGUExLEFTxMARGIN{40}          % in pt, default 40
+\def\EXERGUExRIGHTxMARGIN{10}         % in pt, default 10
+\def\EXERGUExAUTHORxSPACE{4}          % in pt, default 4
+\def\EXERGUExSIZE{\small}            % default \small  (possible values are \small \normalsize \large etc.)
+\def\EXERGUExSHAPE{\slshape}         % default \slshape 
+\def\EXERGUExAUTHORxSHAPE{\scshape}   % default \scshape
+                                    % slshape = slander ; scshape = small capitals ; itshape = italic ; upshape = normal letters ; bfseries = bold
+
+
+%-- code definitions --
+
+\def\CODExLEFTxMARGIN{20}          % in pt, default 20
+\def\CODExRIGHTxMARGIN{20}         % in pt, default 20
+\def\CODExSHAPE{ttfamily}        % default ttfamily (monospace type courier)
+
+
+% table margins
+
+\renewcommand{\arraystretch}{1.0}  % rows
+\addtolength{\tabcolsep}{0pt}     % columns
+
+\def\TABUxSEP{2mm}   % space around content for tables (using tabu package)
+
+
+%% mdframed (boxes) style
+\mdfsetup{linecolor=brown           ,linewidth=2pt             ,backgroundcolor=brown!10  ,splittopskip = \topskip   ,roundcorner=10pt}

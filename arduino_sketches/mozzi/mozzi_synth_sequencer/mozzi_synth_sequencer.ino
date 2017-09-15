@@ -2,6 +2,11 @@
 // "A very simple MIDI synth."
 // Greg Kennedy 2011
 // http://forum.arduino.cc/index.php?topic=79326.0
+
+//
+// Works with Arduino IDE 1.8.1
+//
+
 //
 //  mozzi : pin 9
 //
@@ -34,7 +39,7 @@ int midiNotes[] = {
 //these are MIDI note values, ie 12 = C, 24 = next C up
 //NB note values of 25+ currently considered as absolute (ie don't change with keypress)
 
-  /* test eric */
+  /* test  */
    12,24,12,24,12,24,
   12, 16,16,28,28,16,16,26,28,
   12,12,24,12,12, 14,26,2, 14,

@@ -1,3 +1,9 @@
+// SID file player
+
+//
+// Works with Arduino IDE 1.8.1
+//
+
 /*
 
 <!> Programmer = USBasp for arduino Nano ATmega328

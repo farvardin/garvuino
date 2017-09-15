@@ -91,24 +91,28 @@ From [various 1-bit engines http://randomflux.info/1bit/viewforum.php?id=5] (on 
 == Bill of Materials ==
 
 ```
-Name                           nb    (optionnal part)
+Name                            nb    (optionnal part)
 		
-Garvuino PCB                    1	
-crystal 24 mhz                  1	
-arduino nano                    1	
-atmega8                         1	
-ceramic capacitor 820 pF        2	
-electrolytic capac. 10 uF       2	
-ceramic capacitor 100 nF        1       x
-led                             1       x
-DIN5 connector (midi)           1       x
-1 kΩ Resistor                   1       x
-10 kΩ Resistor                  2	
-micro sd module                 1	
-sd module                       1       x
-momentary switch                1	
-audio jack 3.5 mm (TRS)         1	
-jumper                          6	
+Garvuino PCB                     1	
+crystal 24 mhz                   1	
+arduino nano                     1	
+atmega8                          1	
+ceramic capacitor 820 pF         2	
+electrolytic capac. 10 uF        2	
+ceramic capacitor 100 nF         1       x
+led                              1       x
+DIN5 connector (midi)            1       x
+1 kΩ Resistor                    1       x
+10 kΩ Resistor                   2	
+micro sd module                  1	
+sd module                        1       x
+momentary switch                 1	
+audio jack 3.5 mm (TRS)          1	
+jumper                           6	
+female header socket PCB 2.54mm  1
+male pin strips 2.54             1
+female pin strips 2.54           1
+
 
 ```
 

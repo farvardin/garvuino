@@ -53,6 +53,8 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
 
 ### Mozzi 
 
+ * http://picosong.com/wR2RN (polydrums)
+ * http://picosong.com/wR2Rr (cheap FM)
  * *more to come*
 
 ### SID emulator 
@@ -102,7 +104,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|---------------|
+|--------|-------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|

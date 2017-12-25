@@ -1,11 +1,12 @@
 //Phaser1 (digital drums) beeper engine port from ZX Spectrum to Arduino
 //by Shiru (shiru@mail.ru) 14.02.17
 
-
+// version for Garvuino https://github.com/farvardin/garvuino
+// Works with Arduino IDE 1.8.3
 
 //include music data generated from the binary Beepola output (without player) and bin2h.py
 
-//#include "music_data.h"
+//#include "music_data_mister_beep.h"
 #include "music_data_garvalf.h"
 
 //include sample data
@@ -20,9 +21,9 @@
 
 #define SAMPLE_RATE           (3500000/146*2)   //original Phaser1 runs at 23972 but uses sample interleaving, doubling the output rate
 
-#define SPEAKER_PORT          PORTD             //speaker is on the port D
-#define SPEAKER_DDR           DDRD
-#define SPEAKER_BIT           (1<<7)            //PD7 (Uno pin 7)
+#define SPEAKER_PORT          PORTB             //speaker is on the port B
+#define SPEAKER_DDR           DDRB
+#define SPEAKER_BIT           (1<<1)            //PD7 (Uno pin 9)
 
 #define MUSIC_FRAME           2048              //now many samples in one tempo unit
 

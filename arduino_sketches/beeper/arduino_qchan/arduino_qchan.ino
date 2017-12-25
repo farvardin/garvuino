@@ -1,7 +1,7 @@
 // QChan beeper engine port from ZX Spectrum to Arduino
 // by Shiru (shiru@mail.ru) 15.02.17
 
-//
+// version for Garvuino https://github.com/farvardin/garvuino
 // Works with Arduino IDE 1.8.1
 //
 

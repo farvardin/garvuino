@@ -1,4 +1,9 @@
 /*  Example of a sound being triggered by MIDI input.
+
+
+ version for Garvuino https://github.com/farvardin/garvuino
+ Works with Arduino IDE 1.8.1
+ 
   
     Demonstrates playing notes with Mozzi in response to MIDI input,
     using  Arduino MIDI library v4.2 
@@ -37,7 +42,7 @@ Oscil <SIN2048_NUM_CELLS, AUDIO_RATE> aSin(SIN2048_DATA);
 // envelope generator
 ADSR <CONTROL_RATE, AUDIO_RATE> envelope;
 
-#define LED 13 // shows if MIDI is being recieved
+#define LED 8 // shows if MIDI is being recieved
 
 void HandleNoteOn(byte channel, byte note, byte velocity) { 
   aSin.setFreq(mtof(float(note)));

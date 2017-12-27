@@ -33,14 +33,14 @@
 // Connect PIN 9 from your arduino Uno to audio output (+ ground to the other pin of the audio output)!
 
 #include <avr/pgmspace.h>  //used to store data in the flash rom
-#include "temp_dmp.h" 
+//#include "temp_dmp.h" 
 //#include "Alternative_Fuel_dmp.h"       //RAW SID register data file in flash
 //#include "Castlevania_64_Mixes_dmp.h"       //RAW SID register data file in flash
 //#include "Zelda_1_Dungeon_dmp.h"       //RAW SID register data file in flash
 //#include "Open_Groove_dmp.h"
 //#include "Vibralux_dmp.h"
 //#include "Visitors_dmp.h"
-//#include "marche_hiver_dmp.h"
+#include "marche_hiver_dmp.h"
 //#include "/home/path/ownCloud/arduino/sketches/_musique/sidTest/Commando.dmp.h"
 
 #include <SID.h>           //

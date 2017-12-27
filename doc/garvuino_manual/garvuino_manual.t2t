@@ -36,6 +36,39 @@ The board has 2 chips, the Arduino Nano chip (which in itself is a complete boar
 
 There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optionnal SD card reader, for reading AY music files, and an optionnal DIN5 midi input, for using the board as a synth.
 
+There are a few jumper on the board. They are for switching between some modes:
+
+- mono: used in mozzi, 1-bit and sid mode. You can remove the jumper in AY mode because it's in stereo (but you might also prefer using the mono mode)
+
+
+- TX: used for transmitting data to the Atmega8 chip in AY mode. You can remove the jumper when not in AY mode. You can also keep it, it doesn't matter, unless you have some problem for flashing the arduino board. On some boards, the jumper is below the board for easier access.
+
+- AY>L and AY>R: used in AY mode. You can cut a voice if you remove the jumper. If you remove the jumper when not in AY mode, you'll be sure there won't be extra noise from the Atmega8 chip.
+
+- J1: extra midi input GND (below) and midi wire nb 5 if you don't want to use the DIN5 plug.
+
+- J2/J3: for connecting regular (big) SD reader. Most board will use the smaller SD reader
+
+- J4 / ay chip GND / arduino chip: ay chip used in AY mode. It's better to put the jumper in the "arduino chip" mode (bottom), when not using AY otherwise you'll get extra and residual noise from the atmega8 chip.
+
+
+- J5: not used. Linked to midi 4 wire "just in case".
+
+- J6: not used. Could be used to switch off the atmega8 but since there are still some residual noise without it, it can be kept connected. It's been soldered on most boards.
+
+- J7: can be used for programming the Arduino for Analog input (potentiomer, light sensor for example)
+
+- J8: not used. Can be connected to arduino +5V, RST, GND and VIN but shouldn't be necessary.
+
+
+- J9: can be used for programming the Arduino for digital output (more leds for example) 
+
+- J10: not used. Extra digital output.
+
+
+- Led: for monitoring some 
+
+
 The Garvuino board can be used in those modes: 
 
 
@@ -156,6 +189,13 @@ For flashing, just launch the Arduino IDE, connect the arduino to your computer 
 Load a sketch from the arduino_sketches/ folder.
 
 For flashing, you need to __unplug__ the midi cable from your synth ir garvuino if it's connected, or powerdown the synth. If you want to develop a sketch on garvuino, it can be tiresome to always unplug the midi. You can use a simpler wire <=> midi connected to the J1, with GND to midi GND (pin 2) and the other slot (which is connected to the RXD port) to the midi pin 5, this way it's faster to unplug.
+
+In the case you get a:
+
+``` avrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x32
+
+it can be different causes. It midi plug is connected, see above, but also from random occasion. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
+This kind of message can also be seen if you've choosen the wrong port to connect the arduino.
 
 
 

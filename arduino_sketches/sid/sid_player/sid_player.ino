@@ -18,7 +18,8 @@
  SIDCog:
  http://forums.parallax.com/showthread.php/118285-SIDcog-The-sound-of-the-Commodore-64-!-%28Now-in-the-OBEX%29
  SIDDumper:
- http://gadgetgangster.com/scripts/displayasset.php?id=361
+ --http://gadgetgangster.com/scripts/displayasset.php?id=361-- => new link http://www.bauerhub.com/packages/dumper.zip  or find it there: http://forums.parallax.com/discussion/118285/sidcog-the-sound-of-the-commodore-64-now-in-the-obex/p8
+ 
  For best results use an IRQ at 50 or 60Hz and set the registers programatically.
  For info on how to make music with the SID chip and related registers
  I recomend the e-magazine "Commodore Hacking":

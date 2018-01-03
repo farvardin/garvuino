@@ -8,6 +8,9 @@
 \widowpenalty10000
 \clubpenalty10000
 
+% because verbatim doesn't line break
+\usepackage{spverbatim}
+
 % For using extended colors
 \usepackage[usenames,svgnames]{xcolor}
 \usepackage{mdframed} % boxes and frames
@@ -54,7 +57,7 @@
 
 
 
-\def\DEFAULTxFONTxSIZE{14}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. Other sizes might not work.
+\def\DEFAULTxFONTxSIZE{12}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. Other sizes might not work.
 
 
 %% XETEX (other rendering)
@@ -71,10 +74,11 @@
 					   % Junicode : doesn't work well
 					   % Cheboygan (no bold, no italic)
 					   % Sans Guilt (Gill Sans), get it at http://ospublish.constantvzw.org/foundry/sans-guilt or use "Cabin" (font-cabin package), or "Gillius ADF"
+					   % Share Tech
 
 
 
-\def\DEFAULTxXETEXxFONTxSIZE{16}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. FOR XETEX ONLY. It seems xetex fonts usually render smaller.
+\def\DEFAULTxXETEXxFONTxSIZE{14}          % 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, and 20pt (don't add pt). 12pt is default for LaTeX. FOR XETEX ONLY. It seems xetex fonts usually render smaller.
 
 
 
@@ -135,9 +139,9 @@
 %\def\TYPE_OF_DOCUMENT{book}        % book, article... IT DOESNT WORK
 
 
-\def\PAGExBREAKxPOLICY{2}             % higher number will make it more likely to produce a page break for a new \section or chapter (heading 1), from 0 (never break), to 4 (always break). 
+\def\PAGExBREAKxPOLICY{0}             % higher number will make it more likely to produce a page break for a new \section or chapter (heading 1), from 0 (never break), to 4 (always break). 
 
-\def\PAGExSUBxBREAKxPOLICY{2}             % higher number will make it more likely to produce a page break for a new \section (heading 1), from 0 (never break), to 4 (always break). 
+\def\PAGExSUBxBREAKxPOLICY{1}             % higher number will make it more likely to produce a page break for a new \section (heading 1), from 0 (never break), to 4 (always break). 
 
 
 \def\FOOTERxSPACE{18}               % from below the text, in mm

@@ -245,7 +245,11 @@ You can compose music using the [beepola tracker http://freestuff.grok.co.uk/bee
 
 Beepola can use the Tritone, Qchan and Phaser1 engines. 
 
-There are python converters in the folder to convert your own music to arduino code. Just make it into beepola and export it to .bin format. Then include your code into the arduino sketch (use #include "music_data_yoursong.h" instead of #include "music_data_garvalf.h" or #include "music_data_vapeurs.h" or #include "music_data_bourrasque.h" for example)
+There are python converters in the folder to convert your own music to arduino code. Just make it into beepola and "compile" it to .bin format in the tools menu (without song engine, "song data only"). Convert the bin to data readable by the arduino with the python script. 
+
+% Open the generated .h file and on the first line replace "const unsigned char your_song_name[] PROGMEM ={" with "const unsigned char music_data[] PROGMEM ={"
+
+Then include your code into the arduino sketch (use #include "your_song.h" instead of #include "music_data.h" for example.) Use the line that is not commented (a comment on arduino starts with with two /)
 
 For the octode engine, you'll have to edit a .xm file with a tracker like milkytracker. See http://battleofthebits.org/lyceum/View/Octode for more informations. There is a xm to arduino converter in the arduino_octode folder as well.
 

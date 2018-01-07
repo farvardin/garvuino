@@ -413,7 +413,8 @@ void setup()
     MIDI.setHandleProgramChange(HandleProgramChange); 
     MIDI.setHandleControlChange(HandleControlChange);
     MIDI.begin();
-     mySid.begin();
+    Serial.begin(115200); // will change baud rate of MIDI traffic from 31250 to 115200
+    mySid.begin();
 }
 
 void setwaveform_triangle(uint8_t channel)

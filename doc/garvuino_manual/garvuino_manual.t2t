@@ -273,6 +273,7 @@ https://bitbucket.org/farvardin/playtune-arduino
 
 Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 10.
 
+Use the examples/test_nano/test_nano.in sketch
 
 
 

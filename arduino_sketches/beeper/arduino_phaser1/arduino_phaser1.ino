@@ -6,8 +6,8 @@
 
 //include music data generated from the binary Beepola output (without player) and bin2h.py
 
-#include "music_data_mister_beep.h"
-//#include "music_data_garvalf.h"
+//#include "music_data_mister_beep.h"
+#include "music_data_garvalf.h"
 
 //include sample data
 
@@ -26,6 +26,8 @@
 #define SPEAKER_BIT           (1<<1)            //PD7 (Uno pin 9)
 
 #define MUSIC_FRAME           2048              //now many samples in one tempo unit
+
+#define LED 8
 
 
 //note table, stored in the PROGMEM
@@ -206,6 +208,7 @@ ISR(TIMER2_COMPA_vect)
 		if(pgm_read_byte_near(drum_sample_data+(drum_ptr>>1))&drum_sample) output_state=SPEAKER_BIT; else output_state=0;
 
 		++drum_ptr;
+   digitalWrite(LED,HIGH);
 
 		if(drum_ptr>=1024*2) drum_sample=0; //drum_ptr increments in half steps to compensate doubled sample rate
 	}
@@ -334,12 +337,16 @@ void loop()
 				else  //118..127 is a drum
 				{
 					drum_ptr=0;
+         //PORTA ^= 0x03;        // turn off one of the LEDs and turn on the other one
+        // digitalWrite(LED,LOW);
 					drum_sample=1<<(tag-118); //bit mask for the drum sample
 
 					parser_sync=MUSIC_FRAME*1;  //drum always take one tempo unit, so it normally followed by the wait command
+				
 				}
 				
 				done=true;
+				//digitalWrite(LED,HIGH);
 			}
 		}
 

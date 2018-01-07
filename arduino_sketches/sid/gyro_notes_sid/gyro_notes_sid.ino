@@ -19,6 +19,8 @@ INT     should be on D2 but can be left unconnected
 
 */
 #include <SID.h>
+#include "noteList.h"
+#include "pitches.h"
 
 #define OFF 0
 #define SETTRIANGLE_1	4,0x11,5,0xBB,6,0xAA,
@@ -43,9 +45,9 @@ int noteVolume=12;
 #include <Wire.h>
 #include "gyro_accel.h"
 // Defining constants
-#define dt 5                       // time difference in milli seconds
+#define dt 20                       // time difference in milli seconds
 #define rad2degree 57.3              // Radian to degree conversion
-#define Filter_gain 0.5             // e.g.  angle = angle_gyro*Filter_gain + angle_accel*(1-Filter_gain)
+#define Filter_gain 0.6             // e.g.  angle = angle_gyro*Filter_gain + angle_accel*(1-Filter_gain)
 // *********************************************************************
 //    Global Variables
 // *********************************************************************
@@ -237,20 +239,20 @@ void loop(){
   uint16_t soundindex=0;
 
   
-/*
-  setwaveform_triangle(CHANNEL1);
-  setwaveform_triangle(CHANNEL2);
+
+ // setwaveform_triangle(CHANNEL1);
+  //setwaveform_triangle(CHANNEL2);
   setwaveform_triangle(CHANNEL3);
 
 
-  setwaveform_rectangle(CHANNEL1);
+  //setwaveform_rectangle(CHANNEL1);
   setwaveform_rectangle(CHANNEL2);
-  setwaveform_rectangle(CHANNEL3);
-*/
+  //setwaveform_rectangle(CHANNEL3);
 
- // setwaveform_sawtooth(CHANNEL1);
- setwaveform_sawtooth(CHANNEL2);
-  setwaveform_sawtooth(CHANNEL3);
+
+  setwaveform_sawtooth(CHANNEL1);
+ //setwaveform_sawtooth(CHANNEL2);
+  //setwaveform_sawtooth(CHANNEL3);
 
 /*
   setwaveform_noise(CHANNEL1);
@@ -260,12 +262,28 @@ void loop(){
     
   while(1)
   {
+    byte currentNote = 0;
+    
     ny=angle_y*8;
-    set_frequency(ny*17,CHANNEL1); // change noise generator frequency
+    // set_frequency(ny*17,CHANNEL1); // change noise generator frequency
+    currentNote = map(ny, -90, 90, 40, 60);
+    //currentNote = constrain(currentNote, 40, 60);
+    set_frequency(sNotePitches[currentNote],CHANNEL1); 
+    //Serial.print(ny);
+    //Serial.print("\t");
+    
     nz=angle_z*8;
-    set_frequency(nz*17,CHANNEL2); // change noise generator frequency
+    //set_frequency(nz*17,CHANNEL2); // change noise generator frequency
+    currentNote = map(nz, -90, 90, 60, 80);
+    //currentNote = constrain(currentNote, 60, 80);
+    set_frequency(sNotePitches[currentNote],CHANNEL2); 
+    
+    
     nx=angle_x*8;
-    set_frequency(nx*17,CHANNEL3); // change noise generator frequency
+    //set_frequency(nx*17,CHANNEL3); // change noise generator frequency
+    currentNote = map(nx, -90, 90, 60, 90);
+    //currentNote = constrain(currentNote, 60, 90);
+    set_frequency(sNotePitches[currentNote],CHANNEL3); 
 
     delay(100);
     t=millis(); 
@@ -286,6 +304,7 @@ void loop(){
   angle_x = Filter_gain*angle_x_gyro+(1-Filter_gain)*angle_x_accel;
   angle_y = Filter_gain*angle_y_gyro+(1-Filter_gain)*angle_y_accel;
   angle_z = Filter_gain*angle_z_gyro+(1-Filter_gain)*angle_z_accel;
+  
   
 
   Serial.print(gyro_x_scalled);
@@ -328,6 +347,7 @@ void loop(){
    
 
   Serial.println(((float)(millis()-t)/(float)dt)*100);
+
 
    // digitalWrite(8, LOW); //turn off debugging LED
 

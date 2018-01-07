@@ -240,7 +240,7 @@ void loop(){
 
   
 
- // setwaveform_triangle(CHANNEL1);
+  //setwaveform_triangle(CHANNEL1);
   //setwaveform_triangle(CHANNEL2);
   setwaveform_triangle(CHANNEL3);
 
@@ -251,7 +251,7 @@ void loop(){
 
 
   setwaveform_sawtooth(CHANNEL1);
- //setwaveform_sawtooth(CHANNEL2);
+  //setwaveform_sawtooth(CHANNEL2);
   //setwaveform_sawtooth(CHANNEL3);
 
 /*
@@ -262,27 +262,32 @@ void loop(){
     
   while(1)
   {
-    byte currentNote = 0;
+    uint16_t currentNote = 0;
     
     ny=angle_y*8;
     // set_frequency(ny*17,CHANNEL1); // change noise generator frequency
-    currentNote = map(ny, -90, 90, 40, 60);
-    //currentNote = constrain(currentNote, 40, 60);
+    //ny=abs(ny);
+    currentNote = map(ny, -720, 720, 40, 60);
+    currentNote = constrain(currentNote, 40, 60);
     set_frequency(sNotePitches[currentNote],CHANNEL1); 
-    //Serial.print(ny);
-    //Serial.print("\t");
+    
+    Serial.print("\t ");
+    Serial.print(ny);
+    Serial.print(" \t");
     
     nz=angle_z*8;
     //set_frequency(nz*17,CHANNEL2); // change noise generator frequency
-    currentNote = map(nz, -90, 90, 60, 80);
-    //currentNote = constrain(currentNote, 60, 80);
+    nz=abs(nz);
+    currentNote = map(nz, -720, 720, 60, 80);
+    currentNote = constrain(currentNote, 60, 80);
     set_frequency(sNotePitches[currentNote],CHANNEL2); 
     
     
     nx=angle_x*8;
     //set_frequency(nx*17,CHANNEL3); // change noise generator frequency
-    currentNote = map(nx, -90, 90, 60, 90);
-    //currentNote = constrain(currentNote, 60, 90);
+    nx=abs(nx);
+    currentNote = map(nx, -720, 720, 60, 90);
+    currentNote = constrain(currentNote, 60, 90);
     set_frequency(sNotePitches[currentNote],CHANNEL3); 
 
     delay(100);
@@ -306,7 +311,7 @@ void loop(){
   angle_z = Filter_gain*angle_z_gyro+(1-Filter_gain)*angle_z_accel;
   
   
-
+/*
   Serial.print(gyro_x_scalled);
   Serial.print("\t");
   Serial.print(gyro_y_scalled);
@@ -336,17 +341,18 @@ void loop(){
   Serial.print(angle_z_accel);
   Serial.print("\t"); 
 
+*/
 
-  Serial.print(angle_x);
-  Serial.print("\t");
-  Serial.print(angle_y);
-  Serial.print("\t");
-  Serial.print(angle_z);
-  Serial.print("\t");
+  //Serial.print(angle_x);
+  //Serial.print("\t");
+  //Serial.print(angle_y);
+  //Serial.print("\t");
+  //Serial.print(angle_z);
+  //Serial.print("\t");
   
    
 
-  Serial.println(((float)(millis()-t)/(float)dt)*100);
+//  Serial.println(((float)(millis()-t)/(float)dt)*100);
 
 
    // digitalWrite(8, LOW); //turn off debugging LED

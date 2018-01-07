@@ -77,7 +77,80 @@ More detailled informations:
 
 You can of course connect audio out to the mini-jack, but it's also possible to connect a small buzzer (HP), for example 8 ohms / 1 W to the AY>L (under the L) and to the GND (for example in the middle 3-pin J4 or on the GND of J1, if it's installed) then you'll get very cheap sound. It can be useful for monitoring.
 
-## Assembly the board 
+Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart.
+
+You can also use [hairless midi serial bridge](https://projectgus.github.io/hairless-midiserial/) (windows, mac os x, linux) or [ttymidi](http://www.varal.org/ttymidi/) (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch).
+
+## Flashing the Garvuino board 
+
+This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
+
+Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
+
+For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
+
+Load a sketch from the arduino_sketches/ folder.
+
+For flashing, you need to unplug the midi cable from your synth ir garvuino if it's connected, or powerdown the synth. If you want to develop a sketch on garvuino, it can be tiresome to always unplug the midi. You can use a simpler wire <=> midi connected to the J1, with GND to midi GND (pin 2) and the other slot (which is connected to the RXD port) to the midi pin 5, this way it's faster to unplug. Or use ttymidi or hairless midi serial to usb port (see above)
+
+In the case you get a:
+
+    avrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x32
+
+it can be different causes. It midi plug is connected, see advice above. But it can also appear from random occasion. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
+This kind of message can also be seen if you've choosen the wrong port to connect the arduino.
+
+### Flashing for AY music 
+
+Just load avray/avray_sd_sketch/avray_sd_sketch.ino, put some tunes from tunes/aym_tunes/1_75MHz/rsf/ into your SD card and power the device!
+
+If you create your own tunes (using Vortex Tracker II for example), you'll need to convert them to RSF using the AVR-AY player: http://www.avray.ru/avr-ay-player/
+
+### Sid emulator 
+
+load /sid/sid_midi/sid_midi.ino for the Sid emulator synth. Change sound mode with the switch. You can change some sound with knobs on your keyboard. The sketch is programmed for my Behringer UMA25S keyboard, knob E09 to E13 (midi control 71 to 75).
+
+There is also a sid player (/sid/sid_player/) which can load some SID data and play it from the arduino (at the moment it can only load from memory, which isn't big enough for a complete song).
+
+You can also connect a gyroscope module to the Garvuino and have fun with sounds. See sid/gyro_header_sid/ for this.
+
+### Flashing for 1-bit music 
+
+Only one 1-bit music can be installed into the Arduino at a time. Load a sketch, for example beeper/arduino_qchan/arduino_qchan.ino and flash the Arduino. Music should go out of the mini-jack now!
+
+You can compose music using the [beepola tracker](http://freestuff.grok.co.uk/beepola/).
+
+Beepola can use the Tritone, Qchan and Phaser1 engines. 
+
+There are python converters in the folder to convert your own music to arduino code. Just make it into beepola and "compile" it to .bin format in the tools menu (without song engine, "song data only"). Convert the bin to data readable by the arduino with the python script. 
+
+Then include your code into the arduino sketch (use #include "your_song.h" instead of #include "music_data.h" for example.) Use the line that is not commented (a comment on arduino starts with with two /)
+
+For the octode engine, you'll have to edit a .xm file with a tracker like milkytracker. See http://battleofthebits.org/lyceum/View/Octode for more informations. There is a xm to arduino converter in the arduino_octode folder as well.
+
+Read more on the [1-bit forum thread](http://randomflux.info/1bit/viewforum.php?id=5) (search for arduino)
+
+If you have some problem for creating your own music and exporting it to arduino, you can join the 1-bit forum to request for help.
+
+### Flashing for Mozzi synth 
+
+There are several examples in the mozzi/ folder, just try them out!
+
+*TO BE CONTINUED*
+
+### Flashing other sketches 
+
+The Garvuino should be able to play many other sketches from various projects on internet.
+
+This one can play some MIDI files after converting them:
+
+https://bitbucket.org/farvardin/playtune-arduino
+
+Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 10.
+
+Use the examples/test_nano/test_nano.in sketch
+
+## Assembly the Garvurino board 
 
 If you got the board through a kit, soldering it should be pretty simple as there are only basic components. 
 
@@ -141,69 +214,4 @@ Use a 16 Mhz crystal for example, on pin 09 (PB6) and pin 10 (PB7).
 Once it's connected, you can program the atmega8 chip with this command-line:
 
     avrdude -p atmega8 -c USBasp -U flash:w:AY_Emul_244_2ch.hex -U eeprom:w:Conf_standard_24MHz_1_75Mhz.hex -U lfuse:w:0xCE:m -U hfuse:w:0xCF:m 
-
-## Flashing the Garvuino board 
-
-This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
-
-Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
-
-For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
-
-Load a sketch from the arduino_sketches/ folder.
-
-For flashing, you need to unplug the midi cable from your synth ir garvuino if it's connected, or powerdown the synth. If you want to develop a sketch on garvuino, it can be tiresome to always unplug the midi. You can use a simpler wire <=> midi connected to the J1, with GND to midi GND (pin 2) and the other slot (which is connected to the RXD port) to the midi pin 5, this way it's faster to unplug.
-
-In the case you get a:
-
-    avrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x32
-
-it can be different causes. It midi plug is connected, see above, but also from random occasion. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
-This kind of message can also be seen if you've choosen the wrong port to connect the arduino.
-
-### Flashing for AY music 
-
-Just load avray/avray_sd_sketch/avray_sd_sketch.ino, put some tunes from tunes/aym_tunes/1_75MHz/rsf/ into your SD card and power the device!
-
-If you create your own tunes (using Vortex Tracker II for example), you'll need to convert them to RSF using the AVR-AY player: http://www.avray.ru/avr-ay-player/
-
-### Sid emulator 
-
-load /sid/sid_midi/sid_midi.ino for the Sid emulator synth. Change sound mode with the switch. You can change some sound with knobs on your keyboard. The sketch is programmed for my Behringer UMA25S keyboard, knob E09 to E13 (midi control 71 to 75).
-
-There is also a sid player (/sid/sid_player/) which can load some SID data and play it from the arduino (at the moment it can only load from memory, which isn't big enough for a complete song).
-
-You can also connect a gyroscope module to the Garvuino and have fun with sounds. See sid/gyro_header_sid/ for this.
-
-### Flashing for 1-bit music 
-
-Only one 1-bit music can be installed into the Arduino at a time. Load a sketch, for example beeper/arduino_qchan/arduino_qchan.ino and flash the Arduino. Music should go out of the mini-jack now!
-
-You can compose music using the [beepola tracker](http://freestuff.grok.co.uk/beepola/).
-
-Beepola can use the Tritone, Qchan and Phaser1 engines. 
-
-There are python converters in the folder to convert your own music to arduino code. Just make it into beepola and export it to .bin format. Then include your code into the arduino sketch (use #include "music_data_yoursong.h" instead of #include "music_data_garvalf.h" or #include "music_data_vapeurs.h" or #include "music_data_bourrasque.h" for example)
-
-For the octode engine, you'll have to edit a .xm file with a tracker like milkytracker. See http://battleofthebits.org/lyceum/View/Octode for more informations. There is a xm to arduino converter in the arduino_octode folder as well.
-
-Read more on the [1-bit forum thread](http://randomflux.info/1bit/viewforum.php?id=5) (search for arduino)
-
-If you have some problem for creating your own music and exporting it to arduino, you can join the 1-bit forum to request for help.
-
-### Flashing for Mozzi synth 
-
-There are several examples in the mozzi/ folder, just try them out!
-
-*TO BE CONTINUED*
-
-### Flashing other sketches 
-
-The Garvuino should be able to play many other sketches from various projects on internet.
-
-This one can play some MIDI files after converting them:
-
-https://bitbucket.org/farvardin/playtune-arduino
-
-Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 10.
 

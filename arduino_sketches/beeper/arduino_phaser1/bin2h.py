@@ -19,7 +19,9 @@ file.close()
 
 name=os.path.splitext(sys.argv[1])[0]
 
-print 'const unsigned char %s[] PROGMEM ={' % name
+#print 'const unsigned char %s[] PROGMEM ={' % name
+print 'const unsigned char music_data[] PROGMEM ={' 
+
 
 str=''
 

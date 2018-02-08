@@ -4,15 +4,22 @@
 // version for Garvuino https://github.com/farvardin/garvuino
 // Works with Arduino IDE 1.8.1
 
-Use a potentiometer
+/*
+Use a 10k potentiometer 
 
 connect:
-VCC     5V on bottom right pin in the group of 6 pins on the top
-GND     GND on bottom left pin in the group of 6 pins on the top
-middle  Analog input 0
+Potent.        Arduino
+-------        -------
+VCC            5V on bottom right pin in the group of 6 pins on the top
+GND            GND on bottom left pin in the group of 6 pins on the top
+middle pin     Analog input 0
+
+note: there is no VCC or GND pin on the pot, just use the 2 extremities
 
 
 */
+
+
 #include <SID.h>
 #include "noteList.h"
 #include "pitches.h"

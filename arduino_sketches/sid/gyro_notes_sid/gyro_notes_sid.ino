@@ -11,6 +11,7 @@ Ver: 0.2 beta --- Bug fixed for calculating "angle_y_accel" and "angle_x_accel" 
 Use a MpU6050 gyroscope
 connect:
 Gyro    Arduino
+----    -------
 VCC     5V on bottom right pin in the group of 6 pins on the top
 GND     GND on bottom left pin in the group of 6 pins on the top
 SCL     A5

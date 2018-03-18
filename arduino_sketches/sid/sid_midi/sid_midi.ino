@@ -414,7 +414,7 @@ void setup()
     MIDI.setHandleControlChange(HandleControlChange);
     MIDI.begin();
     // uncomment the line below to enable ttymidi or Hailess midi serial (won't work with regular midi cable)
-    Serial.begin(115200); // TTYMIDI will change baud rate of MIDI traffic from 31250 to 115200
+    //Serial.begin(115200); // TTYMIDI will change baud rate of MIDI traffic from 31250 to 115200
     mySid.begin();
 }
 

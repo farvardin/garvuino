@@ -19,3 +19,13 @@ rm -fr expansion_board_gerber_v2-10.zip
 zip -r expansion_board_gerber_v2-10.zip expansion_board_gerber
 
 	
+	
+# test
+for i in test/*.gm1 ; do cp $i ${i%%.*}.gml ; done
+	
+for j in test/*_pnp.txt ; do mv $j $j.old ; done
+	
+rm -fr test_gerber.zip
+zip -r test_gerber.zip test
+
+	

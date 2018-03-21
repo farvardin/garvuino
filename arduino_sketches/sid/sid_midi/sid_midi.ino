@@ -1,28 +1,16 @@
-#include <MIDI.h>
-#include "noteList.h"
-#include "pitches.h"
-//#include <Tone.h>
-
-#include <SID.h>
-
-/************************************************************************
-
+/****************************************
         Arduino controls an
   Atmega8 MOS6581 SID Emulator
         by softare serial line
-        
-  ( SID = Sound Interface Device )
-
-        
-
-
-****************************************************************************
+       
+  (SID = Sound Interface Device on C64)
+*****************************************
 
   date       authors             version       comment
   ======  ======================  =======   ==============================
-  2007    (ch) Christoph Haberer  V1.0        First implementation
-  2012     Mario Patino           V1.1        Adapted for Arduino SID Library
-  2015-2017  Eric Forgeot         V1.3        Adapted for midi input (monophonic + one channel only)
+  2007     (ch) Christoph Haberer  V1.0        First implementation
+  2012      Mario Patino           V1.1        Adapted for Arduino SID Library
+  2015-18   Eric Forgeot           V1.3        Adapted for midi input (monophonic + one channel only)
 
   Versions:
 
@@ -32,7 +20,7 @@
   V1.1
   - Adapted to work with the Arduino SID Library
     
-    V1.2
+   V1.3
     - Use your sid arduino as a midi synth!
     Some parts heavily borrowed from the cheapsynth projects and from the arduino midi lib
 
@@ -50,6 +38,21 @@
  *   don't want to make it open source, please contact the authors for     *
  *   licensing.                                                            *
  ***************************************************************************/
+
+
+// Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
+#define USBMIDI 1
+
+// if set to 1, will enable physical knobs and disable midi knobs on synth
+#define ANALOG_KNOBS 1
+
+#include <MIDI.h>
+#include "noteList.h"
+#include "pitches.h"
+//#include <Tone.h>
+
+#include <SID.h>
+
  
 #define OFF 0
 #define SETTRIANGLE_1 4,0x11,5,0xBB,6,0xAA,
@@ -57,6 +60,8 @@
 #define SETSAWTOOTH_1 4,0x21,5,0xBB,6,0xAA,  
 #define C4_1  1,0x11,0,0x25,
 #define CONTROLREG 4 // SID control register address
+
+#define KNOB_PIN0 0
 
 // waveforms
 #define SETNOISE_1  4,0x81,5,0xBB,6,0xAD, // SID register setup to create noise
@@ -286,8 +291,9 @@ Serial.begin(31250);
   case 72: // E13
       // filter 1
       noteFilter = map(value, 0, 127, 0, 15);
-      
+      mySid.set_register(23,1);
      mySid.set_register(21,noteFilter);
+     mySid.set_register(22,noteFilter/8);
 
   break;
 
@@ -302,7 +308,7 @@ Serial.begin(31250);
 
   case 74: // E9
       // SUSTAIN/RELEASE
-      noteSustain = map(value, 0, 127, 0, 15);
+      noteSustain = map(value, 0, 127, 0, 256);
       
      mySid.set_register(6,noteSustain);
     // mySid.set_register(5,value);
@@ -413,8 +419,12 @@ void setup()
     MIDI.setHandleProgramChange(HandleProgramChange); 
     MIDI.setHandleControlChange(HandleControlChange);
     MIDI.begin();
+
+    if (USBMIDI == 1) {
     // uncomment the line below to enable ttymidi or Hailess midi serial (won't work with regular midi cable)
-    //Serial.begin(115200); // TTYMIDI will change baud rate of MIDI traffic from 31250 to 115200
+    Serial.begin(115200); // TTYMIDI will change baud rate of MIDI traffic from 31250 to 115200
+    }
+    
     mySid.begin();
 }
 
@@ -616,7 +626,17 @@ void loop()
          changeMode();
       }
 
-  //  time = millis();    
+  //  time = millis(); 
+
+      if (ANALOG_KNOBS==1)
+      // will enable physical knobs on garvuino, and disable MIDI knobs
+      {
+       // read analog port 
+       // E12
+       // pw high 
+     notePW = map(analogRead(KNOB_PIN0), 0, 1023, 0, 15);  //value is 0-1023
+     mySid.set_register(3,notePW);
+      }
   }
 
    // previous = reading;

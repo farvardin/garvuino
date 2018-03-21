@@ -13,13 +13,14 @@
 //
 // Digital 3: Audio out 
 //
-// On GARVUINO: connect PIN3 to PIN AY>L (under the L)
+// On GARVUINO: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
 //
 // Changelog:
 // 19 Nov 2008: Added support for ATmega8 boards
 // 21 Mar 2009: Added support for ATmega328 boards
 // 7 Apr 2009: Fixed interrupt vector for ATmega328 boards
 // 8 Apr 2009: Added support for ATmega1280 boards (Arduino Mega)
+// 2018-03-18: 
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -35,6 +36,13 @@ uint16_t grain2PhaseInc;
 uint16_t grain2Amp;
 uint8_t grain2Decay;
 
+//int switchInPin = 6;  
+//#define LED 8    
+
+//int stateSwitch = HIGH;      // the current state of the output pin
+//int readingSwitch;           // the current reading from the input pin
+//int previousSwitch = LOW;    // the previous reading from the input pin
+
 // Map Analogue channels
 #define SYNC_CONTROL         (4)
 #define GRAIN_FREQ_CONTROL   (0)
@@ -43,34 +51,10 @@ uint8_t grain2Decay;
 #define GRAIN2_DECAY_CONTROL (1)
 
 
-// Changing these will also requires rewriting audioOn()
 
-#if defined(__AVR_ATmega8__)
-//
-// On old ATmega8 boards.
-//    Output is on pin 11
-//
-#define LED_PIN       13
-#define LED_PORT      PORTB
-#define LED_BIT       5
-#define PWM_PIN       9 // 11
-#define PWM_VALUE     OCR2
-#define PWM_INTERRUPT TIMER2_OVF_vect
-#elif defined(__AVR_ATmega1280__)
-//
-// On the Arduino Mega
-//    Output is on pin 3
-//
-#define LED_PIN       13
-#define LED_PORT      PORTB
-#define LED_BIT       7
-#define PWM_PIN       9 //3
-#define PWM_VALUE     OCR3C
-#define PWM_INTERRUPT TIMER3_OVF_vect
-#else
-//
+
 // For modern ATmega168 and ATmega328 boards
-//    Output is on pin 9
+//    Output is on pin 3
 //
 #define PWM_PIN       3
 #define PWM_VALUE     OCR2B// OCR1A //OCR2B
@@ -78,7 +62,7 @@ uint8_t grain2Decay;
 #define LED_PORT      PORTB
 #define LED_BIT       5
 #define PWM_INTERRUPT TIMER2_OVF_vect
-#endif
+
 
 // Smooth logarithmic mapping
 //
@@ -123,24 +107,11 @@ uint16_t mapPentatonic(uint16_t input) {
 
 
 void audioOn() {
-#if defined(__AVR_ATmega8__)
-  // ATmega8 has different registers
-  TCCR2 = _BV(WGM20) | _BV(COM21) | _BV(CS20);
-  TIMSK = _BV(TOIE2);
-#elif defined(__AVR_ATmega1280__)
-  TCCR3A = _BV(COM3C1) | _BV(WGM30);
-  TCCR3B = _BV(CS30);
-  TIMSK3 = _BV(TOIE3);
-#else
-  // Set up PWM to 31.25kHz, phase accurate
-  /*TCCR2A = _BV(COM1B1) | _BV(WGM12);
-  TCCR2B = _BV(CS11);
-  TIMSK2 = _BV(TOIE2);*/
 
   TCCR2A = _BV(COM2B1) | _BV(WGM20);
   TCCR2B = _BV(CS20);
   TIMSK2 = _BV(TOIE2);
-#endif
+
 }
 
 
@@ -148,6 +119,7 @@ void setup() {
   pinMode(PWM_PIN,OUTPUT);
   audioOn();
   pinMode(LED_PIN,OUTPUT);
+  //pinMode(switchInPin, INPUT_PULLUP); // uses internal arduino resistor for the switch
 }
 
 void loop() {
@@ -157,13 +129,16 @@ void loop() {
   // They will cause clicks and poops in the audio.
   
   // Smooth frequency mapping
-  //syncPhaseInc = mapPhaseInc(analogRead(SYNC_CONTROL)) / 4;
+  syncPhaseInc = mapPhaseInc(analogRead(SYNC_CONTROL)) / 4;
+
   
   // Stepped mapping to MIDI notes: C, Db, D, Eb, E, F...
-  //syncPhaseInc = mapMidi(analogRead(SYNC_CONTROL));
-  
+  syncPhaseInc = mapMidi(analogRead(SYNC_CONTROL));
+   
+   
   // Stepped pentatonic mapping: D, E, G, A, B
-  syncPhaseInc = mapPentatonic(analogRead(SYNC_CONTROL));
+  //syncPhaseInc = mapPentatonic(analogRead(SYNC_CONTROL));
+   
 
   grainPhaseInc  = mapPhaseInc(analogRead(GRAIN_FREQ_CONTROL)) / 2;
   grainDecay     = analogRead(GRAIN_DECAY_CONTROL) / 8;

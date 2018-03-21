@@ -126,9 +126,9 @@ More detailled informations:
 You can of course connect audio out to the mini-jack, but it's also possible to connect a small buzzer (HP), for example 8 ohms / 1 W to the AY>L (under the L) and to the GND (for example in the middle 3-pin J4 or on the GND of J1, if it's installed) then you'll get very cheap sound. It can be useful for monitoring.
 
 
-Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart.
+Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart. And when pluging it in and out, hold the midi port with your hand to avoid extra pressure on the connexions.
 
-You can also use [hairless midi serial bridge https://projectgus.github.io/hairless-midiserial/] (windows, mac os x, linux) or [ttymidi http://www.varal.org/ttymidi/] (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch).
+You can also use [hairless midi serial bridge https://projectgus.github.io/hairless-midiserial/] (windows, mac os x, linux) or [ttymidi http://www.varal.org/ttymidi/] (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch, or for #define USBMIDI at the begining of the sketch).
 
 
 

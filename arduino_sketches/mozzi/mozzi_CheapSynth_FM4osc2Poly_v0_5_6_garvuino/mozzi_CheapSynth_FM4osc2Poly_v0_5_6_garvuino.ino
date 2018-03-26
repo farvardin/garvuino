@@ -53,6 +53,12 @@ Note decay length on forward arrow to the right of big transparent Mode button (
 to less computationally demanding envelopes in Mode 0 and 2), toggles between short/medium/long
 */
 
+// Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
+#define USBMIDI 1
+
+// if set to 1, will enable physical knobs and disable midi knobs on synth
+#define ANALOG_KNOBS 0  // not used yet
+
 #include <MIDI.h>
 //#include "noteList.h"
 //#include "pitches.h"
@@ -142,6 +148,11 @@ void setup() {
 
   // Initiate MIDI communications, listen to all channels
   MIDI.begin(MIDI_CHANNEL_OMNI);
+
+if (USBMIDI == 1) {
+    // uncomment the line below to enable ttymidi or Hailess midi serial (won't work with regular midi cable)
+    Serial.begin(115200); // TTYMIDI will change baud rate of MIDI traffic from 31250 to 115200
+    }
 
   // push button
    pinMode(switchInPin, INPUT_PULLUP);

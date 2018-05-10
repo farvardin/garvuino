@@ -54,7 +54,7 @@ to less computationally demanding envelopes in Mode 0 and 2), toggles between sh
 */
 
 // Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
-#define USBMIDI 1
+#define USBMIDI 0
 
 // if set to 1, will enable physical knobs and disable midi knobs on synth
 #define ANALOG_KNOBS 0  // not used yet

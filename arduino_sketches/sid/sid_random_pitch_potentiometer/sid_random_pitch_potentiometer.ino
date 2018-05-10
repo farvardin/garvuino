@@ -45,6 +45,15 @@ SID mySid;
 int noteVolume=12;
 
 int switchInPin = 6;   
+int reading;           // the current reading from the input pin
+
+// the follow variables are long's because the time, measured in miliseconds,
+// will quickly become a bigger number than can be stored in an int.
+long time = 0;         // the last time the output pin was toggled
+long debounce = 800;   // the debounce time, increase if the output flickers
+
+
+
 const int KNOB_PIN = 0; // set the input for the knob to analog pin 0
 
 int ny=0;
@@ -52,12 +61,15 @@ int ny=0;
 #define dt 20                       // time difference in milli seconds
 unsigned long t=0; // Time Variables
 
+byte mode=1; // push button change mode
+
 
 
 // Main Code
 void setup(){
   
-  pinMode(switchInPin, INPUT_PULLUP);
+  pinMode(switchInPin, INPUT_PULLUP); // uses internal arduino resistor
+  Serial.begin(38400);
   mySid.begin();
   
   
@@ -193,12 +205,43 @@ uint8_t zufall()
     #define CHANNEL2  7
     #define CHANNEL3  14
     
+
+#define LED 8          
+
+void BlinkLed(byte num)         // Basic blink function
+{
+    for (byte i=0;i<num;i++)
+    {
+        digitalWrite(LED,HIGH);
+        delay(200);
+        digitalWrite(LED,LOW);
+        delay(200);
+    }
+}
     
+ void changeMode()
+{
+    mode++; 
+    Serial.println("Mode: ");  Serial.println(mode);
+   BlinkLed(1);
+
+  if (mode==3) { 
+      mode = 1 ;
+     BlinkLed(3);
+     }
+}
+
 void loop(){
+
+
+  reading = digitalRead(switchInPin);
+
+  if (reading == HIGH  ) { Serial.println(reading); }
+  else {    changeMode();  // mettre la suite dans un autre programme pour que ça fonctionne ??
+     }
   
 
-  
-
+ if (mode==1) {
   //setwaveform_triangle(CHANNEL1);
   //setwaveform_triangle(CHANNEL2);
   setwaveform_triangle(CHANNEL3);
@@ -212,14 +255,17 @@ void loop(){
   setwaveform_sawtooth(CHANNEL1);
   //setwaveform_sawtooth(CHANNEL2);
   //setwaveform_sawtooth(CHANNEL3);
+  BlinkLed(1);
+}
 
-/*
+if (mode==2) {  // noise
   setwaveform_noise(CHANNEL1);
   setwaveform_noise(CHANNEL2);
   setwaveform_noise(CHANNEL3);
-*/
+  BlinkLed(2);
+}
     
-  while(1)
+ while(1)
   {
     uint16_t currentNote = 0;
 
@@ -282,7 +328,8 @@ mySid.set_register(22,noteFilter);
   
   
   }
-  
+
+
 
 }
 

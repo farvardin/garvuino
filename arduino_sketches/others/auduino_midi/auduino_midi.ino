@@ -1,5 +1,6 @@
 // ************************************************************************
 // AUDUINO - MIDI Upgrade v1.1
+// Auduino, the Lo-Fi granular synthesiser
 //
 // MIDI programming by David Benn http://www.notesandvolts.com
 //
@@ -12,6 +13,15 @@
 // Version 1.0 - Initial release
 // Version 1.1 - Fixed bug that caused note to hang with some DAWs
 // ************************************************************************
+// Analog in 0: Grain 1 pitch
+// Analog in 1: Grain 2 decay
+// Analog in 2: Grain 1 decay
+// Analog in 3: Grain 2 pitch
+// Analog in 4: Grain repetition frequency
+//
+// Digital 3: Audio out 
+
+// On GARVUINO: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -192,16 +202,19 @@ void loop() { // *** MAIN LOOP ***
 
   MIDI.read();
 
+
   if (abs(analogRead(SYNC_CONTROL) - oldpot) > 5) pot = true;// Check if SYNC Pot has been touched
 
   // If Sync pot has been touched - Play pentatonic major scale with Root Note set by note on keyboard
   if (pot == true && noteOn == true) {
-    syncPhaseInc = (mapPentatonic(analogRead(SYNC_CONTROL)) * pow(2, ((cents + transpose) / 1200)) );
+    // we disable this to avoid random notes / glitches. Uncomment to enable again pitch pot:
+   // syncPhaseInc = (mapPentatonic(analogRead(SYNC_CONTROL)) * pow(2, ((cents + transpose) / 1200)) );
     oldpot = analogRead(SYNC_CONTROL);
   }
   // If Sync pot has not been touched - Play the note sent by keyboard
   else {
-    syncPhaseInc = mapMidi(note) * pow(2, (cents / 1200));
+ 
+   syncPhaseInc = mapMidi(note) * pow(2, (cents / 1200));
   }
 
   grainPhaseInc  = mapPhaseInc(analogRead(GRAIN_FREQ_CONTROL)) / 2;

@@ -12,8 +12,13 @@
 // Analog in 4: Grain repetition frequency
 //
 // Digital 3: Audio out 
+// Change the line beginning with syncPhaseInc in the main loop to choose between chromatic and pentatonic
 //
-// On GARVUINO: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
+// On GARVUINO v2.10: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
+// On GARVUINO v1.09: remove the arduino out of the socket
+//      and connect directly the analog input A0 to A4, and the 5V to the extension board. 
+//      Then connect PIN3 to PIN AY>L (under the L label) and GND to the GND in J1 on Garvuino
+//      in order to get the audio output!
 //
 // Changelog:
 // 19 Nov 2008: Added support for ATmega8 boards
@@ -133,11 +138,11 @@ void loop() {
 
   
   // Stepped mapping to MIDI notes: C, Db, D, Eb, E, F...
-  syncPhaseInc = mapMidi(analogRead(SYNC_CONTROL));
+  //syncPhaseInc = mapMidi(analogRead(SYNC_CONTROL));
    
    
   // Stepped pentatonic mapping: D, E, G, A, B
-  //syncPhaseInc = mapPentatonic(analogRead(SYNC_CONTROL));
+  syncPhaseInc = mapPentatonic(analogRead(SYNC_CONTROL));
    
 
   grainPhaseInc  = mapPhaseInc(analogRead(GRAIN_FREQ_CONTROL)) / 2;

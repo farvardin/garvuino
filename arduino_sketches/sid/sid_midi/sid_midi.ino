@@ -41,7 +41,7 @@
 
 
 // Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
-#define USBMIDI 1
+#define USBMIDI 0
 
 // if set to 1, will enable physical knobs and disable midi knobs on synth
 #define ANALOG_KNOBS 1

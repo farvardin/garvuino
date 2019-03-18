@@ -18,7 +18,7 @@ It works with an Arduino Nano and an Atmega8 chip.
 
 == Manual ==
 
-You can find the manual [here doc/garvuino_manual.md]
+You can find the manual [here doc/garvuino_manual.md].
 
 
 == Features ==
@@ -108,8 +108,7 @@ DIN5 connector (midi)            1       x
 1 kΩ Resistor                    1       x
 10 kΩ Resistor                   2	
 micro sd module                  1	
-sd module                        1       x
-momentary switch                 1	
+momentary switch (6x6mm type)    1	
 audio jack 3.5 mm (TRS)          1	
 jumper                           6	
 female header socket PCB 2.54mm  1
@@ -172,6 +171,17 @@ Get the sketches [in this folder arduino_sketches/]
 //(more infos to come later)//
 
 You can find [some tunes for using with the AVR-AY setup in here tunes/]. The arduino sketch can read the RSF files from the SD (it can't read the YM or AY files directly). You can convert to RSF with the [AVR-AY Player http://www.avray.ru/avr-ay-player/].
+
+
+== Expansion board ===
+
+The expansion board is a new board for using with the Garvuino or other projects.
+Solder 5K or 10K potentiometers onto the board. You don't need to solder the switches, they are not used at the moment.
+
+Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>R pin.
+
+And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins on the arduino, connect the + to 5V and the - to ground, and you'll be able to control the Auduino and Auduino midi sketches found there: https://github.com/farvardin/garvuino/tree/master/arduino_sketches/others
+
 
 
 == Links ==

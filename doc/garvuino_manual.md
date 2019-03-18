@@ -41,17 +41,19 @@ LINEBREAK It might be possible to stream data from SD if the 1-bit music engine 
 
 The board has 2 chips, the Arduino Nano chip (which in itself is a complete board for development), for computing, and an optionnal Atmega8 chip, for AY sound output.
 
-There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optionnal SD card reader, for reading AY music files, and an optionnal DIN5 midi input, for using the board as a synth.
+There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optionnal SD card reader, for reading AY music files, and an optionnal DIN5 midi input, for using the board as a midi synth. 
 
-There are a few jumper on the board. They are for switching between some modes.
+The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
-When used in AY mode, the mono jumper should be off, when used in beeper, sid or mozzi mode the mono jumper should be on, the J4 (ay chip ground) should be off. Also the AY>L and AY>R can be off to reduce noise (but it will work anyway). And TX could be off as well when flashing the arduino chip (you can leave it on, but it the transfer fails, try to remove it)
+There are a few jumpers on the board. They are for switching between some modes.
 
-More detailled informations:
+When used in AY mode, the mono jumper should be off, when used in beeper, sid or mozzi mode the mono jumper should be on, the J4 (ay chip ground, v1.09 board only) should be off. Also the AY>L and AY>R can be off to reduce noise (but it will work anyway). And TX could be off as well when flashing the arduino chip (you can leave it on, but if the transfer fails, try to remove it)
+
+More detailled informations about the jumpers:
 
  * mono: used in mozzi, 1-bit and sid mode. You can remove the jumper in AY mode because it's in stereo (but you might also prefer using the mono mode)
 
- * TX: used for transmitting data to the Atmega8 chip in AY mode. You can remove the jumper when not in AY mode. You can also keep it, it doesn't matter, unless you have some problem for flashing the arduino board. On some boards, the jumper is below the board for easier access.
+ * TX: used for transmitting data to the Atmega8 chip in AY mode. You can remove the jumper when not in AY mode. You can also keep it, it doesn't matter, unless you have some problem for flashing the arduino board. On some boards, the jumper is below the board for easier access to the push button.
 
  * AY>L and AY>R: used in AY mode. You can cut a voice if you remove the jumper. If you remove the jumper when not in AY mode, you'll be sure there won't be extra noise from the Atmega8 chip.
 
@@ -59,13 +61,13 @@ More detailled informations:
 
  * J2/J3: for connecting regular (big) SD reader. Most board will use the smaller SD reader
 
- * J4 / ay chip GND / arduino chip: ay chip used in AY mode. It's better to put the jumper in the "arduino chip" mode (bottom), when not using AY otherwise you'll get extra and residual noise from the atmega8 chip.
+ * J4 / ay chip GND / arduino chip (v1.09 board only): ay chip used in AY mode. It's better to put the jumper in the "arduino chip" mode (bottom), when not using AY otherwise you'll get extra and residual noise from the atmega8 chip.
 
- * J5: not used. Linked to midi 4 wire "just in case".
+ * J5 (v1.09 board only): not used. Linked to midi 4 wire "just in case".
 
- * J6: not used. Could be used to switch off the atmega8 but since there are still some residual noise without it, it can be kept connected. It's been soldered on most boards.
+ * J6 (v1.09 board only): not used. Could be used to switch off the atmega8 but since there are still some residual noise without it, it can be kept connected. It's been soldered on most boards.
 
- * J7: can be used for programming the Arduino for Analog input (potentiomer, light sensor for example)
+ * J7 (v1.09) / J11 (v2.10): can be used for programming the Arduino for Analog input (potentiomer, light sensor for example)
 
  * J8: not used. Can be connected to arduino +5V, RST, GND and VIN but shouldn't be necessary.
 
@@ -77,9 +79,9 @@ More detailled informations:
 
 You can of course connect audio out to the mini-jack, but it's also possible to connect a small buzzer (HP), for example 8 ohms / 1 W to the AY>L (under the L) and to the GND (for example in the middle 3-pin J4 or on the GND of J1, if it's installed) then you'll get very cheap sound. It can be useful for monitoring.
 
-Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart.
+Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart. And when pluging it in and out, hold the midi port with your hand to avoid extra pressure on the connexions.
 
-You can also use [hairless midi serial bridge](https://projectgus.github.io/hairless-midiserial/) (windows, mac os x, linux) or [ttymidi](http://www.varal.org/ttymidi/) (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch).
+You can also use [hairless midi serial bridge](https://projectgus.github.io/hairless-midiserial/) (windows, mac os x, linux) or [ttymidi](http://www.varal.org/ttymidi/) (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch, or for #define USBMIDI at the begining of the sketch).
 
 ## Flashing the Garvuino board 
 
@@ -97,7 +99,7 @@ In the case you get a:
 
     avrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x32
 
-it can be different causes. It midi plug is connected, see advice above. But it can also appear from random occasion. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
+it can be different causes. If the midi plug is connected, see advice above. But it can also appear at random occasions. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
 This kind of message can also be seen if you've choosen the wrong port to connect the arduino.
 
 ### Flashing for AY music 
@@ -136,6 +138,8 @@ If you have some problem for creating your own music and exporting it to arduino
 
 There are several examples in the mozzi/ folder, just try them out!
 
+You can also use most mozzi examples from the original library (see Examples/Mozzi in the Arduino IDE).
+
 *TO BE CONTINUED*
 
 ### Flashing other sketches 
@@ -148,7 +152,9 @@ https://bitbucket.org/farvardin/playtune-arduino
 
 Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 10.
 
-Use the examples/test_nano/test_nano.in sketch
+Use the examples/test_nano/test_nano.in sketch.
+
+The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (see the sketch for more informations).
 
 ## Assembly the Garvurino board 
 
@@ -178,8 +184,7 @@ There is a little error on the version 1.09 / 2017-08 of the PCB board, which I'
     1 kΩ Resistor                    1       x
     10 kΩ Resistor                   2	
     micro sd module                  1	
-    sd module                        1       x
-    momentary switch                 1	
+    momentary switch (6x6mm type)    1
     audio jack 3.5 mm (TRS)          1	
     jumper                           6	
     female header socket PCB 2.54mm  1

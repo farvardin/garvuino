@@ -12,8 +12,8 @@
 
 //#include "music_test.h"
 //#include "music_rotor.h"
-//#include "music_dazbog.h"
-#include "music_shiru.h"
+#include "music_dazbog.h"
+//#include "music_shiru.h"
 
 //general settings
 

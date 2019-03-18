@@ -39,9 +39,9 @@ LINEBREAK It might be possible to stream data from SD if the 1-bit music engine 
 
 ### Hardware 
 
-The board has 2 chips, the Arduino Nano chip (which in itself is a complete board for development), for computing, and an optionnal Atmega8 chip, for AY sound output.
+The board has 2 chips, the Arduino Nano chip (which in itself is a complete board for development), for computing, and an optional Atmega8 chip, for AY sound output.
 
-There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optionnal SD card reader, for reading AY music files, and an optionnal DIN5 midi input, for using the board as a midi synth. 
+There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optional SD card reader, for reading AY music files, and an optional DIN5 midi input, for using the board as a midi synth. 
 
 The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
@@ -170,7 +170,7 @@ There is a little error on the version 1.09 / 2017-08 of the PCB board, which I'
 
 ### Bill of Materials 
 
-    Name                            nb    (optionnal part)
+    Name                            nb    (optional part)
     		
     Garvuino PCB                     1	
     crystal 24 mhz                   1	

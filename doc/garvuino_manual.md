@@ -5,11 +5,11 @@ GARVUINO
 
 Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
-It's open-source hardware, so you can modify, hack, have fun with it without restriction.
+As the hardware is open-source, you can modify, hack and have fun with it without restriction.
 
 ## Presentation of the board 
 
-The Garvuino board can be used in those modes: 
+Several modes can be used :
 
 ### AY-3-8910 emulator 
 
@@ -39,9 +39,15 @@ LINEBREAK It might be possible to stream data from SD if the 1-bit music engine 
 
 ### Hardware 
 
-The board has 2 chips, the Arduino Nano chip for computing (which is in itself a complete board for development) and an optional Atmega8 chip, for AY sound output.
+The board has 2 chips : 
+* an Arduino Nano for the compute (it is a complete board for development)
+* an optional Atmega8 for AY sound output.
 
-There is a 24 Mhz crystal, for driving The Atmega8, some capacitors and resistors, for filtering the output, an optional SD card reader, for reading AY music files, and an optional DIN5 midi input, for using the board as a midi synth. 
+A few components :
+* a 24 Mhz crystal that is driving the Atmega8
+* some capacitors and resistors to filter the output 
+* a SD card reader to read AY music files (optional)
+* a DIN5 midi input to use the board as a midi synth (optional) 
 
 The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
@@ -160,7 +166,7 @@ The Auduino is a project for using granular synthesis with 5 potentiometers, you
 
 If you got the board through a kit, soldering it should be pretty simple as there are only basic components. 
 
-If you have no clue about how to solder, this guide might be of some use for you: https://www.makerspaces.com/how-to-solder/
+If you have no clue about soldering, this guide might be of some use for you: https://www.makerspaces.com/how-to-solder/
 
 Solder the resistors and capacitors first for example, then the jumpers, socket, led, switch, crystal and audio jack. In any case, the regular sd card reader should be soldered after all of this.
 

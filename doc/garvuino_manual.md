@@ -3,7 +3,7 @@ GARVUINO
 
 # Garvuino 
 
-Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating musics, sounds and chiptunes, either through programmation, soundtracker or live recording (midi).
+Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
 It's open-source hardware, so you can modify, hack, have fun with it without restriction.
 
@@ -39,9 +39,9 @@ LINEBREAK It might be possible to stream data from SD if the 1-bit music engine 
 
 ### Hardware 
 
-The board has 2 chips, the Arduino Nano chip (which in itself is a complete board for development), for computing, and an optional Atmega8 chip, for AY sound output.
+The board has 2 chips, the Arduino Nano chip for computing (which is in itself a complete board for development) and an optional Atmega8 chip, for AY sound output.
 
-There is a 24 Mhz crystal, for driving the Atmega8, some capacitors and resistors, for filtering the output, an optional SD card reader, for reading AY music files, and an optional DIN5 midi input, for using the board as a midi synth. 
+There is a 24 Mhz crystal, for driving The Atmega8, some capacitors and resistors, for filtering the output, an optional SD card reader, for reading AY music files, and an optional DIN5 midi input, for using the board as a midi synth. 
 
 The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 

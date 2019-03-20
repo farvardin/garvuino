@@ -2,7 +2,7 @@
 
 # Garvuino 
 
-The Garvuino is a PCB board for creating musics, sounds and chiptunes, either through programmation, soundtracker or live recording (midi).
+The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
 ![](garvuino_pcb.png)
 
@@ -139,7 +139,7 @@ Get the sketches [in this folder](arduino_sketches/)
 
 You can find [some tunes for using with the AVR-AY setup in here](tunes/). The arduino sketch can read the RSF files from the SD (it can't read the YM or AY files directly). You can convert to RSF with the [AVR-AY Player](http://www.avray.ru/avr-ay-player/).
 
-== Expansion board ===
+## Expansion board
 
 The expansion board is a new board for using with the Garvuino or other projects.
 Solder 5K or 10K potentiometers onto the board. You don't need to solder the switches, they are not used at the moment.

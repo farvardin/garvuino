@@ -1,4 +1,4 @@
-#Garvuino
+# Garvuino manual
 
 
 Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).

@@ -22,7 +22,7 @@ GARVUINO
 %!postproc(md): 'CONVERTboxedBEGIN' '```'
 %!postproc(md): 'CONVERTboxedEND' '```'
 
-%!postproc(md): 'GARVUINO' '#Garvuino'
+%!postproc(md): 'GARVUINO' '# Garvuino manual'
 %!postproc(md): 'LINEBREAK' ''
 %!postproc(md): '\)\[150\]' ')'
 

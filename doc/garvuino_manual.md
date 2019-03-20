@@ -3,13 +3,17 @@ GARVUINO
 
 # Garvuino 
 
+![](garvuino_pcb.png)
+
 Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
 As the hardware is open-source, you can modify, hack and have fun with it without restriction.
 
+The PCB, schematics, code and further instructions can be found on https://github.com/farvardin/garvuino/
+
 ## Presentation of the board 
 
-Several modes can be used :
+Several modes can be used: 
 
 ### AY-3-8910 emulator 
 
@@ -40,14 +44,17 @@ LINEBREAK It might be possible to stream data from SD if the 1-bit music engine 
 ### Hardware 
 
 The board has 2 chips : 
-* an Arduino Nano for the compute (it is a complete board for development)
-* an optional Atmega8 for AY sound output.
+
+ * an Arduino Nano for the compute (it is a complete board for development)
+ * an optional Atmega8 for AY sound output.
 
 A few components :
-* a 24 Mhz crystal that is driving the Atmega8
-* some capacitors and resistors to filter the output 
-* a SD card reader to read AY music files (optional)
-* a DIN5 midi input to use the board as a midi synth (optional) 
+ * a 24 Mhz crystal that is driving the Atmega8
+ * some capacitors and resistors to filter the output 
+ * a SD card reader to read AY music files (optional)
+ * a DIN5 midi input to use the board as a midi synth (optional)  
+
+![](garvuino_pcb.png)
 
 The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
@@ -94,6 +101,8 @@ You can also use [hairless midi serial bridge](https://projectgus.github.io/hair
 This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
 
 Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
+
+Get the sketches from there: https://github.com/farvardin/garvuino/archive/master.zip
 
 For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
 
@@ -212,7 +221,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|---------------|
+|--------|-------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|
@@ -225,4 +234,21 @@ Use a 16 Mhz crystal for example, on pin 09 (PB6) and pin 10 (PB7).
 Once it's connected, you can program the atmega8 chip with this command-line:
 
     avrdude -p atmega8 -c USBasp -U flash:w:AY_Emul_244_2ch.hex -U eeprom:w:Conf_standard_24MHz_1_75Mhz.hex -U lfuse:w:0xCE:m -U hfuse:w:0xCF:m 
+
+### Breadboard 
+
+It can also work without the PCB. Just use a breadboard and a few wires!
+
+![](breadboard/garvuino_09g_breadboard_only_bb.jpg)
+
+Please refer to [this folder](breadboard) for the fritzing sources and pdf version.
+
+## Expansion board 
+
+The expansion board is a new board for using with the Garvuino or other projects.
+Solder 5K or 10K potentiometers onto the board. You don't need to solder the switches, they are not used at the moment.
+
+Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>R pin.
+
+And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins on the arduino, connect the + to 5V and the - to ground, and you'll be able to control the Auduino and Auduino midi sketches found there: https://github.com/farvardin/garvuino/tree/master/arduino_sketches/others
 

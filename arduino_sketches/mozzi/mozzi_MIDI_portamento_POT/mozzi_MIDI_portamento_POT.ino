@@ -1,5 +1,5 @@
 /* 
- *  Mozzi + Midi + Control portamento with Pot 1 in A0  
+ *  Mozzi + Midi + Control portamento strength with Pot 1 in A0  
  * 
  *  version for Garvuino https://github.com/farvardin/garvuino
  *  Works with Arduino IDE 1.8.3

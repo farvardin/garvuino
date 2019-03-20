@@ -4,42 +4,22 @@
 
 The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
-![](garvuino_pcb.png)
+![](doc/garvuino_pcb.png)
 
 It works with an Arduino Nano and an Atmega8 chip.
 
 ## Manual 
 
-You can find the manual [here](doc/garvuino_manual.md).
+You can find the full manual [here](doc/garvuino_manual.md).
 
 ## Features 
 
-### AY-3-8910 emulator 
+ * AY-3-8910 emulator (using an atmega8 chip): it can replay Sinclair ZX Spectrum, Atari ST, Amstrad square wave chiptunes from the sd card.
+ * Sid emulator: play some C64 musics, or use it as a midi synth with a fat sound.
+ * 1-bit music: play beeper music. 
+ * Mozzi synth: fun FM sounds and many other effects, driven by MIDI or some captors.
 
-On Atmega8 chip, driven by the Arduino nano, from the [AVR-AY project](http://avray.ru/)
-
- * It can replay Sinclair ZX Spectrum, Atari ST, Amstrad chiptunes from the sd card.
- * It might be possible to use it as a (very simple and dirty) AY synth. We just need to code the synth in the future.
-
-### Sid emulator 
-
-On Arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-emulator)
-
- * It can replay some sid files, from the arduino memory, which is limited (so tunes will be cut). We'd like to find a way to stream the tune from the sd card, it's probably possible.
- * It can be used as a Sid synth, driven by midi.
-
-### 1-bit music 
-
-From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on arduino)
-
- * It can play music from the arduino memory. 1-bit music don't need much memory so a whole song, even a complex one, can fit in the memory. It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
- * It should be possible to create a 1-bit synth in the future. Probably not an easy task.
-
-### Mozzi synth 
-
- * [Mozzy synth](https://sensorium.github.io/Mozzi), can output fun FM sounds and many other effects.
-
- ![](garvuino01.jpg) 
+ ![](doc/garvuino01.jpg) 
 
 ## How does it sound? 
 
@@ -67,57 +47,9 @@ From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on
  * http://garvalf.online.fr/index.php?page=blog_2017-02-12
  * *more to come*
 
-## Bill of Materials 
-
-    Name                            nb    (optionnal part)
-    		
-    Garvuino PCB                     1	
-    crystal 24 mhz                   1	
-    arduino nano                     1	
-    atmega8                          1	
-    ceramic capacitor 820 pF         2	
-    electrolytic capac. 10 uF        2	
-    ceramic capacitor 100 nF         1       x
-    led                              1       x
-    DIN5 connector (midi)            1       x
-    1 kΩ Resistor                    1       x
-    10 kΩ Resistor                   2	
-    micro sd module                  1	
-    momentary switch (6x6mm type)    1	
-    audio jack 3.5 mm (TRS)          1	
-    jumper                           6	
-    female header socket PCB 2.54mm  1
-    male pin strips 2.54             1
-    female pin strips 2.54           1
-    
-    
-
 ## Atmega8 setup 
 
-Get a "USBASP USB ISP Programmer & 10 Pin ISP interface Cable - AVR ATMEL ATMega".
-
-Connect it according to this schematic for the atmega8:
-
-![](atmega8/atmega8_burn_bb.png)
-
-Basically it's:
-
-| SD reader |Atmega|
-|--------|-------|
-|MISO |pin 18: PB4|
-|MOSI |pin 17: PB3|
-|RESET |pin 01: PC6|
-|VCC |pin 20: AVCC||
-|SCK |pin 19: PB5|
-|GND |pin 22: GND|
-
-Use a 16 Mhz crystal for example, on pin 09 (PB6) and pin 10 (PB7).
-
-Once it's connected, you can program the atmega8 chip with this command-line:
-
-    avrdude -p atmega8 -c USBasp -U flash:w:AY_Emul_244_2ch.hex -U eeprom:w:Conf_standard_24MHz_1_75Mhz.hex -U lfuse:w:0xCE:m -U hfuse:w:0xCF:m 
-
-Please refer to [this folder](atmega8) for more info about setting up the atmega8 chip.
+Please refer to the [manual](doc/garvuino_manual.md) and [this folder](atmega8) for more info about setting up the atmega8 chip.
 
 ## PCB 
 
@@ -135,18 +67,7 @@ Please refer to [this folder](breadboard) for the fritzing sources and pdf versi
 
 Get the sketches [in this folder](arduino_sketches/)
 
-*(more infos to come later)*
-
 You can find [some tunes for using with the AVR-AY setup in here](tunes/). The arduino sketch can read the RSF files from the SD (it can't read the YM or AY files directly). You can convert to RSF with the [AVR-AY Player](http://www.avray.ru/avr-ay-player/).
-
-## Expansion board
-
-The expansion board is a new board for using with the Garvuino or other projects.
-Solder 5K or 10K potentiometers onto the board. You don't need to solder the switches, they are not used at the moment.
-
-Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>R pin.
-
-And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins on the arduino, connect the + to 5V and the - to ground, and you'll be able to control the Auduino and Auduino midi sketches found there: https://github.com/farvardin/garvuino/tree/master/arduino_sketches/others
 
 ## Links 
 

@@ -1,15 +1,13 @@
-GARVUINO
+#Garvuino
 
-
-# Garvuino 
-
-![](garvuino_pcb.png)
 
 Thank you for your interest in Garvuino! The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
 As the hardware is open-source, you can modify, hack and have fun with it without restriction.
 
 The PCB, schematics, code and further instructions can be found on https://github.com/farvardin/garvuino/
+
+ ![](garvuino01.jpg) 
 
 ## Presentation of the board 
 
@@ -34,7 +32,7 @@ On Arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-em
 From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on arduino)
 
  * It can play music from the arduino memory. 1-bit music don't need much memory so a whole song, even a complex one, can fit in the memory. You can create those songs with Beepola or MilkyTracker.
-LINEBREAK It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
+ * It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
  * It might be possible to create a 1-bit synth in the future. Probably not an easy task.
 
 ### Mozzi synth 
@@ -92,7 +90,9 @@ More detailled informations about the jumpers:
 
 You can of course connect audio out to the mini-jack, but it's also possible to connect a small buzzer (HP), for example 8 ohms / 1 W to the AY>L (under the L) and to the GND (for example in the middle 3-pin J4 or on the GND of J1, if it's installed) then you'll get very cheap sound. It can be useful for monitoring.
 
+```
 Midi: You can plug a DIN5 midi cable into the dedicated port. When removing it, please do it slowly, to avoid tearing everything apart. And when pluging it in and out, hold the midi port with your hand to avoid extra pressure on the connexions.
+```
 
 You can also use [hairless midi serial bridge](https://projectgus.github.io/hairless-midiserial/) (windows, mac os x, linux) or [ttymidi](http://www.varal.org/ttymidi/) (linux) to create a virtual connection going through serial port. You'll need to adjust the arduino sketch to enable this (search for hairless midi or ttymidi in the sketch, or for #define USBMIDI at the begining of the sketch).
 
@@ -102,7 +102,9 @@ This board is supposed to work extensively with the Arduino IDE (http://arduino.
 
 Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
 
-Get the sketches from there: https://github.com/farvardin/garvuino/archive/master.zip
+Get the sketches from there:
+
+https://github.com/farvardin/garvuino/archive/master.zip
 
 For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
 
@@ -114,7 +116,7 @@ In the case you get a:
 
     avrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x32
 
-it can be different causes. If the midi plug is connected, see advice above. But it can also appear at random occasions. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
+it can be from different causes. If the midi plug is connected, see advice above. But it can also appear at random occasions. I suspect it's because of some electricity in the atmega8 chip. In this case, you can remove the TX jumper (above the arduino nano). You only need it connected when playing AY chiptunes (see below).
 This kind of message can also be seen if you've choosen the wrong port to connect the arduino.
 
 ### Flashing for AY music 
@@ -154,8 +156,6 @@ If you have some problem for creating your own music and exporting it to arduino
 There are several examples in the mozzi/ folder, just try them out!
 
 You can also use most mozzi examples from the original library (see Examples/Mozzi in the Arduino IDE).
-
-*TO BE CONTINUED*
 
 ### Flashing other sketches 
 
@@ -216,7 +216,7 @@ Get a "USBASP USB ISP Programmer & 10 Pin ISP interface Cable - AVR ATMEL ATMega
 
 Connect it according to this schematic for the atmega8:
 
-![](../../atmega8/atmega8_burn_bb.png)
+![](../atmega8/atmega8_burn_bb.png)
 
 Basically it's:
 
@@ -239,14 +239,16 @@ Once it's connected, you can program the atmega8 chip with this command-line:
 
 It can also work without the PCB. Just use a breadboard and a few wires!
 
-![](breadboard/garvuino_09g_breadboard_only_bb.jpg)
+![](../breadboard/garvuino_09g_breadboard_only_bb.jpg)
 
-Please refer to [this folder](breadboard) for the fritzing sources and pdf version.
+Please refer to the garvuino/breadboard folder for the fritzing sources and pdf version.
 
 ## Expansion board 
 
 The expansion board is a new board for using with the Garvuino or other projects.
 Solder 5K or 10K potentiometers onto the board. You don't need to solder the switches, they are not used at the moment.
+
+ ![](garvuino_expansion_board_01.jpg) 
 
 Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>R pin.
 

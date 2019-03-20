@@ -4,7 +4,7 @@
 
 The Garvuino is a PCB board for creating music, sounds and chiptunes, either through programming, soundtracker or live recording (midi).
 
-![](doc/garvuino_pcb.png)
+ ![](doc/garvuino_pcb.png)
 
 It works with an Arduino Nano and an Atmega8 chip.
 

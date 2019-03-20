@@ -171,7 +171,7 @@ Use the examples/test_nano/test_nano.in sketch.
 
 The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (see the sketch for more informations).
 
-## Assembly the Garvurino board 
+## Assemble the Garvurino board 
 
 If you got the board through a kit, soldering it should be pretty simple as there are only basic components. 
 

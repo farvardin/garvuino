@@ -8,19 +8,21 @@
 
 #include <SPI.h>
 
-int switchInPin = 6;   
+int switchInPin = 6;   // 2 on 1.09 shield  
 int LedPin = 8;
-#define LED 8
+#define LED 8     // 13 on 1.09 shield 
 
 const int KNOB_PIN = 0; // set the input for the knob to analog pin 0
 const int KNOB_PIN1 = 1; // set the input for the knob to analog pin 1
 const int KNOB_PIN2 = 2; // set the input for the knob to analog pin 2
 const int KNOB_PIN3 = 3; // set the input for the knob to analog pin 3
+const int KNOB_PIN4 = 4; // set the input for the knob to analog pin 4
 
   int knob_value = 0;
   int knob_value1 = 0;
   int knob_value2 = 0;
   int knob_value3 = 0;
+  int knob_value4 = 0;
 
 int current_value = 2000;  //tone
 int tempo = 60;
@@ -28,12 +30,14 @@ int sweep = 20;
 
 int volume = 32;
 
+int buttonRead = HIGH;
+byte mode=0;
 
 
 void setup()
 {
 
-  pinMode(switchInPin, INPUT_PULLUP);
+  pinMode(switchInPin, INPUT_PULLUP); // uses internal arduino resistor
   pinMode(LedPin, OUTPUT);
   Serial.begin(57600);
 }
@@ -52,7 +56,20 @@ void loop()
   knob_value1 = analogRead(KNOB_PIN1); // value is 0-1023
   knob_value2 = analogRead(KNOB_PIN2); // value is 0-1023
   knob_value3 = analogRead(KNOB_PIN3); // value is 0-1023
-  
+  knob_value4 = analogRead(KNOB_PIN4); // value is 0-1023
+
+  buttonRead = digitalRead(switchInPin); // read push button
+
+  if ( buttonRead == HIGH ) { 
+    // do nothing here
+    }
+   else
+   {    
+    changeMode();
+   }
+
+
+  PlayCurrentPrg();
 
 /*
   current_value = map(knob_value,0,1023, 0, 4096); //tone
@@ -69,10 +86,12 @@ void loop()
 
   //playSeq2();
 
-
+/*
 int variation1 = map(knob_value3,0,1023, 1, 8);
+int variation2 = map(knob_value4,0,1023, 1, 8);
 
-  playArp(2,variation1,5);
+  playArp(2,variation1,variation2);
+  */
   
   //playNote(current_value,current_value/256);
   
@@ -134,11 +153,10 @@ void playEnveloppe(int r0, int r1)
           buf2[11] = 15; // Write # into register #D
           buf2[12] = 7; // Select register #7
           buf2[13] = 62;  //Enable output Channel A (0011 1110)
- //Serial.print(255,1);
- Serial.write(buf2,14);
+          
+   Serial.write(buf2,14);
    digitalWrite(LED,HIGH);
-// delay(20);
-//digitalWrite(LED,LOW);
+
   }
 }
 
@@ -156,11 +174,10 @@ void playNull()
           buf2[5] = 0; // Write #13 into register #1
           buf2[6] = 7; // Select register #7
           buf2[7] = 62;  //Enable output Channel A (0011 1110)
- //Serial.print(255,1);
- Serial.write(buf2,8);
-  // digitalWrite(LED,HIGH);
-// delay(20);
-digitalWrite(LED,LOW);
+          
+
+  Serial.write(buf2,8);
+  digitalWrite(LED,LOW);
   }
 }
 
@@ -230,12 +247,67 @@ void playArp(int a, int b, int c)
 
 void playRandom1()
 {
-playNote(random(1,256),random(8,12));
-playNote(random(1,256),random(current_value,current_value+2));
+  playNote(random(1,256),random(8,12));
+  playNote(random(1,256),random(current_value,current_value+2));
 }
 
 void playRandom2(int rand1)
 {
-playNote(random(1,rand1),random(8,12));
-playNote(random(1,256),random(current_value,current_value+2));
+  playNote(random(1,rand1),random(8,12));
+  playNote(random(1,256),random(current_value,current_value+2));
 }
+
+
+
+void changeMode()
+{
+    mode++; 
+    Serial.println("Mode: ");  Serial.println(mode);
+      if (mode==0) { BlinkLed(1); }
+      if (mode==1) { BlinkLed(2); }
+      if (mode==2) { BlinkLed(3); }
+      if (mode==3) { BlinkLed(4); }
+        if (mode==4) {
+                 mode=-1;              
+               }
+}
+
+void BlinkLed(byte num)         // Basic blink function
+{
+    for (byte i=0;i<num;i++)
+    {
+        digitalWrite(LED,HIGH);
+        delay(200);
+        digitalWrite(LED,LOW);
+        delay(200);
+    }
+}
+
+void PlayCurrentPrg()
+{
+      if (mode==0) {  
+                        current_value = map(knob_value,0,1023, 0, 4096); //freq
+                        playEnveloppe(current_value,current_value/256/2);
+               }
+
+      if (mode==1) {      
+                        playSeq1();
+               }
+               
+      if (mode==2) {   
+                        int variation1 = map(knob_value3,0,1023, 1, 8);
+                        int variation2 = map(knob_value4,0,1023, 1, 8);
+                        playArp(2,variation1,variation2);      
+               }
+
+             if (mode==3) { 
+                        current_value = map(knob_value,0,1023, 0, 32); //freq
+                        tempo = map(knob_value1,0,1023, 0, 15);  // volume
+                        sweep = map(knob_value2,0,1023, 5, 100);  // define how many time to refresh the AY (= duration of the note/enveloppe)
+                        playNoise(current_value, tempo);
+               }
+             if (mode==4) {
+
+               }
+}
+

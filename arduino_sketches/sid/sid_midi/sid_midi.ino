@@ -41,10 +41,10 @@
 
 
 // Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
-#define USBMIDI 0
+#define USBMIDI 1
 
 // if set to 1, will enable physical knobs and disable midi knobs on synth
-#define ANALOG_KNOBS 1
+#define ANALOG_KNOBS 0
 
 #include <MIDI.h>
 #include "noteList.h"
@@ -62,6 +62,10 @@
 #define CONTROLREG 4 // SID control register address
 
 #define KNOB_PIN0 0
+#define KNOB_PIN1 1
+#define KNOB_PIN2 2
+#define KNOB_PIN3 3
+#define KNOB_PIN4 4
 
 // waveforms
 #define SETNOISE_1  4,0x81,5,0xBB,6,0xAD, // SID register setup to create noise
@@ -85,6 +89,7 @@ int noteResonance=10;
 int notePW=12;
 int noteSustain=12;
 int noteFilter=12;
+int notePitch=12;
 int switchInPin = 6;   // 2 on previous shield  
 #define LED 8          // 13 on previous shield 
 
@@ -555,7 +560,7 @@ void changeMode()
                }
 
              if (mode==3) {  // noise
-setwaveform_noise(CHANNEL1);
+                  setwaveform_noise(CHANNEL1);
                      BlinkLed(4);             
                
                }
@@ -634,8 +639,34 @@ void loop()
        // read analog port 
        // E12
        // pw high 
+     
      notePW = map(analogRead(KNOB_PIN0), 0, 1023, 0, 15);  //value is 0-1023
-     mySid.set_register(3,notePW);
+     
+     //doesnt work well
+    // noteResonance = map(analogRead(KNOB_PIN1), 0, 1023, 0, 15);  //value is 0-1023
+    // mySid.set_register(23,noteResonance);
+
+     //doesnt work at all
+     noteFilter = map(analogRead(KNOB_PIN2), 0, 1023, 0, 15);  //value is 0-1023
+
+      mySid.set_register(23,1);
+     mySid.set_register(21,noteFilter);
+     mySid.set_register(22,noteFilter/8);
+     
+     // setwaveform_triangle(CHANNEL1); 
+                setwaveform_rectangle(CHANNEL1); 
+               mySid.set_register(2,notePW);  // notePW low
+               mySid.set_register(3,notePW);  // notePW high
+
+
+     noteVolume = map(analogRead(KNOB_PIN4), 0, 1023, 0, 15);  //value is 0-1023
+      
+       mySid.set_register(24,noteVolume); // SET  VOLUME
+     //mySid.set_register(3,notePW);
+
+        byte currentNote = 30;
+     notePitch = map(analogRead(KNOB_PIN3), 0, 1023, 0, 80);  //value is 0-1023
+     set_frequency(sNotePitches[currentNote+notePitch],CHANNEL1);
       }
   }
 

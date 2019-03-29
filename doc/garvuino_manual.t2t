@@ -88,7 +88,7 @@ On Arduino, from the [sid emulator lib http://playground.arduino.cc/Main/SID-emu
 === 1-bit music ===
 
 
-From [various 1-bit engines http://randomflux.info/1bit/viewforum.php?id=5] (on arduino)
+From various 1-bit engines: http://randomflux.info/1bit/viewforum.php?id=5 (on arduino)
  - It can play music from the arduino memory. 1-bit music don't need much memory so a whole song, even a complex one, can fit in the memory. You can create those songs with Beepola or MilkyTracker.
  - It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
  - It might be possible to create a 1-bit synth in the future. Probably not an easy task.

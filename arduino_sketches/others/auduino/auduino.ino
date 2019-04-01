@@ -9,23 +9,34 @@
 // Analog in 1: Grain 2 decay
 // Analog in 2: Grain 1 decay
 // Analog in 3: Grain 2 pitch
-// Analog in 4: Grain repetition frequency
+// Analog in 6: Grain repetition frequency
 //
 // Digital 3: Audio out 
 // Change the line beginning with syncPhaseInc in the main loop to choose between chromatic and pentatonic
 //
 // On GARVUINO v2.10: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
 // On GARVUINO v1.09: remove the arduino out of the socket
-//      and connect directly the analog input A0 to A4, and the 5V to the extension board. 
+//      and connect directly the analog input A0, A1, A2, A3 and A6, and the 5V to the extension board. 
 //      Then connect PIN3 to PIN AY>L (under the L label) and GND to the GND in J1 on Garvuino
 //      in order to get the audio output!
+//   
+//       A0A1A2
+//     +---------+
+//     | x x x   |
+//     | x x x x |
+//     +---------+
+//       A3A6     (the two other pin on the right are for connecting switches)
 //
+//
+// If you have one, connect the OLED on A4 and A5. Use ssd1306: https://github.com/lexus2k/ssd1306
+
 // Changelog:
 // 19 Nov 2008: Added support for ATmega8 boards
 // 21 Mar 2009: Added support for ATmega328 boards
 // 7 Apr 2009: Fixed interrupt vector for ATmega328 boards
 // 8 Apr 2009: Added support for ATmega1280 boards (Arduino Mega)
-// 2018-03-18: 
+// 2018-03-18: support for Garvuino
+// 2019-03-30: support for Oled display 1306
 
 #include <avr/io.h>
 #include <avr/interrupt.h>

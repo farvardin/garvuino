@@ -43,8 +43,12 @@
 // Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
 #define USBMIDI 1
 
-// if set to 1, will enable physical knobs and disable midi knobs on synth
-#define ANALOG_KNOBS 0
+// if set to 1, will enable some physical knobs 
+#define KNOBS 1
+
+// don't use that yet
+#define KNOB_TEST 0
+
 
 #include <MIDI.h>
 #include "noteList.h"
@@ -52,6 +56,7 @@
 //#include <Tone.h>
 
 #include <SID.h>
+
 
  
 #define OFF 0
@@ -65,7 +70,7 @@
 #define KNOB_PIN1 1
 #define KNOB_PIN2 2
 #define KNOB_PIN3 3
-#define KNOB_PIN4 4
+#define KNOB_PIN6 6
 
 // waveforms
 #define SETNOISE_1  4,0x81,5,0xBB,6,0xAD, // SID register setup to create noise
@@ -83,6 +88,8 @@ SID mySid;
 
 int maxmode=4;
 byte mode=0;
+
+int noteAttack=1;
 
 int noteVolume=12;
 int noteResonance=10;
@@ -199,6 +206,7 @@ void handleNotesChanged(bool isFirstNote = false)
 
              if (mode==1) {
                setwaveform_rectangle(CHANNEL1);
+
                }
                
              if (mode==2) {
@@ -217,6 +225,8 @@ void handleNotesChanged(bool isFirstNote = false)
               set_frequency(sNotePitches[currentNote],CHANNEL1); // change noise generator frequency
               set_frequency(sNotePitches[currentNote],CHANNEL2);       
               set_frequency(sNotePitches[currentNote],CHANNEL3); 
+
+                    
              
                  // n=zufall()*2;
                  // set_frequency(n*17,CHANNEL2); // change noise generator frequency
@@ -373,10 +383,11 @@ shifted= float ((bend+8500) /2048.f ) +0.1f;
 //=====================
 
 void handleNoteOn(byte inChannel, byte inNote, byte inVelocity)
-{
+{   
     const bool firstNote = midiNotes.empty();
     midiNotes.add(MidiNote(inNote, inVelocity));
     handleNotesChanged(firstNote);
+    
 }
 
 void handleNoteOff(byte inChannel, byte inNote, byte inVelocity)
@@ -431,6 +442,8 @@ void setup()
     }
     
     mySid.begin();
+
+
 }
 
 void setwaveform_triangle(uint8_t channel)
@@ -548,8 +561,9 @@ void changeMode()
 
              if (mode==1) { // rectangle
                 setwaveform_rectangle(CHANNEL1); 
-               mySid.set_register(2,13);  // notePW low
-               mySid.set_register(3,13);  // notePW high
+               mySid.set_register(2,7);  // notePW low
+               mySid.set_register(3,7);  // notePW high
+
                BlinkLed(2);     
                      
                }
@@ -612,7 +626,11 @@ void loop()
   uint16_t soundindex=0;
   mySid.set_register(24,noteVolume); // SET VOLUME
   
-
+  /*   notePW = map(analogRead(KNOB_PIN0), 0, 1023, 0, 15);  //value is 0-1023
+    mySid.set_register(2,notePW);  // notePW low
+    mySid.set_register(3,notePW);  // notePW high
+*/
+    
 //  setwaveform_triangle(CHANNEL1);
 //  setwaveform_triangle(CHANNEL2);
 //  setwaveform_triangle(CHANNEL3);
@@ -633,7 +651,46 @@ void loop()
 
   //  time = millis(); 
 
-      if (ANALOG_KNOBS==1)
+    if (KNOBS==1)
+    {
+     notePW = map(analogRead(KNOB_PIN0), 0, 1023, 0, 15);  //value is 0-1023
+     mySid.set_register(2,notePW);  // notePW low
+     mySid.set_register(3,notePW);  // notePW high
+
+     noteVolume = map(analogRead(KNOB_PIN6), 0, 1023, 0, 15);  //value is 0-1023
+     mySid.set_register(24,noteVolume); // SET  VOLUME
+
+
+     noteResonance = map(analogRead(KNOB_PIN1), 0, 1023,0, 15);
+     mySid.set_register(23,noteResonance);
+
+     noteAttack = map(analogRead(KNOB_PIN2), 0, 1023,0, 15);
+     mySid.set_register(5,noteAttack);
+     
+     /*noteFilter = map(analogRead(KNOB_PIN2), 0, 1023, 0, 15);  //value is 0-1023
+
+     mySid.set_register(23,1);
+     mySid.set_register(21,noteFilter);
+     mySid.set_register(22,noteFilter/8);*/
+     
+     // setwaveform_triangle(CHANNEL1); 
+    //setwaveform_rectangle(CHANNEL1); 
+    
+/*
+
+     noteVolume = map(analogRead(KNOB_PIN6), 0, 1023, 0, 15);  //value is 0-1023
+      
+     mySid.set_register(24,noteVolume); // SET  VOLUME*/
+
+
+     /*byte currentNote = 30;
+     notePitch = map(analogRead(KNOB_PIN3), 0, 1023, 0, 80);  //value is 0-1023
+     set_frequency(sNotePitches[currentNote+notePitch],CHANNEL1);*/
+     
+    }
+    
+
+      if (KNOB_TEST==1) // don't use this
       // will enable physical knobs on garvuino, and disable MIDI knobs
       {
        // read analog port 
@@ -659,7 +716,7 @@ void loop()
                mySid.set_register(3,notePW);  // notePW high
 
 
-     noteVolume = map(analogRead(KNOB_PIN4), 0, 1023, 0, 15);  //value is 0-1023
+     noteVolume = map(analogRead(KNOB_PIN6), 0, 1023, 0, 15);  //value is 0-1023
       
        mySid.set_register(24,noteVolume); // SET  VOLUME
      //mySid.set_register(3,notePW);
@@ -667,11 +724,8 @@ void loop()
         byte currentNote = 30;
      notePitch = map(analogRead(KNOB_PIN3), 0, 1023, 0, 80);  //value is 0-1023
      set_frequency(sNotePitches[currentNote+notePitch],CHANNEL1);
+
       }
   }
 
    // previous = reading;
-
-
-
-

@@ -17,27 +17,11 @@
 // Analog in 1: Grain 2 decay
 // Analog in 2: Grain 1 decay
 // Analog in 3: Grain 2 pitch
-// Analog in 6: Grain repetition frequency
+// Analog in 4: Grain repetition frequency
 //
 // Digital 3: Audio out 
-// Change the line beginning with syncPhaseInc in the main loop to choose between chromatic and pentatonic
-//
-// On GARVUINO v2.10: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
-// On GARVUINO v1.09: remove the arduino out of the socket
-//      and connect directly the analog input A0, A1, A2, A3 and A6, and the 5V to the extension board. 
-//      Then connect PIN3 to PIN AY>L (under the L label) and GND to the GND in J1 on Garvuino
-//      in order to get the audio output!
-//   
-//       A0A1A2
-//     +---------+
-//     | x x x   |
-//     | x x x x |
-//     +---------+
-//       A3A6     (the two other pin on the right are for connecting switches)
-//
-//
-// If you have one, connect the OLED on A4 and A5. Use ssd1306: https://github.com/lexus2k/ssd1306
 
+// On GARVUINO: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -73,15 +57,6 @@ uint16_t grain2PhaseInc;
 uint16_t grain2Amp;
 uint8_t grain2Decay;
 
-// push button
-int switchInPin = 6;
-int buttonRead = HIGH; 
-byte mode=0;
-
-int LedPin = 8;
-#define LED 8    
-
-
 // DIP Switch Pins
 #define DIP_SW1 6
 #define DIP_SW2 7
@@ -89,7 +64,7 @@ int LedPin = 8;
 #define DIP_SW4 5
 
 // Map Analogue channels
-#define SYNC_CONTROL         (6)  // 4 in original sketch, without OLED
+#define SYNC_CONTROL         (4)
 #define GRAIN_FREQ_CONTROL   (0)
 #define GRAIN_DECAY_CONTROL  (2)
 #define GRAIN2_FREQ_CONTROL  (3)
@@ -201,11 +176,6 @@ void audioOn() {
 #endif
 }
 
-#include "ssd1306.h"  // oled display by Alexey Dynda
-
-#include "garvuino.h"  // 
-
-
 void setup() {
   if (dipSwitchInstalled) {
     pinMode(DIP_SW1, INPUT_PULLUP);
@@ -226,24 +196,6 @@ void setup() {
   MIDI.setHandleNoteOn(NoteOnMidi);
   MIDI.setHandleNoteOff(NoteOffMidi);
   MIDI.setHandlePitchBend(Pitchbend);
-
-  ssd1306_128x64_i2c_init();
-
-  ssd1306_fillScreen(0x00);
-    ssd1306_drawBitmap(0, 0, 128, 64, garvuino_logo);
-    delay(20);
-    welcome();
-    
-}
-
-static void welcome()
-{
-    ssd1306_setFixedFont(ssd1306xled_font6x8);
-    //ssd1306_clearScreen();
-    ssd1306_printFixed(0,  62, "Garvuino", STYLE_NORMAL);
-    ssd1306_printFixed2x(0,  2, "    ", STYLE_NORMAL);
-    delay(50);
-    
 }
 
 void loop() { // *** MAIN LOOP ***
@@ -326,19 +278,6 @@ void NoteOnMidi(byte channel, byte pitch, byte velocity) {
   int offset = pitch % 12;
   if (offset < 7) transpose = (5 + offset) * 100;
   else if (offset >= 7) transpose = (offset - 7) * 100;
-}
-
-void changeMode()
-{
-    mode++; 
-    Serial.println("Mode: ");  Serial.println(mode);
-      if (mode==0) { garvuino_BlinkLed(1); garvuino_redrawLogo(); ssd1306_printFixed2x(0,  2, "mode 1", STYLE_NORMAL);}
-      if (mode==1) { garvuino_BlinkLed(2); garvuino_redrawLogo(); ssd1306_printFixed2x(0,  2, "mode 2", STYLE_NORMAL);}
-      if (mode==2) { garvuino_BlinkLed(3); garvuino_redrawLogo(); ssd1306_printFixed2x(0,  2, "mode 3", STYLE_NORMAL);}
-      if (mode==3) { garvuino_BlinkLed(4); garvuino_redrawLogo();}
-        if (mode==4) {
-                 mode=-1;              
-               }
 }
 
 // NoteOffMidi function is called when a Note Off event is detected

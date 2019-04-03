@@ -176,14 +176,15 @@ You can also use [hairless midi serial bridge https://projectgus.github.io/hairl
 
 This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
 
-Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
+Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#. With latest arduino IDE (1.8.9), you must select: Processor: "Atmega328 (old bootloader)".
+
 
 Get the sketches from there:
 
 https://github.com/farvardin/garvuino/archive/master.zip
 
 
-For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
+For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328(P)(old bootloader, if applicable), select the right port. 
 
 Load a sketch from the arduino_sketches/ folder.
 

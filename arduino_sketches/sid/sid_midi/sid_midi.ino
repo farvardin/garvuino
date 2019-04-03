@@ -40,15 +40,20 @@
  ***************************************************************************/
 
 
+
 // Define here if you're using USB MIDI (1) ou DIN5 MIDI (0)
 #define USBMIDI 1
 
 // if set to 1, will enable some physical knobs 
-#define KNOBS 1
+#define KNOBS 0
 
 // don't use that yet
 #define KNOB_TEST 0
 
+
+
+#include "ssd1306.h"  // oled display by Alexey Dynda
+#include "garvuino.h"  // 
 
 #include <MIDI.h>
 #include "noteList.h"
@@ -423,11 +428,16 @@ void play(byte hf, byte lf, byte dr,byte hf1, byte lf1, byte dr1){
 
 void setup()
 {
+    /*ssd1306_clearScreen(); //ssd1306 doesn't work with SID
+     * 
+   garvuino_redrawLogo();
+    ssd1306_printFixed2x(0,  2, "SID", STYLE_NORMAL);
+    */
 //    pinMode(switchInPin, INPUT);
     pinMode(switchInPin, INPUT_PULLUP); // uses internal arduino resistor
      //  Set MIDI baud rate:
     //Serial.begin(31250);
-    Serial.begin(38400);
+   // Serial.begin(38400);
     pinMode(sGatePin,     OUTPUT);
     pinMode(sAudioOutPin, OUTPUT);
     MIDI.setHandleNoteOn(handleNoteOn);

@@ -28,6 +28,8 @@
 
 
 #include <synth.h>
+#include "ssd1306.h"  // oled display by Alexey Dynda
+#include <garvuino.h>
 #include "MIDI_parser.h"
 
 
@@ -45,6 +47,12 @@
 #define mLength 73
 #define mMod  75
 
+// try mWave(75), mEnv(55), mLength(68), mMod(64)
+
+
+//#define mPWM  72
+//int PWM = 125;
+
 
 synth edgar;        //-Make a synth
 midiParser parser;  //-Make a MIDI parser
@@ -53,7 +61,8 @@ void setup()
 {
   Serial.begin(31250);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
-  pinMode(13,OUTPUT);
+  pinMode(8,OUTPUT);
+  edgar.setMod(0,64);
 }
 
 void loop()
@@ -86,10 +95,15 @@ void loop()
       case 0xb2:  //-Channel 3 (voice 2)
       case 0xb3:  //-Channel 4 (voice 3)
         voice=parser.midi_cmd-0xb0;
+        digitalWrite(LedPin,HIGH);
+        delay(2);
+        digitalWrite(LedPin,LOW);
+        delay(2);
         switch(parser.midi_1st)  //-Controller number
         {
         case mWave:  //-Controller 13 
-          edgar.setWave(voice,parser.midi_2nd/21);
+          //edgar.setWave(voice,parser.midi_2nd/21);
+          edgar.setUserWave(voice,parser.midi_2nd/21);
           break;
         case mEnv:  //-Controller 12
           edgar.setEnvelope(voice,parser.midi_2nd/32);
@@ -100,13 +114,14 @@ void loop()
         case mMod:   //-Controller 7
           edgar.setMod(voice,parser.midi_2nd);
           break;
+        //case mPWM:   // 
+        //  PWM=parser.midi_2nd;
+        //  break;
         }
         break;
       }
     }
   }
 }
-
-
 
 

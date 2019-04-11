@@ -63,6 +63,7 @@ void setup()
   Serial.begin(31250);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
   pinMode(8,OUTPUT);
+<<<<<<< HEAD
   
   edgar.setWave(0,TRIANGLE);
   edgar.setUserWave(0,USER00);
@@ -77,6 +78,9 @@ void setup()
     ssd1306_drawBitmap(0, 0, 128, 64, garvuino_logo);
     delay(20);
     garvuino_welcome();
+=======
+  edgar.setMod(0,64);
+>>>>>>> 1a638416d41de438d7cfee18fa7d70cea6fe24eb
 }
 
 void loop()
@@ -109,6 +113,7 @@ void loop()
       case 0xb2:  //-Channel 3 (voice 2)
       case 0xb3:  //-Channel 4 (voice 3)
         voice=parser.midi_cmd-0xb0;
+<<<<<<< HEAD
 #if defined (OLED)
         digitalWrite(LedPin,HIGH);
         delay(1);
@@ -132,6 +137,17 @@ void loop()
           ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);
           ssd1306_printFixed(0,  32, "     ", STYLE_NORMAL);*/
 #endif
+=======
+        digitalWrite(LedPin,HIGH);
+        delay(2);
+        digitalWrite(LedPin,LOW);
+        delay(2);
+        switch(parser.midi_1st)  //-Controller number
+        {
+        case mWave:  //-Controller 13 
+          //edgar.setWave(voice,parser.midi_2nd/21);
+          edgar.setUserWave(voice,parser.midi_2nd/21);
+>>>>>>> 1a638416d41de438d7cfee18fa7d70cea6fe24eb
           break;
         case mEnv:  //-Controller 12
           edgar.setEnvelope(voice,parser.midi_2nd/32);

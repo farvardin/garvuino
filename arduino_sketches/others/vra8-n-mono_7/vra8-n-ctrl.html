@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>VRA8-N CTRL</title>
+<style>
+* {
+  font-size: 12px;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+table td {
+  text-align: left;
+}
+td.key {
+  color: lightcoral;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid lightcoral;
+}
+td.keyb {
+  color: white;
+  background-color: lightcoral;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid lightcoral;
+}
+td.keyp {
+  color: lightcoral;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid transparent;
+}
+td.keyh {
+  text-align: center;
+  width: 18px;
+  height: 42px;
+  border: 1px solid transparent;
+}
+</style>
+<script>
+const MIDI_CH        = 0;       // Basic Channel 1
+const NOTE_OFF       = 0x80;
+const NOTE_ON        = 0x90;
+const CONTROL_CHANGE = 0xB0;
+const PITCH_BEND     = 0xE0;
+
+const MODULATION    = 1;
+const EXPRESSION    = 11;
+
+const OSC_WAVE      = 24;
+const OSC2_MIX      = 25;
+const OSC2_COARSE   = 20;
+const OSC2_FINE     = 21;
+
+const SUB_OSC_WAVE  = 29;
+const SUB_OSC_LEVEL = 26;
+const PITCH_EG_AMT  = 104;
+const PITCH_EG_TGT  = 105;
+
+const FILTER_CUTOFF = 16;
+const FILTER_RESO   = 17;
+const CUTOFF_EG_AMT = 18;
+const AMP_EG_ON     = 31;
+
+const EG_ATTACK     = 23;
+const EG_DECAY      = 19;
+const EG_SUSTAIN    = 27;
+const EG_RELEASE    = 28;
+
+const LFO_WAVE      = 14;
+const LFO_RATE      = 80;
+const PITCH_LFO_AMT = 82;
+const CO_LFO_AMT    = 83;
+
+const LFO_DEPTH     = 81;
+const LFO_RT_EG_AMT = 3;
+const PITCH_LFO_TGT = 9;
+const CC15          = 15;
+
+const PB_RANGE      = 85;
+const CC86          = 86;
+const CO_EXP_AMT    = 106;
+const AMP_EXP_AMT   = 107;
+
+const PORTAMENTO    = 22;
+const LEGATO        = 30;
+const KEY_ASSIGN    = 87;
+const EXP_BY_VEL    = 89;
+
+// Special Program Change (only for VRA8-N CTRL)
+const SP_PROG_CHG_0 = 112;
+const SP_PROG_CHG_1 = 113;
+const SP_PROG_CHG_2 = 114;
+const SP_PROG_CHG_3 = 115;
+
+const SP_PROG_CHG_4 = 116;
+const SP_PROG_CHG_5 = 117;
+const SP_PROG_CHG_6 = 118;
+const SP_PROG_CHG_7 = 119;
+
+// Special Random Control (only for VRA8-N CTRL)
+const SP_RAND_CTRL  = 90;
+
+const ALL_NOTES_OFF = 123;
+
+var controllersInLocalStorage = [
+  OSC_WAVE     ,
+  OSC2_MIX     ,
+  OSC2_COARSE  ,
+  OSC2_FINE    ,
+
+  SUB_OSC_WAVE ,
+  SUB_OSC_LEVEL,
+  PITCH_EG_AMT ,
+  PITCH_EG_TGT ,
+
+  FILTER_CUTOFF,
+  FILTER_RESO  ,
+  CUTOFF_EG_AMT,
+  AMP_EG_ON    ,
+
+  EG_ATTACK    ,
+  EG_DECAY     ,
+  EG_SUSTAIN   ,
+  EG_RELEASE   ,
+
+  LFO_WAVE     ,
+  LFO_RATE     ,
+  PITCH_LFO_AMT,
+  CO_LFO_AMT   ,
+
+  LFO_DEPTH    ,
+  LFO_RT_EG_AMT,
+  PITCH_LFO_TGT,
+//CC15         ,
+
+  PB_RANGE     ,
+//CC86         ,
+  CO_EXP_AMT   ,
+  AMP_EXP_AMT  ,
+
+  PORTAMENTO   ,
+  LEGATO       ,
+  KEY_ASSIGN   ,
+  EXP_BY_VEL   ,
+];
+
+var presetControllers = {};
+
+// PRESET                           #0   #1   #2   #3   #4   #5   #6   #7   
+presetControllers[OSC_WAVE     ] = [0  , 0  , 0  , 127, 0  , 0  , 0  , 0  ];
+presetControllers[OSC2_MIX     ] = [64 , 64 , 64 , 64 , 0  , 64 , 0  , 0  ];
+presetControllers[OSC2_COARSE  ] = [71 , 64 , 64 , 64 , 64 , 64 , 64 , 64 ];
+presetControllers[OSC2_FINE    ] = [68 , 72 , 66 , 72 , 68 , 56 , 64 , 64 ];
+
+presetControllers[SUB_OSC_WAVE ] = [127, 0  , 0  , 0  , 127, 0  , 0  , 0  ];
+presetControllers[SUB_OSC_LEVEL] = [127, 127, 127, 0  , 0  , 0  , 0  , 0  ];
+presetControllers[PITCH_EG_AMT ] = [64 , 62 , 64 , 64 , 64 , 72 , 64 , 64 ];
+presetControllers[PITCH_EG_TGT ] = [0  , 127, 0  , 0  , 0  , 127, 0  , 0  ];
+
+presetControllers[FILTER_CUTOFF] = [76 , 28 , 0  , 127, 127, 118, 127, 127];
+presetControllers[FILTER_RESO  ] = [80 , 64 , 127, 0  , 0  , 32 , 0  , 0  ];
+presetControllers[CUTOFF_EG_AMT] = [82 , 112, 94,  64 , 64 , 60 , 64 , 64 ];
+presetControllers[AMP_EG_ON    ] = [127, 0  , 127, 0  , 127, 127, 127, 127];
+
+presetControllers[EG_ATTACK    ] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+presetControllers[EG_DECAY     ] = [64 , 96 , 96 , 96 , 0  , 32 , 0  , 0  ];
+presetControllers[EG_SUSTAIN   ] = [127, 0  , 0  , 0  , 127, 96 , 127, 127];
+presetControllers[EG_RELEASE   ] = [127, 127, 127, 127, 127, 0  , 127, 127];
+
+presetControllers[LFO_WAVE     ] = [0  , 0  , 0  , 127, 0  , 32 , 0  , 0  ];
+presetControllers[LFO_RATE     ] = [64 , 64 , 64 , 80 , 64 , 64 , 64 , 64 ];
+presetControllers[PITCH_LFO_AMT] = [65 , 65 , 64 , 88 , 65 , 65 , 64 , 64 ];
+presetControllers[CO_LFO_AMT   ] = [64 , 64 , 52 , 64 , 64 , 64 , 64 , 64 ];
+
+presetControllers[LFO_DEPTH    ] = [16 , 16 , 0  , 0  , 0  , 16 , 0  , 0  ];
+presetControllers[LFO_RT_EG_AMT] = [64 , 64 , 64 , 72 , 64 , 64 , 64 , 64 ];
+presetControllers[PITCH_LFO_TGT] = [127, 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+presetControllers[CC15         ] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+
+presetControllers[PB_RANGE     ] = [2  , 2  , 2  , 2  , 12 , 2  , 2  , 2  ];
+presetControllers[CC86         ] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+presetControllers[CO_EXP_AMT   ] = [64 , 64 , 64 , 64 , 64 , 94 , 64 , 64 ];
+presetControllers[AMP_EXP_AMT  ] = [127, 127, 127, 127, 127, 127, 127, 127];
+
+presetControllers[PORTAMENTO   ] = [0  , 32 , 32 , 0  , 0  , 32 , 0  , 0  ];
+presetControllers[LEGATO       ] = [0  , 127, 127, 0  , 0  , 127, 0  , 0  ];
+presetControllers[KEY_ASSIGN   ] = [0  , 64 , 0  , 127, 0  , 127, 0  , 0  ];
+presetControllers[EXP_BY_VEL   ] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+
+const PRESET_NUMBER_NEUTRAL = 7;
+</script>
+<script>
+var transpose = 0;
+
+document.addEventListener("touchstart", function(event) {
+  if (event.target.tagName.toUpperCase() != "INPUT" &&
+      event.target.tagName.toUpperCase() != "SELECT") {
+    event.preventDefault();
+  }
+});
+
+window.onload = function() {
+  if (navigator.requestMIDIAccess) {
+    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+  } else {
+    console.log("No MIDI support present in your browser.");
+  }
+
+  var result = restoreControllers();
+  if (!result) {
+    onChangeTranspose(0);
+    preset(0);
+  }
+};
+
+function sleep(msec) {
+  var t1 = new Date().getTime();
+  var t2;
+  do {
+    t2 = new Date().getTime();
+  } while (t2 < t1 + msec);
+}
+
+function allNotesOff() {
+  if (midiOutput) {
+    midiOutput.send([(CONTROL_CHANGE | MIDI_CH), ALL_NOTES_OFF, 0]);
+    sleep(50);
+  }
+}
+
+function restoreControllers() {
+  var value;
+
+  controllersInLocalStorage.forEach(function(i) {
+    value = localStorage.getItem("keyCC" + String(i));
+    if (!value) {
+      value = presetControllers[i][PRESET_NUMBER_NEUTRAL];
+    }
+    onChangeControlChange(i, value);
+  });
+
+  value = localStorage.getItem("keyTranspose");
+  if (!value) {
+    return false;
+  }
+  onChangeTranspose(value);
+
+  return true;
+}
+
+function onChangeTranspose(value) {
+  document.getElementById("inputTranspose").value = parseInt(value);
+  document.getElementById("spanTranspose").innerHTML = value;
+  if (value >= 0) {
+    document.getElementById("spanTranspose").innerHTML = "+" + String(value);
+  } else {
+    document.getElementById("spanTranspose").innerHTML = value;
+  }
+  localStorage.setItem("keyTranspose", value);
+  transpose = parseInt(value);
+}
+</script>
+<script>
+var midi        = null;
+var midiInputs  = null;
+var midiInput1  = null;
+var midiInput2  = null;
+var midiOutputs = null;
+var midiOutput  = null;
+
+var specialProgramChangeCCValues = [0, 0, 0, 0, 0, 0, 0, 0];
+var specialRandomControlCCValue = 0;
+
+function onMIDIMessage(event) {
+  console.log(event.data);
+
+  // CAUTION: Running Status and System Exclusive are not taken into account
+  if (event.data[0] == (CONTROL_CHANGE | MIDI_CH)) {
+    var number = event.data[1];
+    var value = event.data[2];
+    if (controllersInLocalStorage.indexOf(number) >= 0) {
+      updateDisplayOfControl(number, value);
+    } else if (number == MODULATION) {
+      document.getElementById("spanCC1").innerHTML = value;
+    } else if (number == EXPRESSION) {
+      if (document.getElementById("spanCC89").innerHTML < 64) {
+        // Expression by Velocity: Off
+        document.getElementById("spanCC11").innerHTML = value;
+      }
+    } else if (number >= SP_PROG_CHG_0 && number <= SP_PROG_CHG_7) {
+      // Special Program Change (only for VRA8-N CTRL)
+      var programIndex = number - SP_PROG_CHG_0;
+      var oldValue = specialProgramChangeCCValues[programIndex];
+      specialProgramChangeCCValues[programIndex] = value;
+      if (oldValue <= 63 && value >= 64) {
+        loadControllers(programIndex + 8);
+        return;
+      }
+    } else if (number == SP_RAND_CTRL) {
+      // Special Random Control (only for VRA8-N CTRL)
+      var oldValue = specialRandomControlCCValue;
+      specialRandomControlCCValue = value;
+      if (oldValue <= 63 && value >= 64) {
+        setRandom();
+        return;
+      }
+    }
+  } else if (event.data[0] == (PITCH_BEND | MIDI_CH)) {
+    var value = event.data[1] + (event.data[2] * 128) - 8192;
+    document.getElementById("spanPB").innerHTML = value;
+    if (value >= 0) {
+      document.getElementById("spanPB").innerHTML = "+" + String(value);
+    } else {
+      document.getElementById("spanPB").innerHTML = value;
+    }
+  } else if (event.data[0] == (NOTE_ON | MIDI_CH)) {
+    if (document.getElementById("spanCC89").innerHTML >= 64) {
+      // Expression by Velocity: On
+      var value = event.data[2];
+      document.getElementById("spanCC11").innerHTML = value;
+    }
+  }
+
+  const PROGRAM_CHANGE = 0xC0;
+  if (event.data[0] == (PROGRAM_CHANGE | MIDI_CH)) {
+    var number = event.data[1];
+    if (number >= 0 && number <= 7) {
+      preset(number);
+      return;
+    } else if (number >= 8 && number <= 15) {
+      loadControllers(number);
+      return;
+    } else if (number == 127) {
+      // Program #127: Special Random Control (only for VRA8-N CTRL)
+      setRandom();
+      return;
+    }
+  }
+
+  if (midiOutput) {
+    midiOutput.send(event.data);
+  }
+}
+
+function onMIDISuccess(midiAccess) {
+  console.log("MIDI ready!");
+  midi = midiAccess;
+
+  var inputIterator = midi.inputs.values();
+  midiInputs = [""];
+  for (var o = inputIterator.next(); !o.done; o = inputIterator.next()) {
+    midiInputs.push(o.value)
+  }
+  var outputIterator = midi.outputs.values();
+  midiOutputs = [""];
+  for (var o = outputIterator.next(); !o.done; o = outputIterator.next()) {
+    midiOutputs.push(o.value)
+  }
+
+  var selectInputPort1 = document.getElementById("selectInputPort1");
+  for (var i = 0; i < midiInputs.length; i++) {
+    selectInputPort1.appendChild(new Option(midiInputs[i].name))
+  }
+  onChangeInputPort1();
+  var selectInputPort2 = document.getElementById("selectInputPort2");
+  for (var i = 0; i < midiInputs.length; i++) {
+    selectInputPort2.appendChild(new Option(midiInputs[i].name))
+  }
+  onChangeInputPort2();
+  var selectOutputPort = document.getElementById("selectOutputPort");
+  for (var i = 0; i < midiOutputs.length; i++) {
+    selectOutputPort.appendChild(new Option(midiOutputs[i].name))
+  }
+  onChangeOutputPort();
+}
+
+function onMIDIFailure(msg) {
+  console.log("Failed to get MIDI access - " + msg);
+}
+
+function onChangeInputPort1(){
+  var selectInputPort = document.getElementById("selectInputPort1");
+  midiInput1 = midiInputs[selectInputPort.selectedIndex];
+  if (midiInput1) {
+    midiInput1.onmidimessage = onMIDIMessage;
+  }
+}
+
+function onChangeInputPort2(){
+  var selectInputPort = document.getElementById("selectInputPort2");
+  midiInput2 = midiInputs[selectInputPort.selectedIndex];
+  if (midiInput2) {
+    midiInput2.onmidimessage = onMIDIMessage;
+  }
+}
+
+function onChangeOutputPort() {
+  var selectOutputPort = document.getElementById("selectOutputPort");
+  midiOutput = midiOutputs[selectOutputPort.selectedIndex];
+  if (midiOutput) {
+    allNotesOff();
+    var result = restoreControllers();
+    if (!result) {
+      onChangeTranspose(0);
+      preset(0);
+    }
+  }
+}
+
+function updateDisplayOfControl(number, value) {
+  document.getElementById("inputCC" + String(number)).value = parseInt(value);
+
+  switch (number) {
+  case OSC2_COARSE:
+  case OSC2_FINE:
+  case PITCH_EG_AMT:
+  case CUTOFF_EG_AMT:
+  case PITCH_LFO_AMT:
+  case CO_LFO_AMT:
+  case LFO_RT_EG_AMT:
+  case CO_EXP_AMT:
+    if (value >= 64) {
+      document.getElementById("spanCC" + String(number)).innerHTML = "+" + String(value - 64);
+    } else {
+      document.getElementById("spanCC" + String(number)).innerHTML = value - 64;
+    }
+    break;
+  default:
+    document.getElementById("spanCC" + String(number)).innerHTML = value;
+    break;
+  }
+
+  localStorage.setItem("keyCC" + String(number), value);
+}
+
+function onChangeControlChange(number, value) {
+  updateDisplayOfControl(number, value);
+  if (midiOutput) {
+    midiOutput.send([(CONTROL_CHANGE | MIDI_CH), number, parseInt(value)]);
+    sleep(2);
+  }
+}
+
+function preset(number) {
+  controllersInLocalStorage.forEach(function(i) {
+    onChangeControlChange(i, presetControllers[i][number]);
+  });
+}
+
+function setRandom() {
+  controllersInLocalStorage.forEach(function(i) {
+    onChangeControlChange(i, rand(128));
+  });
+}
+
+function rand(n) {
+  return Math.floor(Math.random() * n);
+}
+
+function loadControllers(number) {
+  var value;
+  controllersInLocalStorage.forEach(function(i) {
+    value = localStorage.getItem("keyMemory" + String(number) + "CC" + String(i));
+    if (!value) {
+      value = presetControllers[i][PRESET_NUMBER_NEUTRAL];
+    }
+    onChangeControlChange(i, value);
+  });
+}
+
+function saveControllers(number) {
+  var r = confirm("Store control values to the program #" + String(number) + "?");
+  if (r == false) {
+    return;
+  }
+
+  controllersInLocalStorage.forEach(function(i) {
+    var value = document.getElementById("inputCC" + String(i)).value;
+    localStorage.setItem("keyMemory" + String(number) + "CC" + String(i), value);
+  });
+}
+
+function noteOn(noteNumber) {
+  if (midiOutput) {
+    midiOutput.send([(NOTE_ON | MIDI_CH), noteNumber + transpose, 127]);
+    sleep(2);
+  }
+}
+
+function noteOff(noteNumber) {
+  if (midiOutput) {
+    midiOutput.send([(NOTE_OFF | MIDI_CH), noteNumber + transpose, 64]);
+    sleep(2);
+  }
+}
+</script>
+</head>
+<body>
+
+<table>
+<tr><td><strong>VRA8-N CTRL v2.0.1</strong>&nbsp;&nbsp;Digital Synth VRA8-N Controller (<a href="https://github.com/risgk/digital-synth-vra8-n">View on GitHub</a>), We recommend Google Chrome</td></tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+
+<table>
+<tr><td>MIDI IN 1</td>
+    <td><select id="selectInputPort1" size="1" onchange="onChangeInputPort1()"></select></td>
+    <td>&nbsp;</td>
+    <td>MIDI OUT</td>
+    <td><select id="selectOutputPort" size="1" onchange="onChangeOutputPort()"></select></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>P. BEND</td>
+    <td>&nbsp;</td>
+    <td><span id="spanPB">-</span></td>
+    </tr>
+<tr><td>MIDI IN 2</td>
+    <td><select id="selectInputPort2" size="1" onchange="onChangeInputPort2()"></select></td>
+    <td>&nbsp;</td>
+    <td>KBD TRS</td>
+    <td><input id="inputTranspose" type="range" min="-60" max="60" step="12" oninput="onChangeTranspose(value)" ></td>
+    <td><span id="spanTranspose" >-1</span></td>
+    <td>&nbsp;</td>
+    <td>MOD</td>
+    <td>&nbsp;</td>
+    <td><span id="spanCC1">-</span></td></tr>
+<tr><td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>&nbsp;</td>
+    <td>EXP (VEL)</td>
+    <td>&nbsp;</td>
+    <td><span id="spanCC11">-</span></td></tr>
+</table>
+
+<table>
+<tr><td>PRESET</td>
+    <td><input type="button" value="#0 FIFTH"       onclick="preset(0)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#1 LEAD"        onclick="preset(1)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#2 BASS"        onclick="preset(2)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#3 SQ"          onclick="preset(3)"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td><input type="button" value="#4 SAW"         onclick="preset(4)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#5 WS"          onclick="preset(5)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#7 NEUTRAL"     onclick="preset(7)"></td></tr>
+</table>
+
+<table>
+<tr><td>RECALL</td>
+    <td><input type="button" value="#12"           onclick="loadControllers(12)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#13"           onclick="loadControllers(13)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#14"           onclick="loadControllers(14)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#15"           onclick="loadControllers(15)"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>STORE</td>
+    <td><input type="button" value="#12"           onclick="saveControllers(12)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#13"           onclick="saveControllers(13)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#14"           onclick="saveControllers(14)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#15"           onclick="saveControllers(15)"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>MISC</td>
+    <td><input type="button" value="ALL NOTES OFF" onclick="allNotesOff()"      ></td></tr>
+<tr><td>&nbsp;</td>
+    <td><input type="button" value="#8 "           onclick="loadControllers(8)" ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#9 "           onclick="loadControllers(9)" ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#10"           onclick="loadControllers(10)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#11"           onclick="loadControllers(11)"></td>
+    <td>&nbsp;&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#8 "           onclick="saveControllers(8)" ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#9 "           onclick="saveControllers(9)" ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#10"           onclick="saveControllers(10)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="#11"           onclick="saveControllers(11)"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="RANDOM CTRL"   onclick="setRandom()"        ></td></tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+
+<table>
+<tr><td>OSC1/2 (SAW/SQ)       </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>OSC MIX (1/2)         </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>OSC2 COARSE (-/+)     </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>OSC2 FINE (-/+)       </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td><input id="inputCC24" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(OSC_WAVE, value)"></td>
+    <td><span   id="spanCC24">-1</span></td>
+    <td><input id="inputCC25" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(OSC2_MIX, value)"></td>
+    <td><span   id="spanCC25">-1</span></td>
+    <td><input id="inputCC20" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(OSC2_COARSE, value)"></td>
+    <td><span   id="spanCC20">-1</span></td>
+    <td><input id="inputCC21" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(OSC2_FINE, value)"></td>
+    <td><span   id="spanCC21">-1</span></td></tr>
+<tr><td>SUB (SIN/NOISE/SQ)    </td><td></td>
+    <td>SUB LEVEL             </td><td></td>
+    <td>EG > PITCH (-/+)      </td><td></td>
+    <td>EG > P. TGT (1&2/2)   </td><td></td></tr>
+<tr><td><input id="inputCC29" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(SUB_OSC_WAVE, value)"></td>
+    <td><span   id="spanCC29">-1</span></td>
+    <td><input id="inputCC26" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(SUB_OSC_LEVEL, value)"></td>
+    <td><span   id="spanCC26">-1</span></td>
+    <td><input id="inputCC104" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PITCH_EG_AMT, value)"></td>
+    <td><span   id="spanCC104">-1</span></td>
+    <td><input id="inputCC105" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PITCH_EG_TGT, value)"></td>
+    <td><span   id="spanCC105">-1</span></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>CUTOFF                </td><td></td>
+    <td>RESONANCE             </td><td></td>
+    <td>EG > CUTOFF (-/+)     </td><td></td>
+    <td>AMP EG (OFF/ON)       </td><td></td></tr>
+<tr><td><input id="inputCC16" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(FILTER_CUTOFF, value)"></td>
+    <td><span   id="spanCC16">-1</span></td>
+    <td><input id="inputCC17" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(FILTER_RESO, value)"></td>
+    <td><span   id="spanCC17">-1</span></td>
+    <td><input id="inputCC18" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(CUTOFF_EG_AMT, value)"></td>
+    <td><span   id="spanCC18">-1</span></td>
+    <td><input id="inputCC31" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(AMP_EG_ON, value)"></td>
+    <td><span   id="spanCC31">-1</span></td></tr>
+<tr><td>ATTACK                </td><td></td>
+    <td>DECAY                 </td><td></td>
+    <td>SUSTAIN               </td><td></td>
+    <td>RELEASE (OFF/ON)      </td><td></td></tr>
+<tr><td><input id="inputCC23" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(EG_ATTACK, value)"></td>
+    <td><span   id="spanCC23">-1</span></td>
+    <td><input id="inputCC19" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(EG_DECAY, value)"></td>
+    <td><span   id="spanCC19">-1</span></td>
+    <td><input id="inputCC27" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(EG_SUSTAIN, value)"></td>
+    <td><span   id="spanCC27">-1</span></td>
+    <td><input id="inputCC28" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(EG_RELEASE, value)"></td>
+    <td><span   id="spanCC28">-1</span></td></tr>
+<tr><td>&nbsp;</td></tr>
+    <td>LFO (T/2/SA/RND/SQ)   </td><td></td>
+    <td>LFO RATE              </td><td></td>
+    <td>LFO > PITCH (-/+)     </td><td></td>
+    <td>LFO > CUTOFF (-/+)    </td><td></td></tr>
+<tr><td><input id="inputCC14" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(LFO_WAVE, value)"></td>
+    <td><span   id="spanCC14">-1</span></td>
+    <td><input id="inputCC80" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(LFO_RATE, value)"></td>
+    <td><span   id="spanCC80">-1</span></td>
+    <td><input id="inputCC82" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PITCH_LFO_AMT, value)"></td>
+    <td><span   id="spanCC82">-1</span></td>
+    <td><input id="inputCC83" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(CO_LFO_AMT, value)"></td>
+    <td><span   id="spanCC83">-1</span></td></tr>
+<tr><td>LFO DEPTH             </td><td></td>
+    <td>EG > LFO RATE (-/+)   </td><td></td>
+    <td>LFO > P. TGT (1&2/2)  </td><td></td>
+    <td>                      </td><td></td></tr>
+<tr><td><input id="inputCC81" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(LFO_DEPTH, value)"></td>
+    <td><span   id="spanCC81">-1</span></td>
+    <td><input id="inputCC3"  type="range" min="0" max="127" step="1" oninput="onChangeControlChange(LFO_RT_EG_AMT, value)"></td>
+    <td><span   id="spanCC3" >-1</span></td>
+    <td><input id="inputCC9"  type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PITCH_LFO_TGT, value)"></td>
+    <td><span   id="spanCC9" >-1</span></td>
+    <td><input id="inputCC15" style="visibility:hidden" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(CC15, value)"></td>
+    <td><span   id="spanCC15" style="visibility:hidden">-1</span></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>P. BEND RANGE         </td><td></td>
+    <td>                      </td><td></td>
+    <td>EXP > CUTOFF (-/+)    </td><td></td>
+    <td>EXP > AMP LEVEL       </td><td></td></tr>
+<tr><td><input id="inputCC85" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PB_RANGE, value)"></td>
+    <td><span   id="spanCC85">-1</span></td>
+    <td><input id="inputCC86" style="visibility:hidden" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(CC86, value)"></td>
+    <td><span   id="spanCC86" style="visibility:hidden">-1</span></td>
+    <td><input id="inputCC106" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(CO_EXP_AMT, value)"></td>
+    <td><span   id="spanCC106">-1</span></td>
+    <td><input id="inputCC107" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(AMP_EXP_AMT, value)"></td>
+    <td><span   id="spanCC107">-1</span></td></tr>
+<tr><td>PORTAMENTO            </td><td></td>
+    <td>LEGATO (OFF/ON)       </td><td></td>
+    <td>K. ASN (L/L/P/H/LST)  </td><td></td>
+    <td>EXP BY VEL (OFF/ON)   </td><td></td></tr>
+<tr><td><input id="inputCC22" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(PORTAMENTO, value)"></td>
+    <td><span   id="spanCC22">-1</span></td>
+    <td><input id="inputCC30" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(LEGATO, value)"></td>
+    <td><span   id="spanCC30">-1</span></td>
+    <td><input id="inputCC87" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(KEY_ASSIGN, value)"></td>
+    <td><span   id="spanCC87">-1</span></td>
+    <td><input id="inputCC89" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(EXP_BY_VEL, value)"></td>
+    <td><span   id="spanCC89">-1</span></td></tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+
+<table>
+<tr>
+<td class="keyh"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(49)" onmouseup="noteOff(49)" ontouchstart="noteOn(49)" ontouchend="noteOff(49)">C#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(51)" onmouseup="noteOff(51)" ontouchstart="noteOn(51)" ontouchend="noteOff(51)">D#3</td>
+<td class="keyp"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(54)" onmouseup="noteOff(54)" ontouchstart="noteOn(54)" ontouchend="noteOff(54)">F#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(56)" onmouseup="noteOff(56)" ontouchstart="noteOn(56)" ontouchend="noteOff(56)">G#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(58)" onmouseup="noteOff(58)" ontouchstart="noteOn(58)" ontouchend="noteOff(58)">A#3</td>
+<td class="keyp"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(61)" onmouseup="noteOff(61)" ontouchstart="noteOn(61)" ontouchend="noteOff(61)">C#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(63)" onmouseup="noteOff(63)" ontouchstart="noteOn(63)" ontouchend="noteOff(63)">D#4</td>
+<td class="keyp"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(66)" onmouseup="noteOff(66)" ontouchstart="noteOn(66)" ontouchend="noteOff(66)">F#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(68)" onmouseup="noteOff(68)" ontouchstart="noteOn(68)" ontouchend="noteOff(68)">G#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(70)" onmouseup="noteOff(70)" ontouchstart="noteOn(70)" ontouchend="noteOff(70)">A#4</td>
+<td class="keyp"></td>
+<td class="keyh"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(48)" onmouseup="noteOff(48)" ontouchstart="noteOn(48)" ontouchend="noteOff(48)">C3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(50)" onmouseup="noteOff(50)" ontouchstart="noteOn(50)" ontouchend="noteOff(50)">D3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(52)" onmouseup="noteOff(52)" ontouchstart="noteOn(52)" ontouchend="noteOff(52)">E3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(53)" onmouseup="noteOff(53)" ontouchstart="noteOn(53)" ontouchend="noteOff(53)">F3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(55)" onmouseup="noteOff(55)" ontouchstart="noteOn(55)" ontouchend="noteOff(55)">G3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(57)" onmouseup="noteOff(57)" ontouchstart="noteOn(57)" ontouchend="noteOff(57)">A3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(59)" onmouseup="noteOff(59)" ontouchstart="noteOn(59)" ontouchend="noteOff(59)">B3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(60)" onmouseup="noteOff(60)" ontouchstart="noteOn(60)" ontouchend="noteOff(60)">C4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(62)" onmouseup="noteOff(62)" ontouchstart="noteOn(62)" ontouchend="noteOff(62)">D4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(64)" onmouseup="noteOff(64)" ontouchstart="noteOn(64)" ontouchend="noteOff(64)">E4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(65)" onmouseup="noteOff(65)" ontouchstart="noteOn(65)" ontouchend="noteOff(65)">F4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(67)" onmouseup="noteOff(67)" ontouchstart="noteOn(67)" ontouchend="noteOff(67)">G4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(69)" onmouseup="noteOff(69)" ontouchstart="noteOn(69)" ontouchend="noteOff(69)">A4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(71)" onmouseup="noteOff(71)" ontouchstart="noteOn(71)" ontouchend="noteOff(71)">B4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(72)" onmouseup="noteOff(72)" ontouchstart="noteOn(72)" ontouchend="noteOff(72)">C5</td>
+</tr>
+</table>
+
+</body>
+</html>

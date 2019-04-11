@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>VRA8-Px CTRL</title>
+<style>
+* {
+  font-size: 12px;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+td {
+  text-align: left;
+}
+td.key {
+  color: darkseagreen;
+  text-align: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid darkseagreen;
+}
+td.keyb {
+  color: white;
+  background-color: darkseagreen;
+  text-align: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid darkseagreen;
+}
+td.keyh {
+  text-align: center;
+  width: 20px;
+  height: 46px;
+  border: 1px solid darkseagreen;
+}
+</style>
+<script>
+const MIDI_CH        = 0;       // Basic Channel 1
+const NOTE_OFF       = 0x80;
+const NOTE_ON        = 0x90;
+const CONTROL_CHANGE = 0xB0;
+
+const UNISON        = 16;
+const OSC_WAVEFORM  = 17;
+const OSC_DETUNE    = 18;
+const FILTER_NG_AMT = 19;
+
+const FILTER_CUTOFF = 20;
+const FILTER_RESO   = 21;
+const FILTER_EG_AMT = 22;
+const EG_DECAY      = 23;
+
+const EG_ATTACK     = 24;
+const DETUNE_NG_AMT = 25;
+const DETUNE_EG_AMT = 26;
+const AMP_EG        = 27;
+
+const VELOCITY_SENS = 28;
+const CUTOFF_V_SENS = 29;
+const PORTAMENTO    = 30;
+const UNISON_OPTION = 31;
+
+const DAMPER_PEDAL  = 64;
+
+const ALL_NOTES_OFF = 123;
+
+const CONTROLLERS_FIRST = 16;
+const CONTROLLERS_LAST  = 31;
+</script>
+<script>
+var transpose = 0;
+
+document.addEventListener("touchstart", function(event) {
+  if (event.target.tagName.toUpperCase() != "INPUT" &&
+      event.target.tagName.toUpperCase() != "SELECT") {
+    event.preventDefault();
+  }
+});
+
+window.onload = function() {
+  if (navigator.requestMIDIAccess) {
+    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+  } else {
+    console.log("No MIDI support present in your browser.");
+  }
+
+  var result = restoreControllers();
+  if (!result) {
+    onChangeTranspose(0);
+    preset(0);
+  }
+};
+
+function sleep(msec) {
+  var t1 = new Date().getTime();
+  var t2;
+  do {
+    t2 = new Date().getTime();
+  } while (t2 < t1 + msec);
+}
+
+function allNotesOff() {
+  if (midiOutput) {
+    midiOutput.send([(CONTROL_CHANGE | MIDI_CH), ALL_NOTES_OFF, 0]);
+    sleep(50);
+  }
+}
+
+function restoreControllers() {
+  allNotesOff();
+  var value;
+  for (var i = CONTROLLERS_FIRST; i <= CONTROLLERS_LAST; i++) {
+    value = localStorage.getItem("keyCC" + String(i));
+    if (!value) {
+      return false;
+    }
+    onChangeControlChange(i, value);
+  }
+
+  value = localStorage.getItem("keyTranspose");
+  if (!value) {
+    return false;
+  }
+  onChangeTranspose(value);
+
+  return true;
+}
+
+function onChangeTranspose(value) {
+  document.getElementById("inputTranspose").value = parseInt(value);
+  document.getElementById("spanTranspose").innerHTML = value;
+  localStorage.setItem("keyTranspose", value);
+  transpose = parseInt(value);
+}
+</script>
+<script>
+var midi        = null;
+var midiInputs  = null;
+var midiInput1  = null;
+var midiInput2  = null;
+var midiOutputs = null;
+var midiOutput  = null;
+
+function onMIDIMessage(event) {
+  console.log(event.data);
+
+  // CAUTION: Running Status and System Exclusive are not taken into account
+  if (event.data[0] == (CONTROL_CHANGE | MIDI_CH)) {
+    var number = event.data[1];
+    var value = event.data[2];
+    if (number >= CONTROLLERS_FIRST && number <= CONTROLLERS_LAST) {
+      updateDisplayOfControl(number, value);
+    }
+  }
+
+  const PROGRAM_CHANGE = 0xC0;
+  if (event.data[0] == (PROGRAM_CHANGE | MIDI_CH)) {
+    var number = event.data[1];
+    if (number >= 0 && number <= 7) {
+      loadControllers(number);
+      return;
+    }
+  }
+
+  if (midiOutput) {
+    midiOutput.send(event.data);
+  }
+}
+
+function onMIDISuccess(midiAccess) {
+  console.log("MIDI ready!");
+  midi = midiAccess;
+
+  var inputIterator = midi.inputs.values();
+  midiInputs = [""];
+  for (var o = inputIterator.next(); !o.done; o = inputIterator.next()) {
+    midiInputs.push(o.value)
+  }
+  var outputIterator = midi.outputs.values();
+  midiOutputs = [""];
+  for (var o = outputIterator.next(); !o.done; o = outputIterator.next()) {
+    midiOutputs.push(o.value)
+  }
+
+  var selectInputPort1 = document.getElementById("selectInputPort1");
+  for (var i = 0; i < midiInputs.length; i++) {
+    selectInputPort1.appendChild(new Option(midiInputs[i].name))
+  }
+  onChangeInputPort1();
+  var selectInputPort2 = document.getElementById("selectInputPort2");
+  for (var i = 0; i < midiInputs.length; i++) {
+    selectInputPort2.appendChild(new Option(midiInputs[i].name))
+  }
+  onChangeInputPort2();
+  var selectOutputPort = document.getElementById("selectOutputPort");
+  for (var i = 0; i < midiOutputs.length; i++) {
+    selectOutputPort.appendChild(new Option(midiOutputs[i].name))
+  }
+  onChangeOutputPort();
+}
+
+function onMIDIFailure(msg) {
+  console.log("Failed to get MIDI access - " + msg);
+}
+
+function onChangeInputPort1(){
+  var selectInputPort = document.getElementById("selectInputPort1");
+  midiInput1 = midiInputs[selectInputPort.selectedIndex];
+  if (midiInput1) {
+    midiInput1.onmidimessage = onMIDIMessage;
+  }
+}
+
+function onChangeInputPort2(){
+  var selectInputPort = document.getElementById("selectInputPort2");
+  midiInput2 = midiInputs[selectInputPort.selectedIndex];
+  if (midiInput2) {
+    midiInput2.onmidimessage = onMIDIMessage;
+  }
+}
+
+function onChangeOutputPort() {
+  var selectOutputPort = document.getElementById("selectOutputPort");
+  midiOutput = midiOutputs[selectOutputPort.selectedIndex];
+  if (midiOutput) {
+    var result = restoreControllers();
+    if (!result) {
+      onChangeTranspose(0);
+      preset(0);
+    }
+  }
+}
+
+function updateDisplayOfControl(number, value) {
+  document.getElementById("inputCC" + String(number)).value = parseInt(value);
+  document.getElementById("spanCC" + String(number)).innerHTML = value;
+  localStorage.setItem("keyCC" + String(number), value);
+}
+
+function onChangeSustain(value) {
+  if (midiOutput) {
+    midiOutput.send([(CONTROL_CHANGE | MIDI_CH), DAMPER_PEDAL, value ? 127 : 0]);
+    sleep(2);
+  }
+}
+
+function onChangeControlChange(number, value) {
+  updateDisplayOfControl(number, value);
+  if (midiOutput) {
+    midiOutput.send([(CONTROL_CHANGE | MIDI_CH), number, parseInt(value)]);
+    sleep(2);
+  }
+}
+
+function preset(number) {
+  allNotesOff();
+  var presetControllers = {};
+
+  presetControllers[UNISON       ] = [0  , 0  , 8  , 0  , 0  , 0  , 0  , 127, 127, 127, 119, 24 ];
+  presetControllers[OSC_WAVEFORM ] = [0  , 0  , 16 , 0  , 48 , 48 , 80 , 0  , 0  , 127, 0  , 48 ];
+  presetControllers[OSC_DETUNE   ] = [0  , 48 , 64 , 64 , 48 , 48 , 48 , 48 , 48 , 48 , 16 , 64 ];
+  presetControllers[FILTER_NG_AMT] = [0  , 64 , 64 , 64 , 64 , 64 , 64 , 30 , 30 , 98 , 30 , 64 ];
+
+  presetControllers[FILTER_CUTOFF] = [0  , 64 , 96 , 64 , 127, 64 , 127, 64 , 64 , 64 , 0  , 127];
+  presetControllers[FILTER_RESO  ] = [0  , 64 , 64 , 80 , 0  , 127, 0  , 64 , 64 , 64 , 127, 0  ];
+  presetControllers[FILTER_EG_AMT] = [0  , 96 , 16 , 96 , 64 , 64 , 64 , 96 , 96 , 96 , 96 , 64 ];
+  presetControllers[EG_DECAY     ] = [0  , 64 , 32 , 32 , 64 , 64 , 64 , 32 , 32 , 126, 48 , 0  ];
+
+  presetControllers[EG_ATTACK    ] = [0  , 0  , 32 , 96 , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+  presetControllers[DETUNE_NG_AMT] = [0  , 32 , 32 , 32 , 32 , 32 , 32 , 32 , 32 , 32 , 32 , 0  ];
+  presetControllers[DETUNE_EG_AMT] = [0  , 48 , 48 , 48 , 64 , 64 , 64 , 48 , 48 , 48 , 48 , 64 ];
+  presetControllers[AMP_EG       ] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 80 , 0  ];
+
+  presetControllers[VELOCITY_SENS] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  ];
+  presetControllers[CUTOFF_V_SENS] = [0  , 127, 127, 127, 64 , 96 , 64 , 127, 127, 127, 96 , 64 ];
+  presetControllers[PORTAMENTO   ] = [0  , 32 , 32 , 32 , 0  , 32 , 0  , 32 , 32 , 32 , 32 , 0  ];
+  presetControllers[UNISON_OPTION] = [0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 127, 0  , 0  , 0  ];
+
+  for (var i = CONTROLLERS_FIRST; i <= CONTROLLERS_LAST; i++) {
+    onChangeControlChange(i, presetControllers[i][number]);
+  }
+}
+
+function setRandom() {
+  allNotesOff();
+  for (var i = CONTROLLERS_FIRST; i <= CONTROLLERS_LAST; i++) {
+    onChangeControlChange(i, rand(128));
+  }
+}
+
+function rand(n) {
+  return Math.floor(Math.random() * n);
+}
+
+function loadControllers(number) {
+  var value;
+  value = localStorage.getItem("keyMemory" + String(number) + "CC" + String(CONTROLLERS_FIRST));
+  if (!value) {
+    return;
+  }
+  allNotesOff();
+  for (var i = CONTROLLERS_FIRST; i <= CONTROLLERS_LAST; i++) {
+    value = localStorage.getItem("keyMemory" + String(number) + "CC" + String(i));
+    if (!value) {
+      return;
+    }
+    onChangeControlChange(i, value);
+  }
+}
+
+function saveControllers(number) {
+  var r = confirm("Save current parameters to Memory #" + String(number) + "?");
+  if (r == false) {
+    return;
+  }
+
+  for (var i = CONTROLLERS_FIRST; i <= CONTROLLERS_LAST; i++) {
+    var value = document.getElementById("inputCC" + String(i)).value;
+    localStorage.setItem("keyMemory" + String(number) + "CC" + String(i), value);
+  }
+}
+
+function noteOn(noteNumber) {
+  if (midiOutput) {
+    midiOutput.send([(NOTE_ON | MIDI_CH), noteNumber + transpose, 127]);
+    sleep(2);
+  }
+}
+
+function noteOff(noteNumber) {
+  if (midiOutput) {
+    midiOutput.send([(NOTE_OFF | MIDI_CH), noteNumber + transpose, 64]);
+    sleep(2);
+  }
+}
+</script>
+</head>
+<body>
+
+<table>
+<tr><td><strong>VRA8-Px CTRL v2.0.1</strong>&nbsp;&nbsp;Digital Synth VRA8-Px Controller (<a href="https://github.com/risgk/digital-synth-vra8-p/tree/vra8-px-v2">View on GitHub</a>), We recommend Google Chrome</td></tr>
+</table>
+
+<table>
+<tr><td>MIDI IN 1</td>
+    <td><select id="selectInputPort1" size="1" onchange="onChangeInputPort1()"></select></td>
+    <td>&nbsp;</td>
+    <td>MIDI OUT</td>
+    <td><select id="selectOutputPort" size="1" onchange="onChangeOutputPort()"></select></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td style="display:none">SUSTAIN</td><td>
+    <td style="display:none"><input type="checkbox" value=0 onclick="onChangeSustain(this.checked)"></td></tr>
+<tr><td>MIDI IN 2</td>
+    <td><select id="selectInputPort2" size="1" onchange="onChangeInputPort2()"></select></td>
+    <td>&nbsp;</td>
+    <td>KBD TR</td>
+    <td><input id="inputTranspose" type="range" min="-24" max="12" step="12" oninput="onChangeTranspose(value)" ></td>
+    <td><span id="spanTranspose" >-1</span></td>
+    <td>&nbsp;</td></tr>
+</table>
+
+<table>
+<tr><td>PRESET</td>
+    <td><input type="button" value="INIT"          onclick="preset(1)"    ></td>
+    <td><input type="button" value="SOFT"          onclick="preset(2)"    ></td>
+    <td><input type="button" value="BRS"           onclick="preset(3)"    ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="SAW"           onclick="preset(4)"    ></td>
+    <td><input type="button" value="SAW V"         onclick="preset(5)"    ></td>
+    <td><input type="button" value="SQ"            onclick="preset(6)"    ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="SAW LD"        onclick="preset(7)"    ></td>
+    <td><input type="button" value="MN LD"         onclick="preset(8)"    ></td>
+    <td><input type="button" value="SQ LD"         onclick="preset(9)"    ></td>
+    <td><input type="button" value="BASS"          onclick="preset(10)"   ></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="NEUTRAL"       onclick="preset(11)"   ></td></tr>
+</table>
+
+<table>
+<tr><td><input type="button" value="LOAD #4"       onclick="loadControllers(4)"></td>
+    <td><input type="button" value="LOAD #5"       onclick="loadControllers(5)"></td>
+    <td><input type="button" value="LOAD #6"       onclick="loadControllers(6)"></td>
+    <td><input type="button" value="LOAD #7"       onclick="loadControllers(7)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="SAVE #4"       onclick="saveControllers(4)"></td>
+    <td><input type="button" value="SAVE #5"       onclick="saveControllers(5)"></td>
+    <td><input type="button" value="SAVE #6"       onclick="saveControllers(6)"></td>
+    <td><input type="button" value="SAVE #7"       onclick="saveControllers(7)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="ALL NOTES OFF" onclick="allNotesOff()"></td></tr>
+<tr><td><input type="button" value="LOAD #0"       onclick="loadControllers(0)"></td>
+    <td><input type="button" value="LOAD #1"       onclick="loadControllers(1)"></td>
+    <td><input type="button" value="LOAD #2"       onclick="loadControllers(2)"></td>
+    <td><input type="button" value="LOAD #3"       onclick="loadControllers(3)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="SAVE #0"       onclick="saveControllers(0)"></td>
+    <td><input type="button" value="SAVE #1"       onclick="saveControllers(1)"></td>
+    <td><input type="button" value="SAVE #2"       onclick="saveControllers(2)"></td>
+    <td><input type="button" value="SAVE #3"       onclick="saveControllers(3)"></td>
+    <td>&nbsp;</td>
+    <td><input type="button" value="RANDOM"        onclick="setRandom()"       ></td></tr>
+</table>
+
+<table>
+<tr><td>UNISON/MIX            </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>WAVEFORM/SUB          </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>DETUNE                </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td>CUTOFF NG AMT (-/+)   </td></tr>
+<tr><td><input id="inputCC16" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(16, value)"></td>
+    <td><span id="spanCC16">-1</span></td>
+    <td><input id="inputCC17" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(17, value)"></td>
+    <td><span id="spanCC17">-1</span></td>
+    <td><input id="inputCC18" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(18, value)"></td>
+    <td><span id="spanCC18">-1</span></td>
+    <td><input id="inputCC19" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(19, value)"></td>
+    <td><span id="spanCC19">-1</span></td></tr>
+<tr><td>CUTOFF                </td><td></td>
+    <td>RESONANCE             </td><td></td>
+    <td>CUTOFF EG AMT (-/+)   </td><td></td>
+    <td>EG DECAY (127: INF)   </td></tr>
+<tr><td><input id="inputCC20" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(20, value)"></td>
+    <td><span id="spanCC20">-1</span></td>
+    <td><input id="inputCC21" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(21, value)"></td>
+    <td><span id="spanCC21">-1</span></td>
+    <td><input id="inputCC22" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(22, value)"></td>
+    <td><span id="spanCC22">-1</span></td>
+    <td><input id="inputCC23" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(23, value)"></td>
+    <td><span id="spanCC23">-1</span></td></tr>
+<tr><td>EG ATTACK             </td><td></td>
+    <td>DETUNE S&H AMT        </td><td></td>
+    <td>DETUNE EG AMT (-/+)   </td><td></td>
+    <td>AMP EG/HOLD (32-95)   </td></tr>
+<tr><td><input id="inputCC24" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(24, value)"></td>
+    <td><span id="spanCC24">-1</span></td>
+    <td><input id="inputCC25" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(25, value)"></td>
+    <td><span id="spanCC25">-1</span></td>
+    <td><input id="inputCC26" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(26, value)"></td>
+    <td><span id="spanCC26">-1</span></td>
+    <td><input id="inputCC27" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(27, value)"></td>
+    <td><span id="spanCC27">-1</span></td>
+<tr><td>VELOCITY SENS         </td><td></td>
+    <td>CUTOFF V SENS (-/+)   </td><td></td>
+    <td>PORTAMENTO            </td><td></td>
+    <td>UNI TO MONO           </td></tr>
+<tr><td><input id="inputCC28" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(28, value)"></td>
+    <td><span id="spanCC28">-1</span></td>
+    <td><input id="inputCC29" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(29, value)"></td>
+    <td><span id="spanCC29">-1</span></td>
+    <td><input id="inputCC30" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(30, value)"></td>
+    <td><span id="spanCC30">-1</span></td>
+    <td><input id="inputCC31" type="range" min="0" max="127" step="1" oninput="onChangeControlChange(31, value)"></td>
+    <td><span id="spanCC31">-1</span></td>
+</table>
+
+<table>
+<tr>
+<td class="keyh"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(49)" onmouseup="noteOff(49)" ontouchstart="noteOn(49)" ontouchend="noteOff(49)">C#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(51)" onmouseup="noteOff(51)" ontouchstart="noteOn(51)" ontouchend="noteOff(51)">D#3</td>
+<td class="keyh"></td>
+<td class="keyh"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(54)" onmouseup="noteOff(54)" ontouchstart="noteOn(54)" ontouchend="noteOff(54)">F#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(56)" onmouseup="noteOff(56)" ontouchstart="noteOn(56)" ontouchend="noteOff(56)">G#3</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(58)" onmouseup="noteOff(58)" ontouchstart="noteOn(58)" ontouchend="noteOff(58)">A#3</td>
+<td class="keyh"></td>
+<td class="keyh"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(61)" onmouseup="noteOff(61)" ontouchstart="noteOn(61)" ontouchend="noteOff(61)">C#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(63)" onmouseup="noteOff(63)" ontouchstart="noteOn(63)" ontouchend="noteOff(63)">D#4</td>
+<td class="keyh"></td>
+<td class="keyh"></td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(66)" onmouseup="noteOff(66)" ontouchstart="noteOn(66)" ontouchend="noteOff(66)">F#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(68)" onmouseup="noteOff(68)" ontouchstart="noteOn(68)" ontouchend="noteOff(68)">G#4</td>
+<td class="keyb" onContextmenu="return false" onmousedown="noteOn(70)" onmouseup="noteOff(70)" ontouchstart="noteOn(70)" ontouchend="noteOff(70)">A#4</td>
+<td class="keyh"></td>
+<td class="keyh"></td>
+<td class="keyh"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(48)" onmouseup="noteOff(48)" ontouchstart="noteOn(48)" ontouchend="noteOff(48)">C3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(50)" onmouseup="noteOff(50)" ontouchstart="noteOn(50)" ontouchend="noteOff(50)">D3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(52)" onmouseup="noteOff(52)" ontouchstart="noteOn(52)" ontouchend="noteOff(52)">E3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(53)" onmouseup="noteOff(53)" ontouchstart="noteOn(53)" ontouchend="noteOff(53)">F3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(55)" onmouseup="noteOff(55)" ontouchstart="noteOn(55)" ontouchend="noteOff(55)">G3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(57)" onmouseup="noteOff(57)" ontouchstart="noteOn(57)" ontouchend="noteOff(57)">A3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(59)" onmouseup="noteOff(59)" ontouchstart="noteOn(59)" ontouchend="noteOff(59)">B3</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(60)" onmouseup="noteOff(60)" ontouchstart="noteOn(60)" ontouchend="noteOff(60)">C4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(62)" onmouseup="noteOff(62)" ontouchstart="noteOn(62)" ontouchend="noteOff(62)">D4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(64)" onmouseup="noteOff(64)" ontouchstart="noteOn(64)" ontouchend="noteOff(64)">E4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(65)" onmouseup="noteOff(65)" ontouchstart="noteOn(65)" ontouchend="noteOff(65)">F4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(67)" onmouseup="noteOff(67)" ontouchstart="noteOn(67)" ontouchend="noteOff(67)">G4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(69)" onmouseup="noteOff(69)" ontouchstart="noteOn(69)" ontouchend="noteOff(69)">A4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(71)" onmouseup="noteOff(71)" ontouchstart="noteOn(71)" ontouchend="noteOff(71)">B4</td>
+<td class="key"  onContextmenu="return false" onmousedown="noteOn(72)" onmouseup="noteOff(72)" ontouchstart="noteOn(72)" ontouchend="noteOff(72)">C5</td>
+</tr>
+</table>
+
+</body>
+</html>

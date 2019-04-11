@@ -292,10 +292,26 @@ You'll have to connect PIN6 from the arduino to the AY>L audio output.
 
 https://www.instructables.com/id/Digital-Synth-VRA8-Px-for-Arduino-Uno/
 
+For hairless midi, get it on https://projectgus.github.io/hairless-midiserial/
 
+On Debian based systems, to run it, you'll probably need to install libsm6, libxrender, libasound2 and libasound2-plugins (for i386):
 
+``` sudo apt install libsm6:i386 libxrender1:i386 libasound2:i386 libasound2-plugins:i386
 
+Run the arduino sketch (using the 1.8.5 or below IDE for example). Close Arduino IDE.
 
+Start Hairless MIDI. In prefs, change Baud rate to 38400.
+Select "Serial Port": USB-serial adapter.
+
+Start virtual midi port with:
+
+``̀  sudo modprobe snd-virmidi
+
+In hairless midi window, select a virtual Raw midi port in Midi Out. In Midi In, "serial->Midi" should appear.
+
+Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select midi input in the web page.
+
+Now you should get some sounds from this wonderful synth.
 
 
 == Assemble the Garvurino board ==

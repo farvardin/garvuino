@@ -182,6 +182,8 @@ It's lightweight and easy to hack.
 
 You'll have to connect PIN3 from the arduino to the AY>L audio output (read the sketch header for more informations).
 
+https://www.instructables.com/id/Turn-your-Arduino-into-a-4-voice-wavetable-synth-w/
+
 #### Digital Synth VRA8 
 
 VRA8 is an awesome project with several different monophonic and polyphonic synths for Arduino.
@@ -189,6 +191,29 @@ VRA8 is an awesome project with several different monophonic and polyphonic synt
 It's compatible with the Garvuino. Get more informations for how to use it on http://risgk.github.io/.
 
 You'll have to connect PIN6 from the arduino to the AY>L audio output.
+
+https://www.instructables.com/id/Digital-Synth-VRA8-Px-for-Arduino-Uno/
+
+For hairless midi, get it on https://projectgus.github.io/hairless-midiserial/
+
+On Debian based systems, to run it, you'll probably need to install libsm6, libxrender, libasound2 and libasound2-plugins (for i386):
+
+    sudo apt install libsm6:i386 libxrender1:i386 libasound2:i386 libasound2-plugins:i386
+
+Run the arduino sketch (using the 1.8.5 or below IDE for example). Close Arduino IDE.
+
+Start Hairless MIDI. In prefs, change Baud rate to 38400.
+Select "Serial Port": USB-serial adapter.
+
+Start virtual midi port with:
+
+``̀  sudo modprobe snd-virmidi
+
+In hairless midi window, select a virtual Raw midi port in Midi Out. In Midi In, "serial->Midi" should appear.
+
+Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select midi input in the web page.
+
+Now you should get some sounds from this wonderful synth.
 
 ## Assemble the Garvurino board 
 
@@ -240,7 +265,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|--------|-------|
+|---------------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|
@@ -279,8 +304,10 @@ And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins
  * http://playground.arduino.cc/Main/SID-emulator
  * http://randomflux.info/1bit/viewforum.php?id=5
  * https://sensorium.github.io/Mozzi
+ * http://risgk.github.io/
+ * https://github.com/dzlonline/the_synth
 
-## Credits 
+== Credits ==
 
  * Yoruk for his help on the PCB
  * Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)

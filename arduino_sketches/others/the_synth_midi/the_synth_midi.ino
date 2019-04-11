@@ -27,7 +27,9 @@
 // http://blog.dzl.dk/
 
 
-#include <synth.h>
+// synth.h is in the arduino_sketches/libs/garvuino/ folder
+
+#include <synth.h> 
 #include "MIDI_parser.h"
 
 
@@ -44,6 +46,12 @@
 #define mEnv  71
 #define mLength 73
 #define mMod  75
+
+// try mWave(75), mEnv(55), mLength(68), mMod(64)
+
+
+//#define mPWM  72
+//int PWM = 125;
 
 
 synth edgar;        //-Make a synth
@@ -100,13 +108,14 @@ void loop()
         case mMod:   //-Controller 7
           edgar.setMod(voice,parser.midi_2nd);
           break;
+        //case mPWM:   // 
+        //  PWM=parser.midi_2nd;
+        //  break;
         }
         break;
       }
     }
   }
 }
-
-
 
 

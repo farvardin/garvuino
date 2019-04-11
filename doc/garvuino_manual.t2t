@@ -253,6 +253,9 @@ You can also use most mozzi examples from the original library (see Examples/Moz
 
 The Garvuino should be able to play many other sketches from various projects on internet.
 
+
+==== Playtune ====
+
 This one can play some MIDI files after converting them:
 
 https://bitbucket.org/farvardin/playtune-arduino
@@ -262,7 +265,32 @@ Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audi
 Use the examples/test_nano/test_nano.in sketch.
 
 
-The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (see the sketch for more informations).
+==== Auduino ====
+
+The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (read the sketch header for more informations).
+
+
+==== "The Synth" ====
+
+"The Synth" is a project for using Arduino as a monophonic wavetables synth. 
+It's lightweight and easy to hack.
+
+You'll have to connect PIN3 from the arduino to the AY>L audio output (read the sketch header for more informations).
+
+https://www.instructables.com/id/Turn-your-Arduino-into-a-4-voice-wavetable-synth-w/
+
+
+
+==== Digital Synth VRA8 ====
+
+VRA8 is an awesome project with several different monophonic and polyphonic synths for Arduino.
+
+It's compatible with the Garvuino. Get more informations for how to use it on http://risgk.github.io/.
+
+You'll have to connect PIN6 from the arduino to the AY>L audio output.
+
+
+https://www.instructables.com/id/Digital-Synth-VRA8-Px-for-Arduino-Uno/
 
 
 
@@ -368,4 +396,6 @@ Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>
 
 And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins on the arduino, connect the + to 5V and the - to ground, and you'll be able to control the Auduino and Auduino midi sketches found there: https://github.com/farvardin/garvuino/tree/master/arduino_sketches/others
 
+
+%!include: links_credits_licence.t2t
 

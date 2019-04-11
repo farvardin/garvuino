@@ -29,7 +29,7 @@ On Arduino, from the [sid emulator lib](http://playground.arduino.cc/Main/SID-em
 
 ### 1-bit music 
 
-From [various 1-bit engines](http://randomflux.info/1bit/viewforum.php?id=5) (on arduino)
+From various 1-bit engines: http://randomflux.info/1bit/viewforum.php?id=5 (on arduino)
 
  * It can play music from the arduino memory. 1-bit music don't need much memory so a whole song, even a complex one, can fit in the memory. You can create those songs with Beepola or MilkyTracker.
  * It might be possible to stream data from SD if the 1-bit music engine chosen is the same for all the songs.
@@ -100,13 +100,13 @@ You can also use [hairless midi serial bridge](https://projectgus.github.io/hair
 
 This board is supposed to work extensively with the Arduino IDE (http://arduino.cc/). You must download it and use it for developping, changing sounds and engines. The only exception is if you only intend to use the board as a AY player, then you can just change the tunes on the SD card.
 
-Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#
+Programs on Arduino are called sketches. Most sketches are tested with Arduino IDE 1.8.# but they should work with IDE 1.6.#. With latest arduino IDE (1.8.9), you must select: Processor: "Atmega328 (old bootloader)".
 
 Get the sketches from there:
 
 https://github.com/farvardin/garvuino/archive/master.zip
 
-For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328, select the right port. 
+For flashing, just launch the Arduino IDE, connect the arduino to your computer using an USB mini cable, select in the tools>arduino nano, atmega328(P)(old bootloader, if applicable), select the right port. 
 
 Load a sketch from the arduino_sketches/ folder.
 
@@ -161,6 +161,8 @@ You can also use most mozzi examples from the original library (see Examples/Moz
 
 The Garvuino should be able to play many other sketches from various projects on internet.
 
+#### Playtune 
+
 This one can play some MIDI files after converting them:
 
 https://bitbucket.org/farvardin/playtune-arduino
@@ -169,7 +171,24 @@ Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audi
 
 Use the examples/test_nano/test_nano.in sketch.
 
-The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (see the sketch for more informations).
+#### Auduino 
+
+The Auduino is a project for using granular synthesis with 5 potentiometers, you'll have to connect PIN3 from the arduino to the AY>L audio output (read the sketch header for more informations).
+
+#### "The Synth" 
+
+"The Synth" is a project for using Arduino as a monophonic wavetables synth. 
+It's lightweight and easy to hack.
+
+You'll have to connect PIN3 from the arduino to the AY>L audio output (read the sketch header for more informations).
+
+#### Digital Synth VRA8 
+
+VRA8 is an awesome project with several different monophonic and polyphonic synths for Arduino.
+
+It's compatible with the Garvuino. Get more informations for how to use it on http://risgk.github.io/.
+
+You'll have to connect PIN6 from the arduino to the AY>L audio output.
 
 ## Assemble the Garvurino board 
 
@@ -253,4 +272,52 @@ Solder 5K or 10K potentiometers onto the board. You don't need to solder the swi
 Connect the digital pin D3 to the audio out, under the L or R of the AY>L or AY>R pin.
 
 And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins on the arduino, connect the + to 5V and the - to ground, and you'll be able to control the Auduino and Auduino midi sketches found there: https://github.com/farvardin/garvuino/tree/master/arduino_sketches/others
+
+## Links 
+
+ * http://avray.ru/
+ * http://playground.arduino.cc/Main/SID-emulator
+ * http://randomflux.info/1bit/viewforum.php?id=5
+ * https://sensorium.github.io/Mozzi
+
+## Credits 
+
+ * Yoruk for his help on the PCB
+ * Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)
+ * Klaud for help with avr-ay
+ * Shiru for the 1-bit engines on Arduino
+ * Christoph Haberer and Mario Patino for the Sid-arduino lib
+ * The Mozzi team
+
+## Licence 
+
+This BSD licence is only for the PCB sketch rendition, and code written from scratch. 
+Code derived from other projects retains the original licence.
+For example Avray is GPLv3.
+
+    BSD 3-Clause License
+    Copyright (c) 2015-2017, Garvalf
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+        * Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+        * Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
+        * Neither the name of the <organization> nor the
+          names of its contributors may be used to endorse or promote products
+          derived from this software without specific prior written permission.
+    
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 

@@ -97,58 +97,6 @@ Get the sketches [in this folder arduino_sketches/]
 You can find [some tunes for using with the AVR-AY setup in here tunes/]. The arduino sketch can read the RSF files from the SD (it can't read the YM or AY files directly). You can convert to RSF with the [AVR-AY Player http://www.avray.ru/avr-ay-player/].
 
 
+%!include: links_credits_licence.t2t
 
 
-
-== Links ==
-
-- http://avray.ru/
-- http://playground.arduino.cc/Main/SID-emulator
-- http://randomflux.info/1bit/viewforum.php?id=5
-- https://sensorium.github.io/Mozzi
-
-
-== Credits ==
-
-- Yoruk for his help on the PCB
-- Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)
-- Klaud for help with avr-ay
-- Shiru for the 1-bit engines on Arduino
-- Christoph Haberer and Mario Patino for the Sid-arduino lib
-- The Mozzi team
-
-
-== Licence ==
-
-This BSD licence is only for the PCB sketch rendition, and code written from scratch. 
-Code derived from other projects retains the original licence.
-For example Avray is GPLv3.
-
-
-```
-BSD 3-Clause License
-Copyright (c) 2015-2017, Garvalf
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```

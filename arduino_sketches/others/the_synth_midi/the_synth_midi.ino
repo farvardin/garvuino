@@ -28,11 +28,12 @@
 
 
 // synth.h is in the arduino_sketches/libs/garvuino/ folder
-
-#include <synth.h> 
+#include <synth.h>
+#include "ssd1306.h"  // oled display by Alexey Dynda
+#include <garvuino.h>
 #include "MIDI_parser.h"
 
-
+#define OLED 
 
 /* original version
 #define mWave 13 
@@ -61,7 +62,21 @@ void setup()
 {
   Serial.begin(31250);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
-  pinMode(13,OUTPUT);
+  pinMode(8,OUTPUT);
+  
+  edgar.setWave(0,TRIANGLE);
+  edgar.setUserWave(0,USER00);
+  edgar.setEnvelope(0,1);
+  edgar.setLength(0,82);
+  edgar.setMod(0,64);
+
+  
+    ssd1306_128x64_i2c_init();
+
+  ssd1306_fillScreen(0x00);
+    ssd1306_drawBitmap(0, 0, 128, 64, garvuino_logo);
+    delay(20);
+    garvuino_welcome();
 }
 
 void loop()
@@ -94,19 +109,65 @@ void loop()
       case 0xb2:  //-Channel 3 (voice 2)
       case 0xb3:  //-Channel 4 (voice 3)
         voice=parser.midi_cmd-0xb0;
+#if defined (OLED)
+        digitalWrite(LedPin,HIGH);
+        delay(1);
+        digitalWrite(LedPin,LOW);
+        delay(1);
+   //      garvuino_redrawLogo(); ssd1306_printFixed2x(0,  2, "       ", STYLE_NORMAL);
+    //    char noted[6];
+     // String str1 ;
+#endif
         switch(parser.midi_1st)  //-Controller number
         {
         case mWave:  //-Controller 13 
           edgar.setWave(voice,parser.midi_2nd/21);
+#if defined (OLED)
+          //edgar.setUserWave(voice,parser.midi_2nd/21);
+        //  garvuino_redrawLogo(); 
+          ssd1306_printFixed2x(0,  2, "Wave  ", STYLE_NORMAL);
+          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);
+          /*str1=String(parser.midi_2nd/21); // add too much latency
+          str1.toCharArray(noted,6); 
+          ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);
+          ssd1306_printFixed(0,  32, "     ", STYLE_NORMAL);*/
+#endif
           break;
         case mEnv:  //-Controller 12
           edgar.setEnvelope(voice,parser.midi_2nd/32);
+#if defined (OLED)
+          //garvuino_redrawLogo(); 
+          ssd1306_printFixed2x(0,  2, "Env.", STYLE_NORMAL);
+          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);
+          /*str1=String(parser.midi_2nd/32); 
+          str1.toCharArray(noted,6); 
+          ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);
+          ssd1306_printFixed(0,  32, "     ", STYLE_NORMAL);*/
+#endif
           break;   
         case mLength:  //-Controller 10
           edgar.setLength(voice,parser.midi_2nd);
+#if defined (OLED)
+	// garvuino_redrawLogo(); 
+          ssd1306_printFixed2x(0,  2, "Length", STYLE_NORMAL);
+          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);
+          /*str1=String(parser.midi_2nd); 
+          str1.toCharArray(noted,6); 
+          ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);
+          ssd1306_printFixed(0,  32, "     ", STYLE_NORMAL);*/
+#endif
           break;  
         case mMod:   //-Controller 7
           edgar.setMod(voice,parser.midi_2nd);
+#if defined (OLED)
+          //garvuino_redrawLogo();
+          ssd1306_printFixed2x(0,  2, "Mod   ", STYLE_NORMAL);
+          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);
+          /*str1=String(parser.midi_2nd); 
+          str1.toCharArray(noted,6); 
+          ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);
+          ssd1306_printFixed(0,  32, "     ", STYLE_NORMAL);*/
+#endif
           break;
         //case mPWM:   // 
         //  PWM=parser.midi_2nd;

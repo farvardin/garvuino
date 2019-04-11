@@ -78,7 +78,7 @@ int switchInPin = 6;
 int buttonRead = HIGH; 
 byte mode=0;
 
-int LedPin = 8;
+//int LedPin = 8;
 #define LED 8    
 
 

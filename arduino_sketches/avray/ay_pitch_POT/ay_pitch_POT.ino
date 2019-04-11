@@ -203,7 +203,7 @@ digitalWrite(LED,LOW);
 void playSeq1()
 {
   current_value = map(knob_value,0,1023, 0, 4096); //freq
-  tempo = map(knob_value1,0,1023, 0, 80);  // tempo
+  tempo = map(knob_value1,0,1023, 0, 160);  // tempo
   sweep = map(knob_value2,0,1023, 5, 100);  // define how many time to refresh the AY (= duration of the note/enveloppe)
   
   playEnveloppe(current_value,current_value/256/2);
@@ -214,7 +214,7 @@ void playSeq1()
 void playSeq2()
 {
   current_value = map(knob_value,0,1023, 0, 4096); //freq
-  tempo = map(knob_value1,0,1023, 0, 80);  // tempo
+  tempo = map(knob_value1,0,1023, 0, 160);  // tempo
   sweep = map(knob_value2,0,1023, 5, 100);  // define how many time to refresh the AY (= duration of the note/enveloppe)
   
   playEnveloppe(current_value,current_value/256/2);
@@ -228,7 +228,7 @@ void playSeq2()
 void playArp(int a, int b, int c) 
 {
   current_value = map(knob_value,0,1023, 0, 4096); //freq
-  tempo = map(knob_value1,0,1023, 0, 80);  // tempo
+  tempo = map(knob_value1,0,1023, 0, 160);  // tempo
   sweep = map(knob_value2,0,1023, 5, 100);  // define how many time to refresh the AY (= duration of the note/enveloppe)
   
   playEnveloppe(current_value,current_value/256/2);

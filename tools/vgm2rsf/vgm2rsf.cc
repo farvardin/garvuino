@@ -229,7 +229,14 @@ static std::string hhmmss(uint32_t sec)
 static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std::vector<AY_command> &ay_cmds)
 {
     uint8_t vgm_header[0x100];
-    if (gzread(in, vgm_header, 0x100) != 0x100 || memcmp(vgm_header, "Vgm ", 4))
+    uint32_t vgm_header_size;
+
+    int gzret = gzread(in, vgm_header, sizeof(vgm_header));
+    if (gzret == -1)
+        return false;
+    vgm_header_size = (uint32_t)gzret;
+
+    if (vgm_header_size < 0x40 || memcmp(vgm_header, "Vgm ", 4))
         return false;
 
     uint32_t vgm_version = decode_u32(vgm_header + 0x08);
@@ -242,6 +249,10 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
         data_offset = decode_u32(vgm_header + 0x34);
     if (gzseek(in, 0x34 + data_offset, SEEK_SET) == -1)
         return false;
+
+    vgm_header_size = 0x34 + data_offset;
+    if (vgm_header_size < sizeof(vgm_header))
+        memset(vgm_header + vgm_header_size, 0, sizeof(vgm_header) - vgm_header_size);
 
     uint32_t clock_AY = 0;
     uint32_t clock_YM2608 = 0;

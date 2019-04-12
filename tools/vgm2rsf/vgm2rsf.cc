@@ -447,7 +447,7 @@ static void make_vgm_size_table(uint8_t *table, unsigned version)
     for(unsigned a = 0xD7; a <= 0xDF; ++a)
         table[a] = 3;  // three operands, reserved for future use
     for(unsigned a = 0xE2; a <= 0xFF; ++a)
-        table[a] = 4;  // three operands, reserved for future use
+        table[a] = 4;  // four operands, reserved for future use
 }
 
 static void write_ay_rsf(FILE *out, const std::vector<AY_command> &in_cmds, uint32_t clock, uint32_t src_sample_rate, uint32_t rsf_frequency)

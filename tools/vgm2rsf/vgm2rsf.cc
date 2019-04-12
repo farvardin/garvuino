@@ -273,6 +273,8 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
     uint32_t data_offset = 0x0C;
     if (vgm_version >= 0x150)
         data_offset = decode_u32(vgm_header + 0x34);
+    if (data_offset == 0)
+        data_offset = 0x0C;
     if (gzseek(in, 0x34 + data_offset, SEEK_SET) == -1)
         return false;
 

@@ -44,6 +44,9 @@ static void write_ay_rsf(FILE *out, const std::vector<AY_command> &in_cmds, uint
 static uint32_t ay_quant(std::vector<AY_command> &cmds, uint32_t old_rate, uint32_t new_rate);
 
 ///
+static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock);
+
+///
 static void show_help()
 {
     fprintf(stderr,
@@ -51,6 +54,7 @@ static void show_help()
             "  -h             : show the help\n"
             "  -o <file.rsf>  : output file in RSF3 format\n"
             "  -f <frequency> : interrupt frequency of result file (default 100 Hz)\n"
+            "  -t <clock>     : clock frequency of target chip if a conversion is required (default 2000000 Hz)\n"
             "  <file.vgm>     : input file in VGM or VGZ format\n");
 }
 
@@ -58,13 +62,14 @@ int main(int argc, char *argv[])
 {
     const char *file_out = nullptr;
     uint16_t rsf_frequency = 100;
+    uint32_t target_clock = 2000000;
 
     if (argc < 2) {
         show_help();
         return 0;
     }
 
-    for (int c; (c = getopt(argc, argv, "o:f:h")) != -1;) {
+    for (int c; (c = getopt(argc, argv, "o:f:t:h")) != -1;) {
         switch (c) {
         case 'o':
             file_out = optarg;
@@ -76,6 +81,15 @@ int main(int argc, char *argv[])
                 return 1;
             }
             rsf_frequency = arg;
+            break;
+        }
+        case 't': {
+            int arg = atoi(optarg);
+            if (arg < 1000000 || arg > 2500000) {
+                fprintf(stderr, "target clock must be between 1000000 and 2500000 Hz.\n");
+                return 1;
+            }
+            target_clock = arg;
             break;
         }
         case 'h':
@@ -130,6 +144,12 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Total samples: %u\n", total_delay);
     fprintf(stderr, "Duration: %s\n", hhmmss(total_delay / vgm_sample_rate).c_str());
     fprintf(stderr, "Output frequency: %u\n", rsf_frequency);
+
+    if (!strncmp(chip_type, "SN7", 3)) {
+        fprintf(stderr, "[!] Conversion to AY8910 clocked at %u Hz\n", target_clock);
+        ay_cmds = convert_from_sn7x(ay_cmds, clock, target_clock);
+        clock = target_clock;
+    }
 
     if (file_out) {
         FILE *out = fopen(file_out, "wb");
@@ -258,6 +278,7 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
     uint32_t clock_YM2608 = 0;
     uint32_t clock_YM2610 = 0;
     uint32_t clock_YM2203 = 0;
+    uint32_t clock_SN76489 = 0;
 
     if ((clock_AY = decode_u32(vgm_header + 0x74))) {
         switch (vgm_header[0x78]) {
@@ -285,6 +306,12 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
         *chip_type = "YM2203 PSG";
         *clock = clock_YM2203 / 2;
     }
+    else if ((clock_SN76489 = decode_u32(vgm_header + 0x0C))) {
+        if (clock_SN76489 & (1u << 31))
+            return false;
+        *chip_type = "SN76489 PSG";
+        *clock = clock_SN76489;
+    }
     else
         return false; // no compatible device
 
@@ -309,6 +336,20 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
                 end = true; // unrecognized command
             break;
         }
+
+        case 0x50: // SN76489
+            if (clock_SN76489) {
+                uint8_t sn_data[1];
+                if (gzread(in, sn_data, 1) != 1) // premature end
+                    break;
+                AY_command ay;
+                ay.delay = wait;
+                ay.reg = sn_data[0];
+                ay.val = 0;
+                ay_cmds.push_back(ay);
+                wait = 0;
+            }
+            break;
 
         case 0x61: {
             uint16_t delay;
@@ -558,4 +599,72 @@ static uint32_t ay_quant(std::vector<AY_command> &cmds, uint32_t old_rate, uint3
     }
 
     return total_frames;
+}
+
+static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock)
+{
+    std::vector<AY_command> ay_cmds;
+    uint32_t acc_delay = 0;
+
+    unsigned latch_typ = 0;                /* 0=volume 1=tone */
+    unsigned latch_chn = 0;                /* 0-3=channel */
+    uint16_t sn7_volregs[4] = {0,0,0,0};   /* [0-3]=channel, 10-bit register */
+    uint16_t sn7_toneregs[4] = {0,0,0,0};  /* [0-3]=channel, 10-bit register */
+
+    { // disable noise channels
+        AY_command ay_cmd;
+        ay_cmd.delay = 0;
+        ay_cmd.reg = 7;
+        ay_cmd.val = 0x38;
+        ay_cmds.push_back(ay_cmd);
+    }
+
+    for (const AY_command &sn_cmd : sn_cmds) {
+        uint16_t *reg;
+        acc_delay += sn_cmd.delay;
+
+        if (sn_cmd.reg & 128) { // latch & set low bits
+            latch_typ = (sn_cmd.reg >> 4) & 1;
+            latch_chn = (sn_cmd.reg >> 5) & 3;
+            reg = latch_typ ? &sn7_volregs[latch_chn] : &sn7_toneregs[latch_chn];
+            *reg = (*reg & 0x3F0) | (sn_cmd.reg & 0x00F);
+        }
+        else { // set high bits
+            reg = latch_typ ? &sn7_volregs[latch_chn] : &sn7_toneregs[latch_chn];
+            *reg = (*reg & 0x00F) | ((sn_cmd.reg & 0x3f) << 4);
+        }
+
+        if (latch_typ && latch_chn < 3) { // set volume
+            AY_command ay_cmd;
+            ay_cmd.delay = acc_delay;
+            ay_cmd.reg = 8 + latch_chn;
+            ay_cmd.val = 0xF - (*reg & 0xF);
+            ay_cmds.push_back(ay_cmd);
+            acc_delay = 0;
+        }
+        else if (latch_typ) { // set noise volume
+            /*TODO: noise channel volume?*/
+        }
+        else if (latch_chn < 3) { // set tone
+            double freq = (double)src_clock / (32 * *reg);
+            unsigned long dst_tone = lround(dst_clock / (16 * freq));
+            dst_tone = (dst_tone < 0xFFF) ? dst_tone : 0xFFF;
+            AY_command ay_cmd1; // fine tone
+            ay_cmd1.delay = acc_delay;
+            ay_cmd1.reg = 2 * latch_chn;
+            ay_cmd1.val = dst_tone & 0xFF;
+            AY_command ay_cmd2; // rough tone
+            ay_cmd2.delay = 0;
+            ay_cmd2.reg = 2 * latch_chn + 1;
+            ay_cmd2.val = dst_tone >> 8;
+            ay_cmds.push_back(ay_cmd1);
+            ay_cmds.push_back(ay_cmd2);
+            acc_delay = 0;
+        }
+        else { // set noise tone
+            /*TODO: noise channel tone?*/
+        }
+    }
+
+    return ay_cmds;
 }

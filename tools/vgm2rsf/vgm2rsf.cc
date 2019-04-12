@@ -313,7 +313,7 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
         case 0x67: // data block
         {
             uint32_t pcm_offset;
-            if (gzseek(in, 2, SEEK_CUR) == -1 || !read_u32(in, &pcm_offset))
+            if (gzseek(in, 2, SEEK_CUR) == -1 || !read_u32(in, &pcm_offset) || gzseek(in, pcm_offset, SEEK_CUR) == -1)
                 end = true;
             break;
         }

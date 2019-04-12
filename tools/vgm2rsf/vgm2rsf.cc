@@ -111,6 +111,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    if (ay_cmds.empty()) {
+        fprintf(stderr, "input does not contain any AY commands.\n");
+        return 1;
+    }
+
     uint32_t total_delay = 0;
     for (const AY_command &cmd : ay_cmds)
         total_delay += cmd.delay;
@@ -241,6 +246,7 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
     uint32_t clock_AY = 0;
     uint32_t clock_YM2608 = 0;
     uint32_t clock_YM2610 = 0;
+    uint32_t clock_YM2203 = 0;
 
     if ((clock_AY = decode_u32(vgm_header + 0x74))) {
         switch (vgm_header[0x78]) {
@@ -263,6 +269,10 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
     else if ((clock_YM2610 = decode_u32(vgm_header + 0x4C))) {
         *chip_type = "YM2610 PSG";
         *clock = clock_YM2610 / 4;
+    }
+    else if ((clock_YM2203 = decode_u32(vgm_header + 0x44))) {
+        *chip_type = "YM2203 PSG";
+        *clock = clock_YM2203 / 2;
     }
     else
         return false; // no compatible device
@@ -313,7 +323,7 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
         case 0x67: // data block
         {
             uint32_t pcm_offset;
-            if (gzseek(in, 2, SEEK_CUR) == -1 || !read_u32(in, &pcm_offset))
+            if (gzseek(in, 2, SEEK_CUR) == -1 || !read_u32(in, &pcm_offset) || gzseek(in, pcm_offset, SEEK_CUR) == -1)
                 end = true;
             break;
         }
@@ -337,9 +347,10 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
             }
             break;
 
+        case 0x55: // YM2203
         case 0x56: // YM2608 port 0
         case 0x58: // YM2610 port 0
-            if ((clock_YM2608 && cmd == 0x56) || (clock_YM2610 && cmd == 0x58)) {
+            if ((clock_YM2203 && cmd == 0x55) || (clock_YM2608 && cmd == 0x56) || (clock_YM2610 && cmd == 0x58)) {
                 uint8_t ym_data[2];
                 if (gzread(in, ym_data, 2) != 2) // premature end
                     break;
@@ -447,7 +458,7 @@ static void make_vgm_size_table(uint8_t *table, unsigned version)
     for(unsigned a = 0xD7; a <= 0xDF; ++a)
         table[a] = 3;  // three operands, reserved for future use
     for(unsigned a = 0xE2; a <= 0xFF; ++a)
-        table[a] = 4;  // three operands, reserved for future use
+        table[a] = 4;  // four operands, reserved for future use
 }
 
 static void write_ay_rsf(FILE *out, const std::vector<AY_command> &in_cmds, uint32_t clock, uint32_t src_sample_rate, uint32_t rsf_frequency)

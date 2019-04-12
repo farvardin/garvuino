@@ -305,13 +305,17 @@ Select "Serial Port": USB-serial adapter.
 
 Start virtual midi port with:
 
-``̀  sudo modprobe snd-virmidi
+``` sudo modprobe snd-virmidi
 
-In hairless midi window, select a virtual Raw midi port in Midi Out. In Midi In, "serial->Midi" should appear.
+In hairless midi window, select a virtual Raw midi port in Midi Out. Then, in Midi In, "serial->Midi" should appear.
 
-Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select midi input in the web page.
+Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select RtMidi input in the web page (in the MIDI OUT list).
 
 Now you should get some sounds from this wonderful synth.
+
+In the case you need to reflash the Arduino, just uncheck the "serial<->midi bridge on" button in Hairless midi, and check it again to transmit midi.
+
+
 
 
 == Assemble the Garvurino board ==

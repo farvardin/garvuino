@@ -111,6 +111,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    if (ay_cmds.empty()) {
+        fprintf(stderr, "input does not contain any AY commands.\n");
+        return 1;
+    }
+
     uint32_t total_delay = 0;
     for (const AY_command &cmd : ay_cmds)
         total_delay += cmd.delay;

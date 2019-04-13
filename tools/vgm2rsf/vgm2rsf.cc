@@ -44,17 +44,18 @@ static void write_ay_rsf(FILE *out, const std::vector<AY_command> &in_cmds, uint
 static uint32_t ay_quant(std::vector<AY_command> &cmds, uint32_t old_rate, uint32_t new_rate);
 
 ///
-static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock);
+static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock, bool convert_noise_channel);
 
 ///
 static void show_help()
 {
     fprintf(stderr,
-            "Usage: vgm2rsf [-h] [-o <file.rsf>] [-f <frequency>] <file.vgm>\n"
+            "Usage: vgm2rsf [-h] [-o <file.rsf>] [-f <frequency>] [-n] <file.vgm>\n"
             "  -h             : show the help\n"
             "  -o <file.rsf>  : output file in RSF3 format\n"
             "  -f <frequency> : interrupt frequency of result file (default 100 Hz)\n"
             "  -t <clock>     : clock frequency of target chip if a conversion is required (default 2000000 Hz)\n"
+            "  -n             : don't convert the SN76489 noise channel using the multiplexing strategy\n"
             "  <file.vgm>     : input file in VGM or VGZ format\n");
 }
 
@@ -63,13 +64,14 @@ int main(int argc, char *argv[])
     const char *file_out = nullptr;
     uint16_t rsf_frequency = 100;
     uint32_t target_clock = 2000000;
+    bool convert_noise_channel = true;
 
     if (argc < 2) {
         show_help();
         return 0;
     }
 
-    for (int c; (c = getopt(argc, argv, "o:f:t:h")) != -1;) {
+    for (int c; (c = getopt(argc, argv, "o:f:t:nh")) != -1;) {
         switch (c) {
         case 'o':
             file_out = optarg;
@@ -92,6 +94,9 @@ int main(int argc, char *argv[])
             target_clock = arg;
             break;
         }
+        case 'n':
+            convert_noise_channel = false;
+            break;
         case 'h':
             show_help();
             return 0;
@@ -147,7 +152,8 @@ int main(int argc, char *argv[])
 
     if (!strncmp(chip_type, "SN7", 3)) {
         fprintf(stderr, "[!] Conversion to AY8910 clocked at %u Hz\n", target_clock);
-        ay_cmds = convert_from_sn7x(ay_cmds, clock, target_clock);
+        fprintf(stderr, "[!] Conversion of noise channel: %s\n", convert_noise_channel ? "yes" : "no");
+        ay_cmds = convert_from_sn7x(ay_cmds, clock, target_clock, convert_noise_channel);
         clock = target_clock;
     }
 
@@ -267,6 +273,8 @@ static bool read_ay_vgm(gzFile in, uint32_t *clock, const char **chip_type, std:
     uint32_t data_offset = 0x0C;
     if (vgm_version >= 0x150)
         data_offset = decode_u32(vgm_header + 0x34);
+    if (data_offset == 0)
+        data_offset = 0x0C;
     if (gzseek(in, 0x34 + data_offset, SEEK_SET) == -1)
         return false;
 
@@ -601,23 +609,65 @@ static uint32_t ay_quant(std::vector<AY_command> &cmds, uint32_t old_rate, uint3
     return total_frames;
 }
 
-static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock)
+static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &sn_cmds, uint32_t src_clock, uint32_t dst_clock, bool convert_noise_channel)
 {
     std::vector<AY_command> ay_cmds;
     uint32_t acc_delay = 0;
+
+    auto push_command = [&](uint8_t reg, uint8_t val) {
+                           AY_command ay_cmd;
+                           ay_cmd.delay = acc_delay;
+                           ay_cmd.reg = reg;
+                           ay_cmd.val = val;
+                           ay_cmds.push_back(ay_cmd);
+                           acc_delay = 0;
+                       };
+
+    auto push_set_frequency = [&](uint8_t channel, double freq) {
+                                  unsigned long dst_tone = lround(dst_clock / (16 * freq));
+                                  dst_tone = (dst_tone < 0xFFF) ? dst_tone : 0xFFF;
+                                  push_command(2 * channel, dst_tone & 0xFF); // fine tone
+                                  push_command(2 * channel + 1, dst_tone >> 8); // rough tone
+                              };
 
     unsigned latch_typ = 0;                /* 0=volume 1=tone */
     unsigned latch_chn = 0;                /* 0-3=channel */
     uint16_t sn7_volregs[4] = {0,0,0,0};   /* [0-3]=channel, 10-bit register */
     uint16_t sn7_toneregs[4] = {0,0,0,0};  /* [0-3]=channel, 10-bit register */
 
-    { // disable noise channels
-        AY_command ay_cmd;
-        ay_cmd.delay = 0;
-        ay_cmd.reg = 7;
-        ay_cmd.val = 0x38;
-        ay_cmds.push_back(ay_cmd);
-    }
+    /*
+      About noise channel:
+      SN7x can play noise on the 4th channel independently of 3 tone channels.
+      AY can play 3 channels only, and one of the channels must be toggled to
+      enter noise mode; it cannot perform on 4 simultaneous channels.
+      --- Conversion strategy ---
+      Multiplex the 3rd AY channel: when noise starts, switch the channel C
+      to noise mode. As soon as noise volume drops to silence, switch channel
+      back to tone mode and restore volume.
+     */
+    const unsigned multiplex_channel = 2;
+    enum {
+        mix_ch3tone = 0x38,
+        mix_ch3noise = 0x1c,
+    };
+    unsigned current_mix = mix_ch3tone;
+
+    auto push_set_noise = [&](uint8_t channel, uint8_t noise) {
+                              if (noise & 4) // white noise
+                                  push_command(6, 0x1F/*ADJUST-ME*/);
+                              else // periodic noise
+                                  push_command(6, 0x0F/*ADJUST-ME*/);
+                              const double rate_table[4] = /*ADJUST-ME*/
+                                  { 50, 100, 500, 1000 /* au hasard :^) */ };
+                              push_set_frequency(multiplex_channel, rate_table[noise & 3]);
+                          };
+
+    // disable noise channels
+    push_command(7, current_mix);
+
+    // set noise frequency
+    if (convert_noise_channel)
+        push_set_noise(multiplex_channel, 0);
 
     for (const AY_command &sn_cmd : sn_cmds) {
         uint16_t *reg;
@@ -635,34 +685,38 @@ static std::vector<AY_command> convert_from_sn7x(const std::vector<AY_command> &
         }
 
         if (latch_typ && latch_chn < 3) { // set volume
-            AY_command ay_cmd;
-            ay_cmd.delay = acc_delay;
-            ay_cmd.reg = 8 + latch_chn;
-            ay_cmd.val = 0xF - (*reg & 0xF);
-            ay_cmds.push_back(ay_cmd);
-            acc_delay = 0;
+            push_command(8 + latch_chn, 0xF - (*reg & 0xF));
         }
         else if (latch_typ) { // set noise volume
-            /*TODO: noise channel volume?*/
+            if (convert_noise_channel) {
+                if ((*reg & 0xF) < 0xF) { // noise on
+                    if (current_mix != mix_ch3noise) {
+                        current_mix = mix_ch3noise;
+                        push_command(7, current_mix);
+                    }
+                    push_set_noise(multiplex_channel, sn7_toneregs[3]);
+                    push_command(8 + multiplex_channel, 0xF - (*reg & 0xF));
+                }
+                else { // noise off
+                    if (current_mix != mix_ch3tone) {
+                        current_mix = mix_ch3tone;
+                        push_command(7, current_mix);
+                    }
+                    push_command(8 + multiplex_channel, 0xF - (sn7_volregs[multiplex_channel] & 0xF));
+                    double freq = (double)src_clock / (32 * sn7_toneregs[multiplex_channel]);
+                    push_set_frequency(multiplex_channel, freq);
+                }
+            }
         }
         else if (latch_chn < 3) { // set tone
             double freq = (double)src_clock / (32 * *reg);
-            unsigned long dst_tone = lround(dst_clock / (16 * freq));
-            dst_tone = (dst_tone < 0xFFF) ? dst_tone : 0xFFF;
-            AY_command ay_cmd1; // fine tone
-            ay_cmd1.delay = acc_delay;
-            ay_cmd1.reg = 2 * latch_chn;
-            ay_cmd1.val = dst_tone & 0xFF;
-            AY_command ay_cmd2; // rough tone
-            ay_cmd2.delay = 0;
-            ay_cmd2.reg = 2 * latch_chn + 1;
-            ay_cmd2.val = dst_tone >> 8;
-            ay_cmds.push_back(ay_cmd1);
-            ay_cmds.push_back(ay_cmd2);
-            acc_delay = 0;
+            push_set_frequency(latch_chn, freq);
         }
         else { // set noise tone
-            /*TODO: noise channel tone?*/
+            if (convert_noise_channel) {
+                if (current_mix == mix_ch3noise)
+                    push_set_noise(multiplex_channel, *reg);
+            }
         }
     }
 

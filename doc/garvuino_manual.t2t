@@ -119,7 +119,7 @@ A few components :
 [garvuino_pcb.png]
 
 
-The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
+The LED is connected to D8 on Arduino. The audio output to D9. The switch to D6. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
 There are a few jumpers on the board. They are for switching between some modes.
 
@@ -204,6 +204,9 @@ This kind of message can also be seen if you've choosen the wrong port to connec
 Just load avray/avray_sd_sketch/avray_sd_sketch.ino, put some tunes from tunes/aym_tunes/1_75MHz/rsf/ into your SD card and power the device!
 
 If you create your own tunes (using Vortex Tracker II for example), you'll need to convert them to RSF using the AVR-AY player: http://www.avray.ru/avr-ay-player/
+
+You can also create tunes using [Deflemask http://deflemask.com/] (choose Master System SN76489 PSG) or [Bamboo Tracker https://github.com/rerrahkr/BambooTracker/] (use only the SSC channels) and convert the exported VGM tunes to RSF using the vgm2rsf tool: https://github.com/farvardin/garvuino/tree/master/tools/vgm2rsf
+
 
 
 

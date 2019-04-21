@@ -121,6 +121,32 @@ A few components :
 
 The LED is connected to D8 on Arduino. The audio output to D9. The switch to D6. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
 
+More precisely:
+
+|| PIN | use |
+ | D2 | FREE |
+ | D3 | audio out (some sketches) |
+ | D4 | CS for SD card reader |
+ | D5 | FREE |
+ | D6 | switch Sw1 / audio out (some sketches) |
+ | D7 | switch Sw3 |
+ | D8 | led1 |
+ | D9 | audio out (most sketches) |
+ | D10 | switch Sw2 |
+ | D11 | MOSI: SD card reader |
+ | D12 | MISO: SD card reader |
+ | D13 | SCK; SD card reader |
+ | A0 | POT 1 |
+ | A1 | POT 2 |
+ | A2 | POT 3 |
+ | A3 | POT 4 |
+ | A4 | SDA: oled display6 |
+ | A5 | SCL: oled display |
+ | A6 | POT 5 |
+ | A7 | FREE |
+
+
+
 There are a few jumpers on the board. They are for switching between some modes.
 
 When used in AY mode, the mono jumper should be off, when used in beeper, sid or mozzi mode the mono jumper should be on, the J4 (ay chip ground, v1.09 board only) should be off. Also the AY>L and AY>R can be off to reduce noise (but it will work anyway). And TX could be off as well when flashing the arduino chip (you can leave it on, but if the transfer fails, try to remove it)

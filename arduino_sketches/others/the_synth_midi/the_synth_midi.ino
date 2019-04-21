@@ -13,12 +13,14 @@
 // Controller mMod  controls modulation: negative[0-63] neutral[64] positive[65-127]
 //
 // Digital 3: Audio out 
-// Connect midi on the DIN5 of the Garvuino
+// Connect midi on the DIN5 of the Garvuino (it doesn't work with usb midi)
 //
-// On GARVUINO v2.10: connect PIN3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
+// On GARVUINO v2.10: connect PIN D3 to PIN AY>L or AY>R (under the L or R) to make the audio output!
 // On GARVUINO v1.09: remove the arduino out of the socket
-//      Then connect PIN3 to PIN AY>L (under the L label) and GND to the GND in J1 on Garvuino
-//      in order to get the audio output!
+//      Then connect PIN D3 to PIN AY>L (under the L label) and GND to the GND in J1 on Garvuino (or on top of J4)
+//        in order to get the audio output!
+//      And connect the RX0 from the Arduino to the second pin hole from the top left on the empty
+//        socket, to get the midi connection.
 
 
 // original code and idea: 
@@ -33,7 +35,7 @@
 #include <garvuino.h>
 #include "MIDI_parser.h"
 
-#define OLED 
+//#define OLED 
 
 /* original version
 #define mWave 13 
@@ -61,6 +63,7 @@ midiParser parser;  //-Make a MIDI parser
 void setup() 
 {
   Serial.begin(31250);    //MIDI BAUD rate
+  //Serial.begin(38400);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
   pinMode(8,OUTPUT);
   

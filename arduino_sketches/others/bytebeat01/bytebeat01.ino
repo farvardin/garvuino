@@ -29,7 +29,8 @@ int t = 0;
 
 void loop() {
 #ifdef INTERACTIVE
-  if (++i != map(analogRead(0),0, 1023, 2, 4)) return;
+ // if (++i != map(analogRead(0),0, 1023, 2, 4)) return;
+  if (++i != map(analogRead(1),0, 1023, 2, 8)) return;
   //if (++i != 64) return;
 #else 
   if (++i != 64) return;
@@ -43,6 +44,7 @@ t++;
 // 2*t^(t*t>>8|(t*14)>>8|t*2&t*3) & t*((t>>45)+1)
 #ifdef INTERACTIVE
   analogWrite(speakerPin, /*votre symphonie entre là -->*/ (t*(t>>5|t>>map(analogRead(0),0, 1023, 8, 2)))>>(t>>16)  /*<-- et là */  );
+ // analogWrite(speakerPin, /*votre symphonie entre là -->*/ 2*t^(t*t>>8|(t*14)>>8|t*2&t*3) & t*((t>>45)+1)  /*<-- et là */  );
 #else
   analogWrite(speakerPin, /*votre symphonie entre là -->*/ (t*(t>>5|t>>8))>>(t>>16)  /*<-- et là */  );
 #endif

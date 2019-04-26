@@ -140,7 +140,7 @@ More precisely:
  | A1 | POT 2 |
  | A2 | POT 3 |
  | A3 | POT 4 |
- | A4 | SDA: oled display6 |
+ | A4 | SDA: oled display |
  | A5 | SCL: oled display |
  | A6 | POT 5 |
  | A7 | FREE |

@@ -35,7 +35,7 @@
 #include <garvuino.h>
 #include "MIDI_parser.h"
 
-//#define OLED 
+#define OLED 
 
 /* original version
 #define mWave 13 
@@ -125,11 +125,11 @@ void loop()
         {
         case mWave:  //-Controller 13 
           edgar.setWave(voice,parser.midi_2nd/21);
+		    //edgar.setUserWave(voice,parser.midi_2nd/21);
 #if defined (OLED)
-          //edgar.setUserWave(voice,parser.midi_2nd/21);
         //  garvuino_redrawLogo(); 
-          ssd1306_printFixed2x(0,  2, "Wave  ", STYLE_NORMAL);
-          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);
+          ssd1306_printFixed2x(0,  2, "Wave  ", STYLE_NORMAL);    // x, y position
+          ssd1306_printFixed2x(0,  2, "      ", STYLE_NORMAL);    // x, y position
           /*str1=String(parser.midi_2nd/21); // add too much latency
           str1.toCharArray(noted,6); 
           ssd1306_printFixed(0,  32, noted, STYLE_NORMAL);

@@ -35,6 +35,10 @@
 #include <garvuino.h>
 #include "MIDI_parser.h"
 
+int switchInPin1 = 6;  
+int switchInPin2 = 10; 
+int switchInPin3 = 7; 
+
 #define OLED 
 
 /* original version
@@ -60,15 +64,76 @@
 synth edgar;        //-Make a synth
 midiParser parser;  //-Make a MIDI parser
 
+
+void testSwitches()
+{
+int sensorVal = digitalRead(switchInPin1); // push button
+   // push button
+   if (sensorVal == HIGH) {
+  // DO NOTHING
+  } else {
+// DO
+  //edgar.setUserWave(0,USER00);
+  edgar.setEnvelope(0,1);
+  edgar.setLength(0,82);
+  edgar.setMod(0,64);
+  edgar.setWave(0,TRIANGLE);
+  edgar.mTrigger(0,75);
+  }
+}
+
+
+void Kick()
+{
+  
+
+  edgar.setWave(0,TRIANGLE); // try SQUARE for electro
+  edgar.setEnvelope(0,58);
+  edgar.setLength(0,45);  // 64 for electro kick
+  edgar.setMod(0,21);
+  
+  edgar.mTrigger(0,35);
+  }
+
+
+void Snare()
+{
+    edgar.setWave(0,NOISE); //
+  edgar.setEnvelope(0,10);
+  edgar.setLength(0,70);  // 
+  edgar.setMod(0,45);
+  
+  edgar.mTrigger(0,35);
+  }
+
+
+void HiHat()
+{
+// hi hat
+
+  edgar.setWave(2,NOISE); // 
+  edgar.setEnvelope(2,90);
+  edgar.setLength(2,37);  //
+  edgar.setMod(2,120);
+
+  edgar.mTrigger(2,55);
+  
+}
+
 void setup() 
 {
   Serial.begin(31250);    //MIDI BAUD rate
   //Serial.begin(38400);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
   pinMode(8,OUTPUT);
+
+  pinMode(switchInPin1, INPUT_PULLUP);
+  pinMode(switchInPin2, INPUT_PULLUP);
+  pinMode(switchInPin3, INPUT_PULLUP);
+
   
   edgar.setWave(0,TRIANGLE);
-  edgar.setUserWave(0,USER00);
+  //edgar.setUserWave(0,USER00);
   edgar.setEnvelope(0,1);
   edgar.setLength(0,82);
   edgar.setMod(0,64);
@@ -101,7 +166,7 @@ void loop()
 
         voice = parser.midi_cmd-0x90;
         if(parser.midi_2nd)  //-Velocity not zero (could implement NOTE_OFF here)
-          edgar.mTrigger(voice,parser.midi_1st);
+          edgar.mTrigger(voice,parser.midi_1st);   
         break;
 
         //*********************************************

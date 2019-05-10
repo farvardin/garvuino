@@ -13,6 +13,7 @@
 /*
  * Connect 5 potentiometers to A0, A1, A2, A3, A5 and A6 
  * Connect ssd1306 128x64 OLED display to A4 (SDA) and A5 (SCL)
+ * Use hairless midi to establish the connection with the arduino
  * 
  */
 
@@ -36,6 +37,8 @@ int lastVal4 = 0;
 int val5 = 0;
 int lastVal5 = 0;
 
+
+  // you can define your prefered CC values here
 #define CC1 91
 #define CC2 92
 #define CC3 93

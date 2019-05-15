@@ -132,8 +132,8 @@ void setup()
   pinMode(switchInPin3, INPUT_PULLUP);
 
   
-  edgar.setWave(0,TRIANGLE);
-  //edgar.setUserWave(0,USER00);
+ // edgar.setWave(0,TRIANGLE);
+  edgar.setUserWave(0,USER05);
   edgar.setEnvelope(0,1);
   edgar.setLength(0,82);
   edgar.setMod(0,64);
@@ -189,8 +189,8 @@ void loop()
         switch(parser.midi_1st)  //-Controller number
         {
         case mWave:  //-Controller 13 
-          edgar.setWave(voice,parser.midi_2nd/21);
-		    //edgar.setUserWave(voice,parser.midi_2nd/21);
+         // edgar.setWave(voice,parser.midi_2nd/21);
+		      edgar.setUserWave(voice,parser.midi_2nd/21);
 #if defined (OLED)
         //  garvuino_redrawLogo(); 
           ssd1306_printFixed2x(0,  2, "Wave  ", STYLE_NORMAL);    // x, y position

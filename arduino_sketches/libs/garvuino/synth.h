@@ -262,10 +262,13 @@ public:
       wavs[voice] = (unsigned int)User02Table;
       break;
     case USER03:
-      wavs[voice] = (unsigned int)User00Table;
+      wavs[voice] = (unsigned int)User03Table;
       break;
     case USER04:
-      wavs[voice] = (unsigned int)User00Table;
+      wavs[voice] = (unsigned int)User04Table;
+      break;
+    case USER05:  // max
+      wavs[voice] = (unsigned int)User05Table;
       break;
     default:
       wavs[voice] = (unsigned int)User00Table;

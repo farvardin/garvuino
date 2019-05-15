@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Wave Tables for Arduino</title>
+<style>
+  body {background-color:lightgray}
+  h1   {color:black}
+  p    {color:green }
+input {height:30px; width:100px;}
+button {height:30px; }
+table {font-family: "Helvetica", Helvetica, sans-serif; font-size: 0.8em; font-weight: normal;}
+</style>
+
+  </head>
+  <body>
+<h1> WaveTable Generator</h1>
+This is an online tool to generate new wave forms for Arduino. Simply draw in the drawing area and the hit the GENERATE button to generate the new wave table. <br>
+<br>
+    <div id="canvasDiv"></div>
+
+
+<table border="0" width="1000">
+<tr>
+<th width="40">
+<textarea rows="13" cols="60" id="TextDiv">
+
+</textarea> 
+</th>
+<th style="text-align:left;vertical-align:top";>
+<button type="button" id="button_generate">Generate</button> 
+<button type="button" id="button_scale">Scale</button> 
+<br>
+<br>Generates the wave table. Scale to maximum volume.<br>To upload the wave table to your arduino sketch, click in the area to the left, press "Ctrl-A" (select all) in your browser. Then copy everything into "table.h" from the synth sketch and upload.
+<br>
+<hr>
+Generate the wave form based on a mathematical formula by Thierry Frenkel. Enter the two parameters and hit MATH CALCULATE<br><br>
+<button type="button" id="button_math">Math Calculate</button> 
+
+&nbsp &nbsp p1:<input type="number" id="param1" min="0" max="255" step="1" value="128" name="shoe-size">
+p2:<input type="number" id="param2" min="0" max="255" step="1" value="128" name="shoe-size">
+
+</th>
+</tr>
+</table>
+<br>
+<hr>
+
+
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <script type="text/javascript" src="html5-canvas-drawing-app.js"></script>
+    <script type="text/javascript">
+    	 drawingApp.init();
+	</script>
+
+
+  </body>
+</html>

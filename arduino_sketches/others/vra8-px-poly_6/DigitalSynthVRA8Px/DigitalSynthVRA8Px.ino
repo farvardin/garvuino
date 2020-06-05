@@ -1,7 +1,7 @@
 //#define DEBUG
 
 #define SERIAL_SPEED (38400)    // for Serial MIDI
-//#define SERIAL_SPEED (31250)    // for MIDI Shield
+//#define SERIAL_SPEED (31250)    // for MIDI Shield, don't use this yet
 
 #define PITCH_BEND_RANGE (2)
 //#define PITCH_BEND_RANGE (12)

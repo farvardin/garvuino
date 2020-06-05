@@ -54,7 +54,32 @@ A few components :
 
 ![](garvuino_pcb.png)
 
-The LED is connected to D8 on Arduino. The audio output to D9. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
+The LED is connected to D8 on Arduino. The audio output to D9. The switch to D6. On Garvuino v2.10 and expansion board, the potentiometers are connected to A0 to A1 and to A0 to A4 respectively.
+
+More precisely:
+
+| PIN |use|
+|--------|-------|
+|D2 |FREE|
+|D3 |audio out (some sketches)|
+|D4 |CS for SD card reader|
+|D5 |FREE|
+|D6 |switch Sw1 / audio out (some sketches)|
+|D7 |switch Sw3|
+|D8 |led1|
+|D9 |audio out (most sketches)|
+|D10 |switch Sw2|
+|D11 |MOSI: SD card reader|
+|D12 |MISO: SD card reader|
+|D13 |SCK; SD card reader|
+|A0 |POT 1|
+|A1 |POT 2|
+|A2 |POT 3|
+|A3 |POT 4|
+|A4 |SDA: oled display|
+|A5 |SCL: oled display|
+|A6 |POT 5|
+|A7 |FREE|
 
 There are a few jumpers on the board. They are for switching between some modes.
 
@@ -124,6 +149,8 @@ This kind of message can also be seen if you've choosen the wrong port to connec
 Just load avray/avray_sd_sketch/avray_sd_sketch.ino, put some tunes from tunes/aym_tunes/1_75MHz/rsf/ into your SD card and power the device!
 
 If you create your own tunes (using Vortex Tracker II for example), you'll need to convert them to RSF using the AVR-AY player: http://www.avray.ru/avr-ay-player/
+
+You can also create tunes using [Deflemask](http://deflemask.com/) (choose Master System SN76489 PSG) or [Bamboo Tracker](https://github.com/rerrahkr/BambooTracker/) (use only the SSC channels) and convert the exported VGM tunes to RSF using the vgm2rsf tool: https://github.com/farvardin/garvuino/tree/master/tools/vgm2rsf
 
 ### Sid emulator 
 
@@ -207,15 +234,29 @@ Select "Serial Port": USB-serial adapter.
 
 Start virtual midi port with:
 
-``̀  sudo modprobe snd-virmidi
+    sudo modprobe snd-virmidi
 
-In hairless midi window, select a virtual Raw midi port in Midi Out. In Midi In, "serial->Midi" should appear.
+In hairless midi window, select a virtual Raw midi port in Midi Out. Then, in Midi In, "serial->Midi" should appear.
 
-Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select midi input in the web page.
+Visit http://risgk.github.io/digital-synth-vra8-px/vra8-px-ctrl.html with Chrome (or Chromium). Select RtMidi input in the web page (in the MIDI OUT list).
 
 Now you should get some sounds from this wonderful synth.
 
-## Assemble the Garvurino board 
+In the case you need to reflash the Arduino, just uncheck the "serial<->midi bridge on" button in Hairless midi, and check it again to transmit midi.
+
+#### MMML 
+
+Micro Music Macro Language (μMML) (https://github.com/protodomemusic/mmml) is using AVR programming to flash Atmega chips (Attiny85, Atmega168...). It works too with the Atmega8 found on the Garvuino!
+
+To make it work, you'll have to reflash the firmware of the atmega8 (or get another chip) using an USBasp. You can learn more about this in the "Atmega8 setup and flashing" section of this manual.
+
+And to use the arduino as a power supply, just remove the arduino chip from its socket, connect the 5V from the arduino to the PIN 7 on the atmega8, connect arduino GND to atmega8 PIN 8, connect a passive speaker to atmega8 PIN 22 (another GND) and to atmega8 PIN 14 (PB0)
+
+![](atmega8_mmml.png)
+
+You can also use the Garvuino as an audio output, instead of the speaker, just connect PIN 14 to the empty arduino socket, in the D9 hole (4th from the bottom left), and PIN 22 to the GND hole (2nd from the top right)
+
+## Assemble the Garvuino board 
 
 If you got the board through a kit, soldering it should be pretty simple as there are only basic components. 
 
@@ -265,7 +306,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|---------------|
+|--------|-------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|
@@ -306,8 +347,9 @@ And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins
  * https://sensorium.github.io/Mozzi
  * http://risgk.github.io/
  * https://github.com/dzlonline/the_synth
+ * https://github.com/ArminJo/Talkie (not included in this repo, but works)
 
-== Credits ==
+## Credits 
 
  * Yoruk for his help on the PCB
  * Evgeniy for AVR-AY emulator and invaluable help (initial code by Ramiros)
@@ -315,6 +357,7 @@ And also connect the 2 right top pins and the 3 bottom pins to the A0 to A4 pins
  * Shiru for the 1-bit engines on Arduino
  * Christoph Haberer and Mario Patino for the Sid-arduino lib
  * The Mozzi team
+ * Protodome for the Micro Music Macro Language (μMML) (https://github.com/protodomemusic/mmml) 
 
 ## Licence 
 

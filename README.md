@@ -75,6 +75,9 @@ You can find [some tunes for using with the AVR-AY setup in here](tunes/). The a
  * http://playground.arduino.cc/Main/SID-emulator
  * http://randomflux.info/1bit/viewforum.php?id=5
  * https://sensorium.github.io/Mozzi
+ * http://risgk.github.io/
+ * https://github.com/dzlonline/the_synth
+ * https://github.com/ArminJo/Talkie (not included in this repo, but works)
 
 ## Credits 
 
@@ -84,6 +87,7 @@ You can find [some tunes for using with the AVR-AY setup in here](tunes/). The a
  * Shiru for the 1-bit engines on Arduino
  * Christoph Haberer and Mario Patino for the Sid-arduino lib
  * The Mozzi team
+ * Protodome for the Micro Music Macro Language (μMML) (https://github.com/protodomemusic/mmml) 
 
 ## Licence 
 

@@ -345,9 +345,25 @@ Now you should get some sounds from this wonderful synth.
 In the case you need to reflash the Arduino, just uncheck the "serial<->midi bridge on" button in Hairless midi, and check it again to transmit midi.
 
 
+==== MMML ====
+
+Micro Music Macro Language (μMML) (https://github.com/protodomemusic/mmml) is using AVR programming to flash Atmega chips (Attiny85, Atmega168...). It works too with the Atmega8 found on the Garvuino!
+
+To make it work, you'll have to reflash the firmware of the atmega8 (or get another chip) using an USBasp. You can learn more about this in the "Atmega8 setup and flashing" section of this manual.
+
+And to use the arduino as a power supply, just remove the arduino chip from its socket, connect the 5V from the arduino to the PIN 7 on the atmega8, connect arduino GND to atmega8 PIN 8, connect a passive speaker to atmega8 PIN 22 (another GND) and to atmega8 PIN 14 (PB0)
+
+[atmega8_mmml.png]
+
+You can also use the Garvuino as an audio output, instead of the speaker, just connect PIN 14 to the empty arduino socket, in the D9 hole (4th from the bottom left), and PIN 22 to the GND hole (2nd from the top right)
 
 
-== Assemble the Garvurino board ==
+% http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2486-8-bit-AVR-microcontroller-ATmega8_L_summary.pdf
+
+
+
+
+== Assemble the Garvuino board ==
 
 If you got the board through a kit, soldering it should be pretty simple as there are only basic components. 
 

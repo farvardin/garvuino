@@ -1,0 +1,135 @@
+%===================================================================%
+% TITLE      : La torche
+% COMPOSER   : Garvalf
+% PROGRAMMER : Garvalf
+% DATE       : 2020-06-05
+%===================================================================%
+% for use with Micro Music Macro Language (μMML) 
+% https://github.com/protodomemusic/mmml
+%
+% part of the Garvuino project: https://github.com/farvardin/garvuino
+%
+% Converted from PMD98 MML: 
+%   http://garvalf.online.fr/index.php?page=musiques_opl.en
+
+
+
+%-~-~-~-~-~-~-~-~-~-~-~-~-~-% CHANNEL A %-~-~-~-~-~-~-~-~-~-~-~-~-~-%
+
+@ r4 t50 % set tempo
+
+o4
+v6 
+d2<a2>f2c2d1f4e4e2d2<a2>f2c2d1f4e4d2d2<a2>f2e4d4d2<a4a4>f4f4e2a8d8f8e8c8d8<a4>f8c8e8d8c8d8a8f8e4<a2>d4f4f4e2f8e8d4<a2>d2<a2>f2e4d4d2<a4a4>f4f4e2a8d8f8e8c8d8<a4>f8c8e8d8c8d8a8f8<a4>f8e8<a8>c8c4<a4>d8f8e8d8a4<a4>f8e8<a8>c8c4c4d8f8e8c8e4<a4>f8e8<a8>c8c4<a4>d8f8e8d8a4<a4>f8e8<a8>c8c4c4d8f8e8c8e4d4<f4>d4<f4>c4<e4f4>c4<a2e2c8d4d8>c8<a4>d8<a+8a4a8>c4<a4c8d4d8>c8<a4>d8<a+8a4a8>c4<a4>d4f4c4d4a2d2e8f8e2d4d4f4e4f8e8f2d8e8f8e8d2<a2>f2c2d1f4e4d2<d2>d2d4e4f4g4a4d16e16a8f16a16d8f8d8<a4>d4<a+4a4a1>d8a16g16f8c8d8a16a+16g8f8e8f8g8a8d8a16g16f8c8<a8g8f4g8a8a+8a8a4>d4<a+4a4f2d4a8a8>e8f8g8a8d8a16g16f8d8<a2g8a8a+8a8>d4d4<a+4a4>d8a16g16f8c8d8f16a16g8a8e8f8g4d8f16g16a8c8<a4f4g8a8a+8a8a4>d4<a+4a4d1>d2<a2>f2e4d4d2<a4a4>f4f4e2a8d8f8e8c8d8<a4>f8c8e8d8c8d8a8f8e4<a2>d4f4f4e2f8e8d4<a2d1a4>f8e8<a8>c8c4<a4>d8f8e8d8a4<a4>f8e8<a8>c8c4c4d8f8e8c8e4<a4>f8e8<a8>c8c4<a4>d8f8e8d8a4<a4>f8e8<a8>c8c4c4d8f8e8c8e4<a1>d1<d1
+
+% shh
+[255 r1]
+
+%-~-~-~-~-~-~-~-~-~-~-~-~-~-% CHANNEL B %-~-~-~-~-~-~-~-~-~-~-~-~-~-%
+
+@ r4
+
+o3
+v5	a1>c2c2d2a2d2e2<a1>c2c2d2a2d2d2a8d8f8e8c8d8<a8>d8f8c8e8d8c8d8a8f8d8g8a8f8<a8>c8e8d8<f2e2>f8g8d8c8a4f4<d4a4d4a4e4>f8e4f8a4<d4a4d4a4e4>f8e4f8a4a8d8f8e8c8d8<a8>d8f8c8e8d8c8d8a8f8d8e8a8f8<a8>c8e8d8d1f8g8d8c8a4f4<d4a4d4a4d4a4d4a4e4>f8e4f8<a4d4a4d4a4e4>f8e4e8c4<d4a4d4a4e4>f8e4f8<a4d4a4d4a4e4>f8e4e8c4<d4f8e8g8a8>d8c8<a4g4a8a+8a8g8e4c4e4d4>c2<a2f2a2>c2<a2f2a2>d1<a1>c2c8<a8>a8g8f2a2d2e2<a1>c2c2d2a2d2<d2f2d2a2d2a8g8a8a+8f4d4a1<a2>d2a2d2a8g8a8a+8f4d4a1<a2>d2a2>d2<a8g8a8a+8f4d4a1<a2>d2a2d2a8g8a8a+8f4d4a1<a2>d2f2d2>a8d8f8e8c8d8<a8>d8f8c8e8d8c8d8a8f8d8e8a8f8<a8>c8e8d8<f2e2>f8g8d8c8a4f4<d4a4d4a4e4>f8e4f8a4<d4a4d4a4e4>f8e4f8<a4f2d2d4a4d4a4e4>f8e4f8<a4d4a4d4a4e4>f8e4e8c4<d4a4d4a4e4>f8e4f8<a4d4a4d4a4e4>f8e4e8c4<d2d4a4f2d2d1
+
+% shh
+[255 r1]
+
+%-~-~-~-~-~-~-~-~-~-~-~-~-~-% CHANNEL C %-~-~-~-~-~-~-~-~-~-~-~-~-~-%
+
+@ r4
+
+
+o2
+v4 d1<a4a4>e2d1f4e4e2d1<a4a4>e2d1f4e4d2d1<a4a4>e2e2f4g4a2f4d4d4d4c4c4d2a2<a4>d4d4e4d2a2<a4>d4d4e4d1<a4a4>e2e2f4g4a2f4d4d4d4c4c4d2a2d2a2<a4>d4d4e4d2a2<a4>d4d4e4d2a2<a4>d4d4e4d2a2<a4>d4d4e4f2d4f4c2<a4>c4e2c4<a4>c8d4.e2c8d4<a8>e8d4f8c8d4.e2c8d4.c2d2e2d1<a4a4>e2d1f4e4e2d1<a4a4>e2d1f4e4e2a2>d2<<a4>d4<g8a8a+8a8g2f2d1g2f2a4>d4<g8a8a+8a8g2f2d1g2f2a4>d4<g8a8a+8a8g2f2d1g2f2a4>d4<g8a8a+8a8g2f2d1g2f2>a2>d2<d1<a4a4>e2e2f4g4a2f4d4d4d4c4c4d2a2<a4>d4d4e4d2a2<a4>d4d4e4a2>d2<d2a2<a4>d4d4e4d2a2<a4>d4d4e4d2a2<a4>d4d4e4d2a2<a4>d4d4e4d2a2a2>d2<<a1
+
+
+
+
+% shh
+[255 r1]
+
+%-~-~-~-~-~-~-~-~-~-~-~-~-~-% CHANNEL D %-~-~-~-~-~-~-~-~-~-~-~-~-~-%
+
+@ r4
+
+o3
+v8 
+d4a2a4f4e2e8f8g2a8a+8a8f8g4d2a4d4a2a4f4e2e8f8g2a8a+8a8f8g4d2a4d4a4d4a4f4e4f8e8d4d2.e4d2f4g4a4f4g4a4d1e1d1e1d4a4d4a4f4e4f8e8d4d2.e4d2f4g4a4f4g4a4d1d1e1d1e1d1e1d1e1f4f4d2c4c4<a2a8>c8d8e8a4d4f8e4d2d8f8e4c2d8f8e4d2d8f8e4c2d8d1d4a2a4f4e2e8f8g2a8a+8a8f8g4d2a4d4a2a4f4e2e8f8g2a8a+8a8f8g4d2a4d4e4f4c4<a2>d2<a4>f4d4<a4>d4f8e8f8e8d4<d4d8d8d4a4a2>d2<a4>f4d4<a4>d4f8e8f8e8d4<d4d8d8d4a4a2>d2<a4>f4d4<a4>d4f8e8f8e8d4<d4d8d8d4a4a2>d2<a4>f4d4<a4>d4f8e8f8e8d4<d4d8d8d4a4>d4e4f4c4d4a4d4a4f4e4f8e8d4d2.e4d2f4g4a4f4g4a4d1e1d1e1d4e4f4c4d1e1d1e1d1e1d1e1a1d2f4c4d1
+
+% a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4>d8d8<a4>d4<a4a8a8a4a4>d4d8d8d4d4<a4r4a4r4a4r2.a4r2.a4>d4<a4r4a4a8a8a4r4a4>d4<a4r4a4>d8d8<a4>d4<a4a8a8a4a4>d4d8d8d4d4<a4r4a4r4a4>d8d8<a4>d4<a4a8a8a4a4a4r4a4>d4<a4a4r2a4r4a4>d4<a4a4r4a4a4>d4<a4>d4<a4a4r4>d8d8<a4r4a4>d4<a4a4r4a4a4r4a4>d8r8<a4r4>d4r4<a4r4a4>d8r8<a8a8r8>d8<a8a8r8>d8<a4r4a4r8>d8<a8a8r8>d8<a8a8r8>d8<a4r4a4>d8d8<a4r4a4>d8d8<a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4r2.a4r4a8r8a8a8a4r2.a4>d16d16d8d8<a8a8r8a4>d4<a8a8a8r8a4>d16d16d8d8<a8a8r8a4a8>d8<a8r8a8r8a4>d16d16d8d8<a8a8r8a4>d4<a8a8a8r8a4>d16d16d8d8<a8a8r8a4a8>d8<a8r8a8r8a4>d16d16d8d8<a8a8r8a4>d4<a8a8a8r8a4>d16d16d8d8<a8a8r8a4a8>d8<a8r8a8r8a4>d16d16d8d8<a8a8r8a4>d4<a8a8a8r8a4>d16d16d8d8<a8a8r8a4a8>d8<a8r8a8r8a4r2.a4>d8d8<a4>d4<a4a8a8a4a4>d4d8d8d4d4<a4r4a4r4a4>d8d8<a4>d4<a4a8a8a4a4a4>d4<a4r4a4a8a8a4r4a4>d4<a4r4a4r2.a4r4a4>d4<a4a4r2a4r4a4>d4<a4a4r4a4a4>d4<a4>d4<a4a4r4>d8d8<a4r4a4>d4<a4a4r4a4a4r4a4>d4<a4r2.a1
+
+% shh
+[255 r1]
+
+%-~-~-~-~-~-~-~-~-~-~-~-~-~-%   MACRO   %-~-~-~-~-~-~-~-~-~-~-~-~-~-%
+
+% m1
+@ o1 % macro 1 data here
+
+% m2
+@ o1 % macro 2 data here
+
+% m3, m4, m5...
+
+%===================================================================%
+
+% NOTES      : A blank template ready for MMML commands. Here's a
+%              quick cheatsheet to get started (an X indicates a
+%              required value):
+%
+%              cX - gX   : Note values (and duration)
+%              rX        : Rest / pause (and duration)
+%              1,2,4,8,
+%              16,32,64,
+%              128       : Possible note / rest durations
+%              X.        : Dotted note (X plus an additional 1/2 X)
+%              + or #    : Sharpen a note
+%              o1-5      : Channel octave (1 lowest, 5 highest)
+%              < or >    : Decrease, or increase, the current octave
+%              v0-8      : Channel 'volume' (actually pulse width)
+%                          8=50%,7=25%,6=12.5%,5=6.25%,4=3.125%,
+%                          3=1.5625,2=0.78125,1=0.390625.
+%              [2-255    : Start X number of loops
+%              ]         : End a loop
+%              m1-255    : Call a macro (channel agnostic data)
+%              t1-255    : Set the global tempo
+%              @         : Channel / macro start. Channels are
+%                          declared sequentially from A - D, macros
+%                          are specified underneath.
+%              cX - eX   : Possible drum sounds (c=pop,
+%                          c#=beep,d=kick,d#=snare,e=hi-hat)
+%
+%              Some quick tips:
+%
+%              -> You can nest up to five loops - or four in a macro.
+%                 e.g.: "[X[X[X[X[X ]]]]]"
+%
+%              -> Notes don't need multiple, identical durations.
+%                 e.g.: "cX cX cX" could be written as "cX c c"
+%
+%              -> Careful when jumping to a macro, it won't remember
+%                 your octave! Best practice is to declare an octave
+%                 at the start of each macro, and when you return.
+%                 e.g.: "@ oX" and "mX oX"
+%
+%              -> Save space whenever and wherever you can! Arpeggios
+%                 can be condensed into loops and repeated passages
+%                 should become macros.
+%
+%              -> Channels will loop back to the beginning when they
+%                 have completed reading their data.
+%
+%              -> I always start with a quarter note pause as, when
+%                 microcontrollers are first switched on, the first
+%                 few milliseconds can vary slightly, changing the
+%                 duration.
+%
+%              -> Tempo commands can be placed in any channel, but
+%                 apply globally (unfortunately, no unique tempo per 
+%                 channel).
+%
+%              I hope you have fun writing tiny music! If you have
+%              any questions / suggestions / corrections contact me
+%              at: hello@protodome.com
+%===================================================================%

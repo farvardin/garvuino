@@ -1,0 +1,310 @@
+musicchip tune
+version 1
+
+songline 00 01 00 00 00 00 00 00 00
+songline 01 01 00 00 00 00 00 00 00
+songline 02 01 00 02 00 00 00 00 00
+songline 03 01 00 02 00 00 00 00 00
+songline 04 01 00 02 00 00 00 00 00
+songline 05 01 00 09 00 00 00 00 00
+songline 06 01 00 09 00 03 00 00 00
+songline 07 01 00 09 00 03 00 00 00
+songline 08 01 00 06 00 03 00 00 00
+songline 09 05 00 02 00 04 00 00 00
+songline 0a 05 00 02 00 04 00 00 00
+songline 0b 05 00 09 00 04 00 00 00
+songline 0c 05 00 09 00 0a 00 00 00
+songline 0d 05 00 09 00 0a 00 00 00
+songline 0e 05 00 06 00 0b 00 00 00
+songline 0f 01 00 02 00 0c 00 00 00
+songline 10 01 00 02 00 04 00 00 00
+songline 11 01 00 09 00 00 00 00 00
+songline 12 01 00 09 00 00 00 00 00
+songline 13 01 00 09 00 00 00 00 00
+songline 14 01 00 09 00 00 00 00 00
+songline 15 04 00 00 00 00 00 00 00
+songline 16 04 00 00 00 00 00 00 00
+songline 17 04 00 00 00 00 00 00 00
+songline 18 04 00 00 00 00 00 00 00
+
+trackline 01 00 1d 01 00 00 00 00
+trackline 01 02 29 01 00 00 00 00
+trackline 01 04 1d 01 00 00 00 00
+trackline 01 06 29 01 00 00 00 00
+trackline 01 08 20 01 00 00 00 00
+trackline 01 0b 2a 01 00 00 00 00
+trackline 01 0c 1d 01 00 00 00 00
+trackline 01 0e 20 01 00 00 00 00
+trackline 01 10 2c 01 00 00 00 00
+trackline 01 12 20 01 00 00 00 00
+trackline 01 14 2c 01 00 00 00 00
+trackline 01 17 2b 01 00 00 00 00
+trackline 01 18 2a 01 00 00 00 00
+trackline 01 1a 29 01 00 00 00 00
+trackline 01 1c 1d 01 00 00 00 00
+trackline 01 1e 1b 01 00 00 00 00
+trackline 02 00 19 02 00 00 00 00
+trackline 02 08 19 02 00 00 00 00
+trackline 02 10 19 02 00 00 00 00
+trackline 02 18 19 02 00 00 00 00
+trackline 02 1c 0d 02 00 00 00 00
+trackline 03 00 35 03 00 00 00 00
+trackline 03 04 35 03 00 00 00 00
+trackline 03 08 2c 03 00 00 00 00
+trackline 03 10 25 03 00 00 00 00
+trackline 03 18 2e 03 00 00 00 00
+trackline 03 1c 2c 03 00 00 00 00
+trackline 04 00 19 04 66 ee 00 00
+trackline 05 00 1b 01 00 00 00 00
+trackline 05 02 27 01 00 00 00 00
+trackline 05 04 1b 01 00 00 00 00
+trackline 05 06 27 01 00 00 00 00
+trackline 05 08 20 01 00 00 00 00
+trackline 05 0b 29 01 00 00 00 00
+trackline 05 0c 1d 01 00 00 00 00
+trackline 05 0e 1e 01 00 00 00 00
+trackline 05 10 29 01 00 00 00 00
+trackline 05 12 1e 01 00 00 00 00
+trackline 05 14 29 01 00 00 00 00
+trackline 05 17 2a 01 00 00 00 00
+trackline 05 18 29 01 00 00 00 00
+trackline 05 1a 27 01 00 00 00 00
+trackline 05 1c 1b 01 00 00 00 00
+trackline 05 1e 27 01 00 00 00 00
+trackline 06 00 19 02 00 00 00 00
+trackline 06 08 19 02 00 00 00 00
+trackline 06 0c 1e 02 00 00 00 00
+trackline 06 10 19 02 00 00 00 00
+trackline 06 18 19 02 00 00 00 00
+trackline 06 1c 29 02 00 00 00 00
+trackline 06 1e 29 02 00 00 00 00
+trackline 07 00 44 03 00 00 00 00
+trackline 07 04 41 03 00 00 00 00
+trackline 07 10 3f 03 00 00 00 00
+trackline 07 14 3d 03 00 00 00 00
+trackline 07 18 3c 03 00 00 00 00
+trackline 08 00 38 03 00 00 00 00
+trackline 08 08 3a 03 00 00 00 00
+trackline 08 0e 35 03 00 00 00 00
+trackline 08 10 41 03 66 ff 00 00
+trackline 09 00 19 02 00 00 00 00
+trackline 09 04 2a 05 00 00 00 00
+trackline 09 08 19 02 00 00 00 00
+trackline 09 10 19 02 00 00 00 00
+trackline 09 14 2a 05 00 00 00 00
+trackline 09 18 19 02 00 00 00 00
+trackline 09 1c 2a 05 00 00 00 00
+trackline 09 1e 2a 05 00 00 00 00
+trackline 0a 00 29 13 00 00 00 00
+trackline 0a 01 35 13 00 00 00 00
+trackline 0a 02 29 13 00 00 00 00
+trackline 0a 03 35 13 00 00 00 00
+trackline 0a 04 35 13 00 00 00 00
+trackline 0a 05 29 13 00 00 00 00
+trackline 0a 06 35 13 00 00 00 00
+trackline 0a 07 29 13 00 00 00 00
+trackline 0a 08 35 13 00 00 00 00
+trackline 0a 09 29 13 00 00 00 00
+trackline 0a 0a 35 13 00 00 00 00
+trackline 0a 0b 29 13 00 00 00 00
+trackline 0a 0c 35 13 00 00 00 00
+trackline 0a 0d 29 13 00 00 00 00
+trackline 0a 0e 35 13 00 00 00 00
+trackline 0a 0f 29 13 00 00 00 00
+trackline 0a 10 2c 13 00 00 00 00
+trackline 0a 11 38 13 00 00 00 00
+trackline 0a 12 2c 13 00 00 00 00
+trackline 0a 13 38 13 00 00 00 00
+trackline 0a 14 2c 13 00 00 00 00
+trackline 0a 15 38 13 00 00 00 00
+trackline 0a 16 2c 13 00 00 00 00
+trackline 0a 17 38 13 00 00 00 00
+trackline 0a 18 2c 13 00 00 00 00
+trackline 0a 19 2b 13 00 00 00 00
+trackline 0a 1a 37 13 00 00 00 00
+trackline 0a 1b 2b 13 00 00 00 00
+trackline 0a 1c 37 13 00 00 00 00
+trackline 0a 1d 2b 13 00 00 00 00
+trackline 0a 1e 37 13 00 00 00 00
+trackline 0a 1f 2b 13 00 00 00 00
+trackline 0b 00 31 13 00 00 00 00
+trackline 0b 10 30 13 00 00 00 00
+trackline 0b 14 2e 13 00 00 00 00
+trackline 0b 18 30 13 00 00 00 00
+trackline 0c 00 29 13 00 00 00 00
+trackline 0c 10 00 00 66 fe 00 00
+
+instrumentline 01 00 76 ee
+instrumentline 01 01 77 01
+instrumentline 01 02 2b 19
+instrumentline 01 03 76 ff
+instrumentline 01 04 74 02
+instrumentline 01 05 64 80
+instrumentline 01 06 6a 01
+instrumentline 02 00 77 03
+instrumentline 02 01 76 ff
+instrumentline 02 02 74 01
+instrumentline 02 03 77 02
+instrumentline 02 04 64 7e
+instrumentline 02 05 2b 31
+instrumentline 02 06 6c a0
+instrumentline 02 07 66 f0
+instrumentline 03 00 76 7e
+instrumentline 03 01 64 42
+instrumentline 03 02 77 00
+instrumentline 03 03 64 46
+instrumentline 03 04 64 80
+instrumentline 03 05 2b 25
+instrumentline 03 06 74 02
+instrumentline 03 07 66 04
+instrumentline 03 08 2b 31
+instrumentline 03 09 74 02
+instrumentline 03 0a 2b 25
+instrumentline 03 0b 30 00
+instrumentline 03 0c 74 02
+instrumentline 03 0d 66 00
+instrumentline 03 0e 74 16
+instrumentline 03 0f 7e 32
+instrumentline 04 00 76 00
+instrumentline 04 01 74 01
+instrumentline 04 02 6a 01
+instrumentline 05 00 77 03
+instrumentline 05 01 76 fe
+instrumentline 05 02 6c e0
+instrumentline 05 03 66 f0
+instrumentline 05 04 66 e0
+instrumentline 05 05 74 01
+instrumentline 05 06 66 d0
+instrumentline 05 07 6c 03
+instrumentline 11 00 77 03
+instrumentline 11 01 76 ff
+instrumentline 11 02 74 01
+instrumentline 11 03 77 02
+instrumentline 11 04 64 90
+instrumentline 11 05 2b 31
+instrumentline 11 06 6c a0
+instrumentline 11 07 66 f0
+instrumentline 12 00 76 ff
+instrumentline 12 01 77 03
+instrumentline 12 02 74 02
+instrumentline 12 03 77 02
+instrumentline 12 04 2b 31
+instrumentline 12 05 64 70
+instrumentline 12 06 6c d0
+instrumentline 12 07 74 02
+instrumentline 12 08 66 f8
+instrumentline 12 09 6a 01
+instrumentline 13 00 77 02
+instrumentline 13 01 6d 05
+instrumentline 13 02 2b 31
+instrumentline 13 03 76 df
+instrumentline 13 04 66 f0
+instrumentline 13 05 74 06
+instrumentline 13 06 66 00
+instrumentline 13 07 74 16
+instrumentline 13 08 7e 25
+instrumentline 14 00 77 03
+instrumentline 14 01 76 ff
+instrumentline 14 02 74 01
+instrumentline 14 03 77 00
+instrumentline 14 04 6d 05
+instrumentline 14 05 2b 3d
+instrumentline 14 06 66 f0
+instrumentline 14 07 74 06
+instrumentline 14 08 66 00
+instrumentline 14 09 74 20
+instrumentline 14 0a 66 f0
+instrumentline 15 00 77 03
+instrumentline 15 01 76 ff
+instrumentline 15 02 74 01
+instrumentline 15 03 77 02
+instrumentline 15 04 64 50
+instrumentline 15 05 6d 01
+instrumentline 15 06 2b 31
+instrumentline 15 07 74 05
+instrumentline 15 08 66 fe
+instrumentline 16 00 77 02
+instrumentline 16 01 64 80
+instrumentline 16 02 2b 3d
+instrumentline 16 03 76 c0
+instrumentline 16 04 66 08
+instrumentline 16 05 74 02
+instrumentline 16 06 66 f0
+instrumentline 16 07 74 02
+instrumentline 16 08 66 00
+instrumentline 16 09 74 16
+instrumentline 16 0a 7e 34
+instrumentline 17 00 77 03
+instrumentline 17 01 76 ff
+instrumentline 17 02 66 fc
+instrumentline 18 00 69 00
+instrumentline 18 01 77 03
+instrumentline 18 02 76 ff
+instrumentline 18 03 74 01
+instrumentline 18 04 77 02
+instrumentline 18 05 6d 05
+instrumentline 18 06 66 ff
+instrumentline 18 07 2b 3d
+instrumentline 18 08 74 03
+instrumentline 18 09 2b 38
+instrumentline 18 0a 74 03
+instrumentline 18 0b 2b 34
+instrumentline 18 0c 74 03
+instrumentline 18 0d 2b 31
+instrumentline 18 0e 74 03
+instrumentline 18 0f 6a 07
+instrumentline 19 00 69 00
+instrumentline 19 01 77 03
+instrumentline 19 02 76 ff
+instrumentline 19 03 74 01
+instrumentline 19 04 77 02
+instrumentline 19 05 6d 05
+instrumentline 19 06 66 ff
+instrumentline 19 07 2b 3d
+instrumentline 19 08 74 03
+instrumentline 19 09 2b 38
+instrumentline 19 0a 74 03
+instrumentline 19 0b 2b 35
+instrumentline 19 0c 74 03
+instrumentline 19 0d 2b 31
+instrumentline 19 0e 74 03
+instrumentline 19 0f 6a 07
+instrumentline 1a 00 69 00
+instrumentline 1a 01 77 03
+instrumentline 1a 02 76 ff
+instrumentline 1a 03 74 01
+instrumentline 1a 04 77 02
+instrumentline 1a 05 6d 05
+instrumentline 1a 06 66 ff
+instrumentline 1a 07 2b 3d
+instrumentline 1a 08 74 03
+instrumentline 1a 09 2b 38
+instrumentline 1a 0a 74 03
+instrumentline 1a 0b 2b 36
+instrumentline 1a 0c 74 03
+instrumentline 1a 0d 2b 31
+instrumentline 1a 0e 74 03
+instrumentline 1a 0f 6a 07
+instrumentline 1b 00 77 03
+instrumentline 1b 01 76 ff
+instrumentline 1b 02 74 01
+instrumentline 1b 03 77 00
+instrumentline 1b 04 6d 05
+instrumentline 1b 05 2b 3d
+instrumentline 1b 06 66 f0
+instrumentline 1b 07 74 06
+instrumentline 1b 08 66 00
+instrumentline 1b 09 74 06
+instrumentline 1b 0a 7e 25
+instrumentline 1c 00 77 03
+instrumentline 1c 01 76 ff
+instrumentline 1c 02 66 f0
+instrumentline 1d 00 76 c4
+instrumentline 1d 01 77 00
+instrumentline 1d 02 6d 05
+instrumentline 1d 03 2b 3d
+instrumentline 1d 04 66 f0
+instrumentline 1d 05 74 06
+instrumentline 1d 06 66 00
+instrumentline 1d 07 74 06
+instrumentline 1d 08 7e 25

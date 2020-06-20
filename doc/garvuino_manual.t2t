@@ -135,7 +135,7 @@ More precisely:
  | D10 | switch Sw2 |
  | D11 | MOSI: SD card reader |
  | D12 | MISO: SD card reader |
- | D13 | SCK; SD card reader |
+ | D13 | SCK; SD card reader (onboard LED too)|
  | A0 | POT 1 |
  | A1 | POT 2 |
  | A2 | POT 3 |

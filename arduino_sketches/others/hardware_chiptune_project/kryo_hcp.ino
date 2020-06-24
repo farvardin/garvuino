@@ -3,8 +3,8 @@
 #include <avr/interrupt.h>
 
 #define TRACKLEN 32
-#define MAXTRACK 0x92
-#define SONGLEN  0x37
+#define MAXTRACK	0x92
+#define SONGLEN		0x37
 
 #include <avr/pgmspace.h>
 
@@ -591,11 +591,11 @@ for(ch = 0; ch < 4; ch++) {
 lights = 0;
 if(light[0]) {
   light[0]--;
-  lights |= 0x04;
+  lights |= 0x01; // was 0x04;
 }
 if(light[1]) {
   light[1]--;
-  lights |= 0x10;
+  lights |= (1<<5);  // was 0x10;
 }
 PORTB = lights;
 }
@@ -623,10 +623,10 @@ DDRD = 0xff;
 
 //PORTC = 0;
 
-        pinMode(10,OUTPUT);
-        pinMode(12,OUTPUT);
+pinMode(8,OUTPUT);  // led, see PORTB lights above
+pinMode(13,OUTPUT);  // led, see PORTB lights above
 
-         timetoplay = 0;
+timetoplay = 0;
 trackwait = 0;
 trackpos = 0;
 playsong = 1;

@@ -1,9 +1,10 @@
 
 
 
-#SONG=bearborne
+SONG=bearborne
 #SONG=kryo_hcp
-SONG=garvalf01
+#SONG=garvalf01
+#SONG=test
 
 convert:
 	gcc -c exported.s

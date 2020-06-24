@@ -54,4 +54,6 @@ More info on http://bearborne.blogspot.com/2012/02/lft-tracker-howto.html
 
 Change your working document in the makefile, and use "make edit" to open it with the tracker, "make convert" to generate the "hardware_chiptune_project.ino" (arduino requires the .ino file to have the same name as the containing folder). "make backup" is a conveniant way to save a snapshot of your current work, in the backups folder.
 
+Important: you might need to optimise the song (press # in the editor) before exporting it (%), otherwise the song might not be correctly converted.
+
 

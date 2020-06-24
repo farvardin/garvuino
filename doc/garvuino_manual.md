@@ -59,19 +59,19 @@ The LED is connected to D8 on Arduino. The audio output to D9. The switch to D6.
 More precisely:
 
 | PIN |use|
-|--------|-------|
+|---------------|
 |D2 |FREE|
 |D3 |audio out (some sketches)|
 |D4 |CS for SD card reader|
 |D5 |FREE|
 |D6 |switch Sw1 / audio out (some sketches)|
-|D7 |switch Sw3|
+|D7 |switch Sw3 / audio out (playtune)||
 |D8 |led1|
 |D9 |audio out (most sketches)|
 |D10 |switch Sw2|
 |D11 |MOSI: SD card reader|
 |D12 |MISO: SD card reader|
-|D13 |SCK; SD card reader|
+|D13 |SCK; SD card reader (onboard LED too)||
 |A0 |POT 1|
 |A1 |POT 2|
 |A2 |POT 3|
@@ -80,6 +80,8 @@ More precisely:
 |A5 |SCL: oled display|
 |A6 |POT 5|
 |A7 |FREE|
+
+(TODO: playtune outputs to PIN9, 5 and 6)
 
 There are a few jumpers on the board. They are for switching between some modes.
 
@@ -190,13 +192,11 @@ The Garvuino should be able to play many other sketches from various projects on
 
 #### Playtune 
 
-This one can play some MIDI files after converting them:
+Playtune can play some MIDI files after converting them. It can be found in ./arduino_sketches/others/playtune
 
-https://bitbucket.org/farvardin/playtune-arduino
+Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 7).
 
-Just connect PIN 5 to AY>L and PIN 6 to AY>R (PIN 9 is already connected to audio output) and you'll get a midi player able to play up to 3 voices. You can connect even more voices to the free Digital Output on the Garvuino (for example by adding a pin on PIN 10.
-
-Use the examples/test_nano/test_nano.in sketch.
+Use the playtune_nano/playtune_nano.ino sketch.
 
 #### Auduino 
 
@@ -306,7 +306,7 @@ Connect it according to this schematic for the atmega8:
 Basically it's:
 
 | SD reader |Atmega|
-|--------|-------|
+|---------------|
 |MISO |pin 18: PB4|
 |MOSI |pin 17: PB3|
 |RESET |pin 01: PC6|

@@ -241,6 +241,11 @@ if(playsong) {
     if(playsong) {
      if(songpos >= SONGLEN) {
       playsong = 0;
+	//trackwait = 0;
+	//playsong = 1;
+        //songpos=0;
+        //trackpos=0;
+        //initresources();
      } else {
       for(ch = 0; ch < 4; ch++) {
        u8 gottransp;

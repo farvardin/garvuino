@@ -1,10 +1,16 @@
+
+
+// Hardware chiptune project port to Arduino
+//
+// The audio output is PIN 3.
+
 #include <avr/io.h>
 #include <avr/signal.h>
 #include <avr/interrupt.h>
 
 #define TRACKLEN 32
-#define MAXTRACK	0x0a
-#define SONGLEN		0x19
+#define MAXTRACK	0x92
+#define SONGLEN		0x37
 
 #include <avr/pgmspace.h>
 

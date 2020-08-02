@@ -1,2 +1,2 @@
-#define MAXTRACK	0x0a
-#define SONGLEN		0x19
+#define MAXTRACK	0x04
+#define SONGLEN		0x09

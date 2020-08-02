@@ -1,9 +1,10 @@
 
 
 
-SONG=bearborne
+#SONG=bearborne
 #SONG=kryo_hcp
 #SONG=garvalf01
+SONG=garvalf02
 #SONG=test
 
 convert:
@@ -13,9 +14,9 @@ convert:
 	
 	
 edit:
-	#setxkbmap us
+	setxkbmap us
 	./tracker ${SONG}.song
-	#setxkbmap fr
+	setxkbmap fr
 	
 
 backup:

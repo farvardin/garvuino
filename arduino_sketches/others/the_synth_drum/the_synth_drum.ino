@@ -39,6 +39,13 @@ int switchInPin1 = 6;
 int switchInPin2 = 10; 
 int switchInPin3 = 7; 
 
+const int KNOB_PIN_0 = 0; // set the input for the knob to analog pin 0
+int knob_0 = 100; // initialisation
+
+const int KNOB_PIN_1 = 1; // set the input for the knob to analog pin 1
+int knob_1 = 100; // initialisation
+
+
 #define OLED 
 
 /* original version
@@ -74,6 +81,7 @@ void Kick()
   edgar.setMod(0,21);
   
   edgar.mTrigger(0,35);
+  //edgar.trigger(0);
   }
 
 
@@ -159,7 +167,7 @@ int sensorVal = digitalRead(switchInPin1); // push button
 
 void setup() 
 {
-  Serial.begin(31250);    //MIDI BAUD rate
+ // Serial.begin(31250);    //MIDI BAUD rate
   //Serial.begin(38400);    //MIDI BAUD rate
   edgar.begin(CHB);          //Init synth
   pinMode(8,OUTPUT);
@@ -175,15 +183,20 @@ void setup()
   edgar.setLength(0,82);
   edgar.setMod(0,64);
 */
+  edgar.setupVoice(0,SQUARE,60,ENVELOPE1,60,64);  //-Set up voice 0
+  edgar.setupVoice(1,SINE,60,ENVELOPE1,60,64);      //-Set up voice 1
+  edgar.setupVoice(2,SINE,60,ENVELOPE1,60,64);      //-Set up voice 1
+  edgar.setupVoice(3,SINE,60,ENVELOPE1,60,64);      //-Set up voice 1
 
 
-  
-    ssd1306_128x64_i2c_init();
+  // no sound if enabled:
+  /*  ssd1306_128x64_i2c_init();
 
   ssd1306_fillScreen(0x00);
     ssd1306_drawBitmap(0, 0, 128, 64, garvuino_logo);
     delay(20);
     garvuino_welcome();
+    */
 }
 
 
@@ -235,13 +248,22 @@ void Seq03(int tempo)
 
 void loop()
 {
-  unsigned char voice;
+ // unsigned char voice;
   //testSwitches();
+ // edgar.setFrequency(0,440);
+ // edgar.trigger(0);
+
+  int knob_0 = analogRead(KNOB_PIN_0); // value is 0-1023
+  int knob_0_remap = map(knob_0,0,1023, 0, 400);
+
+  int knob_1 = analogRead(KNOB_PIN_1); // value is 0-1023
+  int knob_1_remap = map(knob_1,0,1023, 0, 110);
+
   
-  Seq01(250);
-  Seq02(250);
-  Seq01(250);
-  Seq03(250);
+  Seq01(knob_0_remap);
+  Seq02(knob_0_remap);
+  Seq01(knob_0_remap);
+  Seq03(knob_0_remap);
   
 }
 

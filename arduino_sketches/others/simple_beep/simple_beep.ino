@@ -15,8 +15,8 @@ int reading;   // variable to store the button's state
 // define your own values there:
 
 int pre_delay = 2000;      // delay before sending the beep (in ms)
-int beep_frequency = 432;  // frequency of the beep. A4 = 440
-int beep_duration = 1400;   // how long will last the beep (in ms)
+int beep_frequency = 220;  // frequency of the beep. A4 = 440
+int beep_duration = 400;   // how long will last the beep (in ms)
 int beep_repetition = 4;   // how many time shall we repeat the beep
 int beep_interval = 500;   // time in ms between two beeps
 
